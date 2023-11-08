@@ -89,6 +89,11 @@ class ExpenseCategoryProviderState extends State<ExpenseCategoryProvider> {
     }
   }
 
+  bool contains(String name) {
+    final names = _categories.map((e) => e.name);
+    return names.contains(name);
+  }
+
   Future<ExpenseCategory> addCategory({required String name, int? iconData}) async {
     final category = ExpenseCategory(
       id: _categories.last.id + 1,

@@ -11,12 +11,19 @@ final class RealmExpenseCategoryRepository implements ExpenseCategoryRepository 
 
   @override
   Future<void> add(ExpenseCategory category) async {
-    final realmCategory = CategoryMapper.toRealm(category);
-
-    realm.write(() {
-      realm.add(realmCategory);
-    });
-    log('${category.name} has been added.', name: 'Realm');
+    try {
+      final realmCategory = CategoryMapper.toRealm(category);
+      realm.write(() {
+        realm.add(realmCategory);
+      });
+      log('${category.name} has been added.', name: 'Realm');
+    } on RealmException catch (e) {
+      if (e.message.contains('1013')) {
+        throw DuplicateCategoryException(category.name);
+      } else {
+        rethrow;
+      }
+    }
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_archive/domain/models/expense_category.dart';
 
 import 'package:money_archive/providers/expense_category_provider.dart';
 import 'package:money_archive/utils/available_icons.dart';
@@ -26,13 +27,20 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
       });
       return;
     }
+    try {
 
-    final addedCategory = await ExpenseCategoryProvider.of(context).addCategory(
-      name: _nameController.text,
-      iconData: _icon?.icon?.codePoint,
-    );
-    if (!mounted) return;
-    Navigator.pop(context, addedCategory);
+      final addedCategory = await ExpenseCategoryProvider.of(context).addCategory(
+        name: _nameController.text,
+        iconData: _icon?.icon?.codePoint,
+      );
+      if (!mounted) return;
+      Navigator.pop(context, addedCategory);
+    } on DuplicateCategoryException catch (e){
+      setState(() {
+        _nameErrorMessage = e.message;
+      });
+    }
+
   }
 
   @override
