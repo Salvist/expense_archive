@@ -3,21 +3,23 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:money_archive/domain/models/expense.dart';
 import 'package:money_archive/domain/repositories/expense_repository.dart';
+import 'package:money_archive/utils/extensions/currency_extension.dart';
 
 class InheritedExpenses extends InheritedWidget {
   final List<Expense> data;
 
-  double get today {
+  String get today {
     final currentDate = DateTime.now();
     final expenses = data.where((expense) => DateUtils.isSameDay(expense.paidAt, currentDate));
-    return expenses.fold(0.0, (previousValue, expense) => previousValue + expense.cost);
+    final totalExpense = expenses.fold(0.0, (previousValue, expense) => previousValue + expense.cost);
+    return totalExpense.toCurrency();
   }
 
-  double get monthly {
+  String get monthly {
     final currentDate = DateTime.now();
     final monthlyExpenses = data.where((expense) => DateUtils.isSameMonth(expense.paidAt, currentDate));
     final expense = monthlyExpenses.fold<double>(0.0, (previousValue, element) => previousValue + element.cost);
-    return expense;
+    return expense.toCurrency();
   }
 
   UnmodifiableListView<Expense> get recent {

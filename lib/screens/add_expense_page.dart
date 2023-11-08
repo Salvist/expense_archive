@@ -114,7 +114,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       decoration: const InputDecoration(
                         labelText: 'Business / Individual',
                       ),
+                      textCapitalization: TextCapitalization.words,
                       validator: (value) => value!.isEmpty ? 'Enter a business / individual name' : null,
+
                     ),
                     const SizedBox(height: 16),
                     TextFormField(

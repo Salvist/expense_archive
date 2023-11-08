@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:money_archive/domain/models/expense.dart';
 import 'package:money_archive/utils/code_point_to_icon.dart';
+import 'package:money_archive/utils/extensions/currency_extension.dart';
 import 'package:money_archive/utils/extensions/date_time_extension.dart';
 
 class ExpenseTile extends StatelessWidget {
@@ -27,7 +29,8 @@ class ExpenseTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(expense.name),
-          Text('\$${expense.cost}'),
+          // Text('\$${expense.cost}'),
+          Text(expense.cost.toCurrency()),
         ],
       ),
       subtitle: Row(

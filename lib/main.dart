@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:money_archive/page_navigator.dart';
 import 'package:realm/realm.dart';
 import 'package:money_archive/data/local/realm/models/expense.dart';
@@ -7,7 +8,6 @@ import 'package:money_archive/data/local/realm/repositories/expense_category_rep
 import 'package:money_archive/data/local/realm/repositories/expense_repository.dart';
 import 'package:money_archive/providers/expense_category_provider.dart';
 import 'package:money_archive/providers/expenses_provider.dart';
-import 'package:money_archive/router.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +46,7 @@ class MoneyArchiveApp extends StatelessWidget {
       title: 'Money Archive',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        fontFamily: GoogleFonts.manrope().fontFamily,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
         // fontFamily: GoogleFonts.robotoSlab().fontFamily,

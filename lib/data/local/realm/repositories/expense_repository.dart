@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:developer' as dev;
 
 import 'package:realm/realm.dart';
 import 'package:money_archive/data/local/realm/models/expense.dart';
@@ -52,7 +52,7 @@ final class RealmExpenseRepository implements ExpenseRepository {
     realm.write(() {
       realm.add(realmExpense);
     });
-    log('Expense has been added.', name: 'Realm');
+    dev.log('Expense has been added.', name: 'Realm');
     return expense.copyWith(id: realmExpense.id.hexString);
   }
 
@@ -65,7 +65,7 @@ final class RealmExpenseRepository implements ExpenseRepository {
         realm.delete<RealmExpense>(realmExpense);
       });
     }
-
+    dev.log('Expense ${expense.name} has been removed.', name: 'Realm');
     return expense;
   }
 

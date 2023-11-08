@@ -48,8 +48,8 @@ class HomePage extends StatelessWidget {
                                 // style: theme.textTheme.headlineSmall,
                               ),
                               Text(
-                                '\$${expenses.monthly}',
-                                style: theme.textTheme.headlineLarge,
+                                expenses.monthly,
+                                style: theme.textTheme.titleLarge,
                               ),
                             ],
                           ),
@@ -65,8 +65,8 @@ class HomePage extends StatelessWidget {
                             children: [
                               const Text('Today'),
                               Text(
-                                '\$${expenses.today}',
-                                style: theme.textTheme.headlineLarge,
+                                expenses.today,
+                                style: theme.textTheme.titleLarge,
                               ),
                             ],
                           ),
