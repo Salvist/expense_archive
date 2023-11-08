@@ -48,12 +48,11 @@ class _AddExpensePageState extends State<AddExpensePage> {
       name: _name.text,
       cost: double.parse(_cost.text),
       note: note,
-      paidAt: DateTime.now(),
+      paidAt: _date.copyWith(hour: _time.hour, minute: _time.minute),
     );
 
     ExpenseProvider.of(context).addExpense(expense);
     Navigator.pop(context);
-    // context.pop();
   }
 
   @override
