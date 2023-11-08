@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -60,22 +63,37 @@ class _ScaffoldWithBottomNavBarState extends State<ScaffoldWithBottomNavBar> {
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       body: widget.child,
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: _goToDestination,
-        selectedIndex: _selectedIndex,
-        destinations: const <NavigationDestination>[
-          NavigationDestination(
-            label: 'Home',
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
-          ),
-          NavigationDestination(
-            label: 'Settings',
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings_rounded),
-          ),
-        ],
-      ),
+      bottomNavigationBar: Platform.isIOS
+          ? CupertinoTabBar(
+              currentIndex: _selectedIndex,
+              onTap: _goToDestination,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  label: 'Home',
+                  icon: Icon(Icons.home_outlined),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Settings',
+                  icon: Icon(Icons.settings_rounded),
+                ),
+              ],
+            )
+          : NavigationBar(
+              onDestinationSelected: _goToDestination,
+              selectedIndex: _selectedIndex,
+              destinations: const <NavigationDestination>[
+                NavigationDestination(
+                  label: 'Home',
+                  icon: Icon(Icons.home_outlined),
+                  selectedIcon: Icon(Icons.home_rounded),
+                ),
+                NavigationDestination(
+                  label: 'Settings',
+                  icon: Icon(Icons.settings_outlined),
+                  selectedIcon: Icon(Icons.settings_rounded),
+                ),
+              ],
+            ),
     );
   }
 }

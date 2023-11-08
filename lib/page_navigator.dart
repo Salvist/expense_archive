@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:money_archive/screens/home_page.dart';
 import 'package:money_archive/screens/settings_page.dart';
@@ -50,22 +53,39 @@ class _PageNavigatorState extends State<PageNavigator> {
           SettingsPage(),
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: _goToDestination,
-        selectedIndex: _selectedIndex,
-        destinations: const <NavigationDestination>[
-          NavigationDestination(
-            label: 'Home',
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home_rounded),
-          ),
-          NavigationDestination(
-            label: 'Settings',
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings_rounded),
-          ),
-        ],
-      ),
+      bottomNavigationBar: Platform.isIOS
+          ? CupertinoTabBar(
+              currentIndex: _selectedIndex,
+              onTap: _goToDestination,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  label: 'Home',
+                  icon: Icon(Icons.home_outlined),
+                  activeIcon: Icon(Icons.home_rounded),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Settings',
+                  icon: Icon(Icons.settings_outlined),
+                  activeIcon: Icon(Icons.settings_rounded),
+                ),
+              ],
+            )
+          : NavigationBar(
+              onDestinationSelected: _goToDestination,
+              selectedIndex: _selectedIndex,
+              destinations: const <NavigationDestination>[
+                NavigationDestination(
+                  label: 'Home',
+                  icon: Icon(Icons.home_outlined),
+                  selectedIcon: Icon(Icons.home_rounded),
+                ),
+                NavigationDestination(
+                  label: 'Settings',
+                  icon: Icon(Icons.settings_outlined),
+                  selectedIcon: Icon(Icons.settings_rounded),
+                ),
+              ],
+            ),
     );
   }
 }

@@ -1,4 +1,4 @@
-# simple_expense_tracker
+# expense_archive
 
 A new Flutter project.
 

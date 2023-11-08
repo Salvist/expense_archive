@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class RemoveAllExpensesDialog extends StatefulWidget {
   final void Function() onDelete;
@@ -36,7 +35,7 @@ class _RemoveAllExpensesDialogState extends State<RemoveAllExpensesDialog> {
 
   void _deleteAllExpenses() {
     widget.onDelete();
-    context.pop();
+    Navigator.pop(context);
   }
 
   @override
@@ -66,7 +65,7 @@ class _RemoveAllExpensesDialogState extends State<RemoveAllExpensesDialog> {
       actions: [
         TextButton(
           onPressed: () {
-            context.pop();
+            Navigator.pop(context);
           },
           child: const Text('Cancel'),
         ),
