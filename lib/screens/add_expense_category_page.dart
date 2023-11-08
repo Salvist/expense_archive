@@ -19,7 +19,7 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
   Icon? _icon;
   final availableIcons = AvailableIcons.icons;
 
-  void _addCategory() {
+  void _addCategory() async {
     if (_nameController.text.isEmpty) {
       setState(() {
         _nameErrorMessage = 'Write category name';
@@ -27,12 +27,12 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
       return;
     }
 
-    ExpenseCategoryProvider.of(context).addCategory(
+    final addedCategory = await ExpenseCategoryProvider.of(context).addCategory(
       name: _nameController.text,
       iconData: _icon?.icon?.codePoint,
     );
-    Navigator.pop(context);
-    // context.pop();
+    if (!mounted) return;
+    Navigator.pop(context, addedCategory);
   }
 
   @override

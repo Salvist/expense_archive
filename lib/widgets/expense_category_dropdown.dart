@@ -3,7 +3,7 @@ import 'package:money_archive/domain/models/expense_category.dart';
 import 'package:money_archive/providers/expense_category_provider.dart';
 import 'package:money_archive/utils/code_point_to_icon.dart';
 
-class ExpenseCategoryDropdown extends StatelessWidget {
+class ExpenseCategoryDropdown extends StatefulWidget {
   final double? width;
   final String? errorText;
   final ExpenseCategory? selectedCategory;
@@ -18,22 +18,40 @@ class ExpenseCategoryDropdown extends StatelessWidget {
   });
 
   @override
+  State<ExpenseCategoryDropdown> createState() => _ExpenseCategoryDropdownState();
+}
+
+class _ExpenseCategoryDropdownState extends State<ExpenseCategoryDropdown> {
+  final _controller = TextEditingController();
+
+  @override
+  void didUpdateWidget(ExpenseCategoryDropdown oldWidget){
+    if(oldWidget.selectedCategory != widget.selectedCategory){
+      setState(() {
+        _controller.text = widget.selectedCategory?.name ?? '';
+      });
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final categories = ExpenseCategories.of(context);
 
     Icon leadingIcon;
-    if (selectedCategory != null) {
-      leadingIcon = Icon(getIconData(selectedCategory!.iconCodePoint));
+    if (widget.selectedCategory != null) {
+      leadingIcon = Icon(getIconData(widget.selectedCategory!.iconCodePoint));
     } else {
       leadingIcon = const Icon(Icons.category_rounded);
     }
 
     return DropdownMenu(
-      width: width,
+      controller: _controller,
+      width: widget.width,
       leadingIcon: leadingIcon,
       label: const Text('Category'),
-      errorText: errorText,
-      onSelected: onChanged,
+      errorText: widget.errorText,
+      onSelected: widget.onChanged,
       dropdownMenuEntries: categories.map((category) {
         return DropdownMenuEntry(
           leadingIcon: Icon(getIconData(category.iconCodePoint)),

@@ -89,7 +89,7 @@ class ExpenseCategoryProviderState extends State<ExpenseCategoryProvider> {
     }
   }
 
-  void addCategory({required String name, int? iconData}) async {
+  Future<ExpenseCategory> addCategory({required String name, int? iconData}) async {
     final category = ExpenseCategory(
       id: _categories.last.id + 1,
       name: name,
@@ -97,10 +97,10 @@ class ExpenseCategoryProviderState extends State<ExpenseCategoryProvider> {
     );
 
     await widget.repository.add(category);
-
     setState(() {
       _categories.add(category);
     });
+    return category;
   }
 
   void removeCategory(ExpenseCategory category) async {

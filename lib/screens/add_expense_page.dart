@@ -94,12 +94,14 @@ class _AddExpensePageState extends State<AddExpensePage> {
                         const SizedBox(width: 8),
                         IconButton.filledTonal(
                           icon: const Icon(Icons.add_rounded),
-                          onPressed: () {
-                            Navigator.push(
+                          onPressed: () async {
+                            final addedCategory = await Navigator.push<ExpenseCategory?>(
                               context,
                               MaterialPageRoute(builder: (context) => const AddExpenseCategoryPage()),
                             );
-                            // context.push('/settings/add_expense_category');
+                            setState(() {
+                              expenseCategory = addedCategory;
+                            });
                           },
                           tooltip: 'Add new category',
                         ),
