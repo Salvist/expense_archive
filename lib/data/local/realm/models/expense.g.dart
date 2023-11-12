@@ -15,7 +15,7 @@ class RealmExpense extends _RealmExpense
     DateTime paidAt,
     String categoryName, {
     String? note,
-    int? categoryIconCodePoint,
+    String? categoryIconName,
   }) {
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
@@ -23,7 +23,7 @@ class RealmExpense extends _RealmExpense
     RealmObjectBase.set(this, 'note', note);
     RealmObjectBase.set(this, 'paidAt', paidAt);
     RealmObjectBase.set(this, 'categoryName', categoryName);
-    RealmObjectBase.set(this, 'categoryIconCodePoint', categoryIconCodePoint);
+    RealmObjectBase.set(this, 'categoryIconName', categoryIconName);
   }
 
   RealmExpense._();
@@ -62,11 +62,11 @@ class RealmExpense extends _RealmExpense
       RealmObjectBase.set(this, 'categoryName', value);
 
   @override
-  int? get categoryIconCodePoint =>
-      RealmObjectBase.get<int>(this, 'categoryIconCodePoint') as int?;
+  String? get categoryIconName =>
+      RealmObjectBase.get<String>(this, 'categoryIconName') as String?;
   @override
-  set categoryIconCodePoint(int? value) =>
-      RealmObjectBase.set(this, 'categoryIconCodePoint', value);
+  set categoryIconName(String? value) =>
+      RealmObjectBase.set(this, 'categoryIconName', value);
 
   @override
   Stream<RealmObjectChanges<RealmExpense>> get changes =>
@@ -87,7 +87,7 @@ class RealmExpense extends _RealmExpense
       SchemaProperty('note', RealmPropertyType.string, optional: true),
       SchemaProperty('paidAt', RealmPropertyType.timestamp),
       SchemaProperty('categoryName', RealmPropertyType.string),
-      SchemaProperty('categoryIconCodePoint', RealmPropertyType.int,
+      SchemaProperty('categoryIconName', RealmPropertyType.string,
           optional: true),
     ]);
   }

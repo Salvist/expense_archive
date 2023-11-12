@@ -30,7 +30,7 @@ class AllExpensePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(expense.name),
-                Text('\$${expense.cost}'),
+                Text('${expense.amount}'),
               ],
             ),
             subtitle: Row(

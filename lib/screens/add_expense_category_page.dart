@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:money_archive/domain/models/expense_category.dart';
-
 import 'package:money_archive/providers/expense_category_provider.dart';
 import 'package:money_archive/utils/available_icons.dart';
+import 'package:money_archive/widgets/dialogs/icon_picker_dialog.dart';
+import 'package:money_archive/widgets/expanded_button.dart';
+import 'package:money_archive/widgets/fields/cost_field.dart';
+
+class BusinessController {
+  int id;
+  final TextEditingController name;
+  final TextEditingController amountPreset;
+
+  BusinessController({
+    this.id = 0,
+  })  : name = TextEditingController(),
+        amountPreset = TextEditingController();
+}
 
 class AddExpenseCategoryPage extends StatefulWidget {
   const AddExpenseCategoryPage({super.key});
@@ -15,10 +28,13 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
   final _nameController = TextEditingController();
   String? _nameErrorMessage;
 
-  IconData? iconData;
+  String? _iconName;
+  IconData? get selectedIcon => categoryIcons[_iconName];
+  String? _iconErrorMessage;
 
-  Icon? _icon;
-  final availableIcons = AvailableIcons.icons;
+  final businessControllers = <BusinessController>[
+    BusinessController(),
+  ];
 
   void _addCategory() async {
     if (_nameController.text.isEmpty) {
@@ -28,108 +44,150 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
       return;
     }
     try {
-
-      final addedCategory = await ExpenseCategoryProvider.of(context).addCategory(
+      final category = ExpenseCategory(
         name: _nameController.text,
-        iconData: _icon?.icon?.codePoint,
+        iconName: _iconName,
       );
+
+      final addedCategory = await ExpenseCategoryProvider.of(context).addCategory(category);
+
+      // final businessNames = businessControllers.map((e) => e.name.text);
+      // for(final business in businessControllers){
+      //   if(business.name.text.isNotEmpty){
+      //     BusinessProvider.of(context).
+      //   }
+      // }
+      // final addedCategory = await ExpenseCategoryProvider.of(context).addCategory(
+      //   name: _nameController.text,
+      //   iconData: _icon?.icon?.codePoint,
+      // );
       if (!mounted) return;
       Navigator.pop(context, addedCategory);
-    } on DuplicateCategoryException catch (e){
+    } on DuplicateCategoryException catch (e) {
       setState(() {
         _nameErrorMessage = e.message;
       });
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Add a new category'),
       ),
       body: Column(
         children: [
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceVariant,
-                    borderRadius: const BorderRadius.all(Radius.circular(8)),
-                  ),
-                  width: 64,
-                  height: 64,
-                  alignment: Alignment.center,
-                  child: _icon,
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: TextField(
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      label: const Text('Category name'),
-                      helperText: '',
-                      errorText: _nameErrorMessage,
-                    ),
-                    textCapitalization: TextCapitalization.sentences,
-                  ),
-                )
-              ],
-            ),
-          ),
           Expanded(
-            child: GridView.builder(
-              scrollDirection: Axis.horizontal,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          final iconName = await showIconPicker(context);
+                          setState(() {
+                            _iconName = iconName;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: _iconErrorMessage == null ? colorScheme.surfaceVariant : colorScheme.errorContainer,
+                            borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          ),
+                          width: 64,
+                          height: 64,
+                          alignment: Alignment.center,
+                          child: selectedIcon != null ? Icon(selectedIcon) : const Text('No Icon'),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: TextField(
+                          controller: _nameController,
+                          decoration: InputDecoration(
+                            label: const Text('Category name'),
+                            helperText: '',
+                            errorText: _nameErrorMessage,
+                          ),
+                          textCapitalization: TextCapitalization.sentences,
+                        ),
+                      )
+                    ],
+                  ),
+                  // const SizedBox(height: 16),
+
+                  Text('Add businesses / individuals', style: textTheme.bodyLarge),
+                  Text('Optional, up to 4 at a time', style: textTheme.bodySmall),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (final business in businessControllers)
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      // BusinessField(
+                                      //   controller: business.name,
+                                      // ),
+                                      const SizedBox(height: 8),
+                                      CostField(
+                                        controller: business.amountPreset,
+                                        labelText: 'Cost preset',
+                                      ),
+                                      const SizedBox(height: 16),
+                                    ],
+                                  ),
+                                ),
+                                if (business.id > 0)
+                                  IconButton(
+                                    icon: const Icon(Icons.clear_rounded),
+                                    onPressed: () {
+                                      setState(() {
+                                        businessControllers.removeAt(business.id);
+                                      });
+                                      for (int i = 0; i < businessControllers.length; i++) {
+                                        businessControllers[i].id = i;
+                                      }
+                                    },
+                                  ),
+                              ],
+                            ),
+                          const SizedBox(height: 8),
+                          if (businessControllers.length < 4)
+                            FilledButton.tonal(
+                              onPressed: () {
+                                setState(() {
+                                  businessControllers.add(BusinessController(id: businessControllers.length));
+                                });
+                              },
+                              child: const Text('Add more'),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              itemCount: availableIcons.length,
-              itemBuilder: (context, index) {
-                final icon = availableIcons[index];
-                return IconButton(
-                  onPressed: () {
-                    setState(() {
-                      _icon = Icon(icon);
-                    });
-                  },
-                  icon: Icon(icon),
-                );
-              },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () {
-                      setState(() {
-                        _icon = null;
-                      });
-                    },
-                    child: const Text('Clear icon'),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: FilledButton(
-                    onPressed: _addCategory,
-                    child: const Text('Add category'),
-                  ),
-                )
-              ],
-            ),
+          ExpandedButton(
+            onPressed: _addCategory,
+            child: const Text('Add category'),
           ),
-          const SizedBox(height: 16),
         ],
       ),
     );

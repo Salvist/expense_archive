@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:money_archive/domain/models/business.dart';
 import 'package:money_archive/domain/models/expense.dart';
 import 'package:money_archive/domain/models/expense_category.dart';
+import 'package:money_archive/providers/business_provider.dart';
 import 'package:money_archive/providers/expense_category_provider.dart';
 import 'package:money_archive/providers/expenses_provider.dart';
 import 'package:money_archive/screens/add_expense_category_page.dart';
-import 'package:money_archive/widgets/date_picker.dart';
+import 'package:money_archive/widgets/fields/business_field.dart';
+import 'package:money_archive/widgets/fields/cost_field.dart';
+import 'package:money_archive/widgets/fields/date_picker.dart';
 import 'package:money_archive/widgets/expense_category_dropdown.dart';
-import 'package:money_archive/widgets/time_picker.dart';
+import 'package:money_archive/widgets/fields/time_picker.dart';
 
 class AddExpensePage extends StatefulWidget {
   const AddExpensePage({super.key});
@@ -22,6 +26,10 @@ class _AddExpensePageState extends State<AddExpensePage> {
   final _formKey = GlobalKey<FormState>();
   ExpenseCategory? expenseCategory;
   String? categoryErrorMessage;
+
+  Business? _business;
+
+  bool get enableAutocomplete => expenseCategory != null;
 
   final _name = TextEditingController();
   final _cost = TextEditingController();
@@ -45,8 +53,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
     final note = _note.text.isEmpty ? null : _note.text;
     final expense = Expense(
       category: expenseCategory!,
-      name: _name.text,
-      cost: double.parse(_cost.text),
+      name: _business!.name,
+      amount: _business!.costPreset!,
       note: note,
       paidAt: _date.copyWith(hour: _time.hour, minute: _time.minute),
     );
@@ -99,6 +107,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                               context,
                               MaterialPageRoute(builder: (context) => const AddExpenseCategoryPage()),
                             );
+                            if (addedCategory == null) return;
                             setState(() {
                               expenseCategory = addedCategory;
                             });
@@ -109,31 +118,29 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       ],
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
-                      controller: _name,
-                      decoration: const InputDecoration(
-                        labelText: 'Business / Individual',
-                      ),
-                      textCapitalization: TextCapitalization.words,
-                      validator: (value) => value!.isEmpty ? 'Enter a business / individual name' : null,
-
+                    BusinessField(
+                      category: expenseCategory,
+                      value: _business,
+                      onSelected: (value) {
+                        _business = value;
+                        if (_business?.costPreset != null) {
+                          _cost.text = _business!.costPreset!.withoutCurrency();
+                        }
+                      },
+                      validator: (_) => _business == null ? 'Add or choose a business / individual.' : null,
                     ),
                     const SizedBox(height: 16),
-                    TextFormField(
+                    CostField(
                       controller: _cost,
-                      decoration: const InputDecoration(
-                        label: Text('Expense'),
-                        prefixIcon: Icon(Icons.attach_money_rounded),
-                      ),
-                      keyboardType: const TextInputType.numberWithOptions(signed: false, decimal: true),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-                      ],
+                      labelText: 'Expense',
                       validator: (value) => value!.isEmpty ? 'How much did you spend?' : null,
                     ),
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _note,
+                      onTapOutside: (event) {
+                        // FocusScope.of(context).unfocus();
+                      },
                       decoration: const InputDecoration(
                         label: Text('Note (Optional)'),
                       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:money_archive/providers/expenses_provider.dart';
 import 'package:money_archive/screens/all_expense_page.dart';
 import 'package:money_archive/screens/expense_category_page.dart';
+import 'package:money_archive/screens/manage_businesses_page.dart';
 import 'package:money_archive/widgets/dialogs/remove_all_expenses_dialog.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -26,10 +27,17 @@ class SettingsPage extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const ManageBusinessesPage()));
+            },
+            title: const Text('Manage businesses / individuals'),
+            leading: const Icon(Icons.storefront_rounded),
+          ),
+          ListTile(
+            onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) => const AllExpensePage()));
               // context.push('/home/all_expenses');
             },
-            leading: const Icon(Icons.attach_money_rounded),
+            leading: const Icon(Icons.payments_rounded),
             title: const Text('View all expenses'),
           ),
           ListTile(
@@ -45,7 +53,7 @@ class SettingsPage extends StatelessWidget {
             },
             leading: const Icon(Icons.delete_forever_rounded),
             title: const Text('Delete all expense'),
-          )
+          ),
         ],
       ),
     );

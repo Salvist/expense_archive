@@ -1,5 +1,6 @@
 import 'dart:developer' as dev;
 
+import 'package:money_archive/domain/models/amount.dart';
 import 'package:realm/realm.dart';
 import 'package:money_archive/data/local/realm/models/expense.dart';
 
@@ -20,9 +21,9 @@ final class RealmExpenseRepository implements ExpenseRepository {
       name: expense.name,
       category: ExpenseCategory(
         name: expense.categoryName,
-        iconCodePoint: expense.categoryIconCodePoint,
+        iconName: expense.categoryIconName,
       ),
-      cost: expense.cost,
+      amount: Amount(expense.cost),
       note: expense.note,
       paidAt: expense.paidAt,
     );
@@ -36,9 +37,9 @@ final class RealmExpenseRepository implements ExpenseRepository {
               name: expense.name,
               category: ExpenseCategory(
                 name: expense.categoryName,
-                iconCodePoint: expense.categoryIconCodePoint,
+                iconName: expense.categoryIconName,
               ),
-              cost: expense.cost,
+              amount: Amount(expense.cost),
               note: expense.note,
               paidAt: expense.paidAt,
             ))

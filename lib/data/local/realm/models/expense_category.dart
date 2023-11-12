@@ -11,7 +11,7 @@ class _RealmExpenseCategory {
   @Indexed()
   late int id;
 
-  late int? iconCodePoint;
+  late String? iconName;
 }
 
 class CategoryMapper {
@@ -21,15 +21,15 @@ class CategoryMapper {
     return RealmExpenseCategory(
       category.name,
       category.id,
-      iconCodePoint: category.iconCodePoint,
+      iconName: category.iconName,
     );
   }
 
   static ExpenseCategory toCategory(RealmExpenseCategory realm) {
     return ExpenseCategory(
       name: realm.name,
-      iconCodePoint: realm.iconCodePoint,
       id: realm.id,
+      iconName: realm.iconName,
     );
   }
 }

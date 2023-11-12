@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_archive/domain/models/expense_category.dart';
 import 'package:money_archive/providers/expense_category_provider.dart';
-import 'package:money_archive/utils/code_point_to_icon.dart';
+import 'package:money_archive/utils/available_icons.dart';
 
 class ExpenseCategoryDropdown extends StatefulWidget {
   final double? width;
@@ -25,8 +25,8 @@ class _ExpenseCategoryDropdownState extends State<ExpenseCategoryDropdown> {
   final _controller = TextEditingController();
 
   @override
-  void didUpdateWidget(ExpenseCategoryDropdown oldWidget){
-    if(oldWidget.selectedCategory != widget.selectedCategory){
+  void didUpdateWidget(ExpenseCategoryDropdown oldWidget) {
+    if (oldWidget.selectedCategory != widget.selectedCategory) {
       setState(() {
         _controller.text = widget.selectedCategory?.name ?? '';
       });
@@ -40,7 +40,7 @@ class _ExpenseCategoryDropdownState extends State<ExpenseCategoryDropdown> {
 
     Icon leadingIcon;
     if (widget.selectedCategory != null) {
-      leadingIcon = Icon(getIconData(widget.selectedCategory!.iconCodePoint));
+      leadingIcon = Icon(widget.selectedCategory!.icon);
     } else {
       leadingIcon = const Icon(Icons.category_rounded);
     }
@@ -54,7 +54,7 @@ class _ExpenseCategoryDropdownState extends State<ExpenseCategoryDropdown> {
       onSelected: widget.onChanged,
       dropdownMenuEntries: categories.map((category) {
         return DropdownMenuEntry(
-          leadingIcon: Icon(getIconData(category.iconCodePoint)),
+          leadingIcon: Icon(categoryIcons[category.iconName]),
           value: category,
           label: category.name,
         );

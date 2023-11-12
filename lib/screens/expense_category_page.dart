@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_archive/providers/expense_category_provider.dart';
-import 'package:money_archive/screens/add_expense_page.dart';
+import 'package:money_archive/screens/add_expense_category_page.dart';
+import 'package:money_archive/utils/available_icons.dart';
 
 class ExpenseCategoryPage extends StatelessWidget {
   const ExpenseCategoryPage({super.key});
@@ -11,13 +12,21 @@ class ExpenseCategoryPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Categories'),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Categories'),
+            Text(
+              'Swipe to show actions',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add_rounded),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const AddExpensePage()));
-              // context.push('/settings/add_expense_category');
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const AddExpenseCategoryPage()));
             },
           )
         ],
@@ -27,8 +36,8 @@ class ExpenseCategoryPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final category = categories[index];
           Icon? icon;
-          if (category.iconCodePoint != null) {
-            icon = Icon(IconData(category.iconCodePoint!, fontFamily: 'MaterialIcons'));
+          if (category.iconName != null) {
+            icon = Icon(categoryIcons[category.iconName]);
           }
           return ListTile(
             leading: icon,

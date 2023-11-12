@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:money_archive/domain/models/expense_category.dart';
 import 'package:money_archive/domain/repositories/expense_category_repository.dart';
 
-final defaultCategories = <ExpenseCategory>[
+const defaultCategories = <ExpenseCategory>[
   ExpenseCategory(
     id: 1,
     name: 'Food',
-    iconCodePoint: Icons.restaurant_rounded.codePoint,
+    iconName: 'restaurant',
   ),
   ExpenseCategory(
     id: 2,
     name: 'Subway',
-    iconCodePoint: Icons.subway_rounded.codePoint,
+    iconName: 'subway',
   ),
   ExpenseCategory(
     id: 3,
     name: 'Electricity',
-    iconCodePoint: Icons.bolt_rounded.codePoint,
+    iconName: 'bolt',
   ),
   ExpenseCategory(
     id: 4,
     name: 'Clothes',
-    iconCodePoint: Icons.checkroom_rounded.codePoint,
+    iconName: 'checkroom',
   ),
 ];
 
@@ -94,14 +94,8 @@ class ExpenseCategoryProviderState extends State<ExpenseCategoryProvider> {
     return names.contains(name);
   }
 
-  Future<ExpenseCategory> addCategory({required String name, int? iconData}) async {
-    final category = ExpenseCategory(
-      id: _categories.last.id + 1,
-      name: name,
-      iconCodePoint: iconData,
-    );
-
-    await widget.repository.add(category);
+  Future<ExpenseCategory> addCategory(ExpenseCategory category) async {
+    await widget.repository.add(category.copyWith(id: _categories.last.id + 1));
     setState(() {
       _categories.add(category);
     });

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:money_archive/page_navigator.dart';
-import 'package:realm/realm.dart';
+import 'package:money_archive/data/local/realm/models/business.dart';
 import 'package:money_archive/data/local/realm/models/expense.dart';
 import 'package:money_archive/data/local/realm/models/expense_category.dart';
+import 'package:money_archive/data/local/realm/repositories/business_repository.dart';
 import 'package:money_archive/data/local/realm/repositories/expense_category_repository.dart';
 import 'package:money_archive/data/local/realm/repositories/expense_repository.dart';
+import 'package:money_archive/page_navigator.dart';
+import 'package:money_archive/providers/business_provider.dart';
 import 'package:money_archive/providers/expense_category_provider.dart';
 import 'package:money_archive/providers/expenses_provider.dart';
+import 'package:realm/realm.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -17,20 +20,27 @@ void main() async {
     [
       RealmExpense.schema,
       RealmExpenseCategory.schema,
+      RealmBusiness.schema,
     ],
     shouldDeleteIfMigrationNeeded: true,
   );
   final realm = Realm(realmConfig);
+  // realm.close();
+  // Realm.deleteRealm(realmConfig.path);
 
   final expenseRepository = RealmExpenseRepository(realm);
   final categoryRepository = RealmExpenseCategoryRepository(realm);
+  final businessesRepository = RealmBusinessRepository(realm);
 
   runApp(
     ExpenseProvider(
       repository: expenseRepository,
       child: ExpenseCategoryProvider(
         repository: categoryRepository,
-        child: const MoneyArchiveApp(),
+        child: BusinessProvider(
+          repository: businessesRepository,
+          child: const MoneyArchiveApp(),
+        ),
       ),
     ),
   );

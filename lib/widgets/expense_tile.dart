@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:money_archive/domain/models/expense.dart';
-import 'package:money_archive/utils/code_point_to_icon.dart';
 import 'package:money_archive/utils/extensions/currency_extension.dart';
 import 'package:money_archive/utils/extensions/date_time_extension.dart';
 
@@ -24,13 +22,13 @@ class ExpenseTile extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      leading: Icon(getIconData(expense.category.iconCodePoint)),
+      leading: Icon(expense.category.icon),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(expense.name),
           // Text('\$${expense.cost}'),
-          Text(expense.cost.toCurrency()),
+          Text('${expense.amount}'),
         ],
       ),
       subtitle: Row(

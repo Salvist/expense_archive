@@ -1,3 +1,5 @@
+import 'package:money_archive/domain/models/amount.dart';
+
 import 'expense_category.dart';
 
 class Expense {
@@ -6,7 +8,7 @@ class Expense {
 
   final ExpenseCategory category;
   final String name;
-  final double cost;
+  final Amount amount;
   final String? note;
   final DateTime paidAt;
 
@@ -14,7 +16,7 @@ class Expense {
     String? id,
     required this.category,
     required this.name,
-    required this.cost,
+    required this.amount,
     this.note,
     required this.paidAt,
   }) : _id = id;
@@ -24,7 +26,7 @@ class Expense {
       id: id ?? _id,
       category: category,
       name: name,
-      cost: cost,
+      amount: amount,
       note: note,
       paidAt: paidAt,
     );

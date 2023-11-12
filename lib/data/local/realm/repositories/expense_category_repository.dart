@@ -29,7 +29,7 @@ final class RealmExpenseCategoryRepository implements ExpenseCategoryRepository 
   @override
   Future<List<ExpenseCategory>> getAll() async {
     final realmCategories = realm.all<RealmExpenseCategory>();
-    final categories = realmCategories.map((e) => ExpenseCategory(name: e.name, iconCodePoint: e.iconCodePoint));
+    final categories = realmCategories.map((e) => ExpenseCategory(name: e.name, iconName: e.iconName));
     log('${categories.length} categories has been loaded.', name: 'Realm');
     return categories.toList();
   }

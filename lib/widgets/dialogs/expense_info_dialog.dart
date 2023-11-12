@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_archive/domain/models/expense.dart';
 import 'package:money_archive/providers/expenses_provider.dart';
-import 'package:money_archive/utils/code_point_to_icon.dart';
+import 'package:money_archive/utils/available_icons.dart';
 import 'package:money_archive/utils/extensions/currency_extension.dart';
 import 'package:money_archive/utils/extensions/date_time_extension.dart';
 
@@ -21,8 +21,8 @@ class _ExpenseInfoDialogState extends State<ExpenseInfoDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      icon: Icon(getIconData(widget.expense.category.iconCodePoint)),
-      title: Text('${widget.expense.name} ${widget.expense.cost.toCurrency()}'),
+      icon: Icon(categoryIcons[widget.expense.category.iconName]),
+      title: Text('${widget.expense.name} ${widget.expense.amount}'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,

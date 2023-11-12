@@ -26,55 +26,60 @@ class HomePage extends StatelessWidget {
               width: double.infinity,
               color: theme.colorScheme.primaryContainer,
               padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Hello, Richie!',
-                    style: theme.textTheme.headlineSmall,
-                  ),
-                  Text(currentDate.format('yMMMd')),
-                  const SizedBox(height: 16),
-                  IntrinsicHeight(
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                currentDate.monthName,
-                                // style: theme.textTheme.headlineSmall,
-                              ),
-                              Text(
-                                expenses.monthly,
-                                style: theme.textTheme.titleLarge,
-                              ),
-                            ],
-                          ),
-                        ),
-                        VerticalDivider(
-                          indent: 4,
-                          endIndent: 4,
-                          color: theme.colorScheme.primary,
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('Today'),
-                              Text(
-                                expenses.today,
-                                style: theme.textTheme.titleLarge,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+              child: SafeArea(
+                left: false,
+                right: false,
+                bottom: false,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hello, Richie!',
+                      style: theme.textTheme.headlineSmall,
                     ),
-                  ),
-                ],
+                    Text(currentDate.format('yMMMd')),
+                    const SizedBox(height: 16),
+                    IntrinsicHeight(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  currentDate.monthName,
+                                  // style: theme.textTheme.headlineSmall,
+                                ),
+                                Text(
+                                  expenses.monthly,
+                                  style: theme.textTheme.titleLarge,
+                                ),
+                              ],
+                            ),
+                          ),
+                          VerticalDivider(
+                            indent: 4,
+                            endIndent: 4,
+                            color: theme.colorScheme.primary,
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text('Today'),
+                                Text(
+                                  expenses.today,
+                                  style: theme.textTheme.titleLarge,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
             ListTile(

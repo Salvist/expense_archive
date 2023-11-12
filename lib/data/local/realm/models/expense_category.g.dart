@@ -11,11 +11,11 @@ class RealmExpenseCategory extends _RealmExpenseCategory
   RealmExpenseCategory(
     String name,
     int id, {
-    int? iconCodePoint,
+    String? iconName,
   }) {
     RealmObjectBase.set(this, 'name', name);
     RealmObjectBase.set(this, 'id', id);
-    RealmObjectBase.set(this, 'iconCodePoint', iconCodePoint);
+    RealmObjectBase.set(this, 'iconName', iconName);
   }
 
   RealmExpenseCategory._();
@@ -31,11 +31,10 @@ class RealmExpenseCategory extends _RealmExpenseCategory
   set id(int value) => RealmObjectBase.set(this, 'id', value);
 
   @override
-  int? get iconCodePoint =>
-      RealmObjectBase.get<int>(this, 'iconCodePoint') as int?;
+  String? get iconName =>
+      RealmObjectBase.get<String>(this, 'iconName') as String?;
   @override
-  set iconCodePoint(int? value) =>
-      RealmObjectBase.set(this, 'iconCodePoint', value);
+  set iconName(String? value) => RealmObjectBase.set(this, 'iconName', value);
 
   @override
   Stream<RealmObjectChanges<RealmExpenseCategory>> get changes =>
@@ -54,7 +53,7 @@ class RealmExpenseCategory extends _RealmExpenseCategory
       SchemaProperty('name', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('id', RealmPropertyType.int,
           indexType: RealmIndexType.regular),
-      SchemaProperty('iconCodePoint', RealmPropertyType.int, optional: true),
+      SchemaProperty('iconName', RealmPropertyType.string, optional: true),
     ]);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:money_archive/domain/models/amount.dart';
 import 'package:money_archive/domain/models/expense.dart';
 import 'package:money_archive/domain/models/expense_category.dart';
 import 'package:realm/realm.dart';
@@ -15,7 +16,7 @@ class _RealmExpense {
   late DateTime paidAt;
 
   late String categoryName;
-  late int? categoryIconCodePoint;
+  late String? categoryIconName;
 }
 
 class ExpenseMapper {
@@ -25,10 +26,10 @@ class ExpenseMapper {
     return RealmExpense(
       ObjectId(),
       expense.name,
-      expense.cost,
+      expense.amount.value,
       expense.paidAt,
       expense.category.name,
-      categoryIconCodePoint: expense.category.iconCodePoint,
+      categoryIconName: expense.category.iconName,
       note: expense.note,
     );
   }
@@ -37,10 +38,10 @@ class ExpenseMapper {
     return Expense(
       category: ExpenseCategory(
         name: realm.categoryName,
-        iconCodePoint: realm.categoryIconCodePoint,
+        iconName: realm.categoryIconName,
       ),
       name: realm.name,
-      cost: realm.cost,
+      amount: Amount(realm.cost),
       note: realm.note,
       paidAt: realm.paidAt,
     );
