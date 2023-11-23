@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:money_archive/providers/expenses_provider.dart';
-import 'package:money_archive/screens/add_expense_page.dart';
-import 'package:money_archive/screens/all_expense_page.dart';
-import 'package:money_archive/utils/extensions/date_time_extension.dart';
-import 'package:money_archive/widgets/dialogs/expense_info_dialog.dart';
-import 'package:money_archive/widgets/expense_tile.dart';
+import 'package:simple_expense_tracker/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/screens/add_expense_page.dart';
+import 'package:simple_expense_tracker/screens/all_expense_page.dart';
+import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
+import 'package:simple_expense_tracker/widgets/dialogs/expense_info_dialog.dart';
+import 'package:simple_expense_tracker/widgets/expense_tile.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Hello, Richie!',
+                      'Hello, User!',
                       style: theme.textTheme.headlineSmall,
                     ),
                     Text(currentDate.format('yMMMd')),

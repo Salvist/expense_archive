@@ -1,6 +1,6 @@
-import 'package:money_archive/data/local/realm/models/business.dart';
-import 'package:money_archive/domain/models/business.dart';
-import 'package:money_archive/domain/repositories/business_repository.dart';
+import 'package:simple_expense_tracker/data/local/realm/models/business.dart';
+import 'package:simple_expense_tracker/domain/models/business.dart';
+import 'package:simple_expense_tracker/domain/repositories/business_repository.dart';
 import 'package:realm/realm.dart';
 
 import 'dart:developer' as dev;

@@ -14,6 +14,12 @@ final class Amount {
 
   String withoutCurrency() => value.toStringAsFixed(2);
 
+  int compareTo(Amount other) {
+    if (other.value > value) return -1;
+    if (other.value < value) return 1;
+    return 0;
+  }
+
   @override
   String toString() => NumberFormat.simpleCurrency(decimalDigits: 2).format(value);
 

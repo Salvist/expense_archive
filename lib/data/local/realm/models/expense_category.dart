@@ -1,5 +1,5 @@
 import 'package:realm/realm.dart';
-import 'package:money_archive/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 
 part 'expense_category.g.dart';
 

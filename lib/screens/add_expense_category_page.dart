@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/domain/models/expense_category.dart';
-import 'package:money_archive/providers/expense_category_provider.dart';
-import 'package:money_archive/utils/available_icons.dart';
-import 'package:money_archive/widgets/dialogs/icon_picker_dialog.dart';
-import 'package:money_archive/widgets/expanded_button.dart';
-import 'package:money_archive/widgets/fields/cost_field.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/utils/available_icons.dart';
+import 'package:simple_expense_tracker/widgets/dialogs/icon_picker_dialog.dart';
+import 'package:simple_expense_tracker/widgets/expanded_button.dart';
+import 'package:simple_expense_tracker/widgets/fields/cost_field.dart';
 
 class BusinessController {
   int id;

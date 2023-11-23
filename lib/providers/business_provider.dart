@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/domain/models/business.dart';
-import 'package:money_archive/domain/models/expense_category.dart';
-import 'package:money_archive/domain/repositories/business_repository.dart';
+import 'package:simple_expense_tracker/domain/models/business.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/domain/repositories/business_repository.dart';
 
 class Businesses extends InheritedWidget {
   final List<Business> data;

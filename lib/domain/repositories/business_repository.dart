@@ -1,4 +1,4 @@
-import 'package:money_archive/domain/models/business.dart';
+import 'package:simple_expense_tracker/domain/models/business.dart';
 
 abstract interface class BusinessRepository {
   Future<List<Business>> getAll();

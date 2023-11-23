@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/utils/extensions/date_time_extension.dart';
+import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
 
 class DatePicker extends StatefulWidget {
   final DateTime? selectedDate;

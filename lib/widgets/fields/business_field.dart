@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/domain/models/business.dart';
-import 'package:money_archive/domain/models/expense_category.dart';
-import 'package:money_archive/providers/business_provider.dart';
+import 'package:simple_expense_tracker/domain/models/business.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/providers/business_provider.dart';
 
 class BusinessField extends StatefulWidget {
   final ExpenseCategory? category;
@@ -24,6 +24,8 @@ class BusinessField extends StatefulWidget {
 class _BusinessFieldState extends State<BusinessField> {
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
+
+  bool _showKeyboard = false;
 
   late Iterable<Business> _businesses;
 
@@ -76,6 +78,30 @@ class _BusinessFieldState extends State<BusinessField> {
     if (widget.onSelected != null) widget.onSelected!(business);
   }
 
+  Widget _buildIcon() {
+    if (widget.value != null) {
+      return IconButton(
+        icon: const Icon(Icons.clear_rounded),
+        onPressed: () {
+          if (widget.onSelected != null) {
+            widget.onSelected!(null);
+            _controller.clear();
+          }
+        },
+      );
+    } else {
+      return IconButton(
+        icon: const Icon(Icons.arrow_drop_down_rounded),
+        onPressed: () {
+          setState(() {
+            _showKeyboard = false;
+          });
+          _focusNode.requestFocus();
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return RawAutocomplete<String>(
@@ -90,12 +116,20 @@ class _BusinessFieldState extends State<BusinessField> {
           onChanged: (value) {
             if (widget.onSelected != null) widget.onSelected!(null);
           },
+          onTap: () {
+            setState(() {
+              _showKeyboard = true;
+            });
+          },
           enabled: widget.category != null,
           controller: textEditingController,
           focusNode: focusNode,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             labelText: 'Business / Individual',
+            suffixIcon: _buildIcon(),
           ),
+          readOnly: !_showKeyboard,
+          textCapitalization: TextCapitalization.words,
           //TODO: Change this to use errorText in decoration. Remove error text when an option is selected
           validator: widget.validator,
         );
@@ -132,13 +166,17 @@ class _BusinessFieldState extends State<BusinessField> {
         );
       },
       optionsBuilder: (textEditingValue) {
-        if (textEditingValue.text == '' || widget.category == null) {
+        // if (textEditingValue.text == '' || widget.category == null) {
+        //   return const Iterable<String>.empty();
+        // }
+        if (widget.category == null) {
           return const Iterable<String>.empty();
         }
 
         final names = _businesses.map((e) => e.name);
-        final matchingNames = names.where((name) => name.toLowerCase().contains(textEditingValue.text.toLowerCase()));
+        if (textEditingValue.text == '') return names;
 
+        final matchingNames = names.where((name) => name.toLowerCase().contains(textEditingValue.text.toLowerCase()));
         return matchingNames.isNotEmpty ? matchingNames : ['Add "${textEditingValue.text}"'];
       },
     );

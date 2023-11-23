@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/domain/models/amount.dart';
-import 'package:money_archive/domain/models/business.dart';
-import 'package:money_archive/domain/models/expense_category.dart';
-import 'package:money_archive/widgets/forms/business_form.dart';
+import 'package:simple_expense_tracker/domain/models/amount.dart';
+import 'package:simple_expense_tracker/domain/models/business.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/widgets/forms/business_form.dart';
 
 class AddBusinessDialog extends StatefulWidget {
   final ExpenseCategory category;

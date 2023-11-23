@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/providers/expenses_provider.dart';
-import 'package:money_archive/screens/all_expense_page.dart';
-import 'package:money_archive/screens/expense_category_page.dart';
-import 'package:money_archive/screens/manage_businesses_page.dart';
-import 'package:money_archive/widgets/dialogs/remove_all_expenses_dialog.dart';
+import 'package:simple_expense_tracker/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/screens/all_expense_page.dart';
+import 'package:simple_expense_tracker/screens/expense_category_page.dart';
+import 'package:simple_expense_tracker/screens/manage_businesses_page.dart';
+import 'package:simple_expense_tracker/widgets/dialogs/remove_all_expenses_dialog.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});

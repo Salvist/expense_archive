@@ -2,8 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:money_archive/screens/home_page.dart';
-import 'package:money_archive/screens/settings_page.dart';
+import 'package:simple_expense_tracker/screens/analytics_page.dart';
+import 'package:simple_expense_tracker/screens/home_page.dart';
+import 'package:simple_expense_tracker/screens/settings_page.dart';
 
 class PageNavigator extends StatefulWidget {
   const PageNavigator({
@@ -50,6 +51,7 @@ class _PageNavigatorState extends State<PageNavigator> {
         controller: _pageController,
         children: const <Widget>[
           HomePage(),
+          AnalyticsPage(),
           SettingsPage(),
         ],
       ),
@@ -62,6 +64,11 @@ class _PageNavigatorState extends State<PageNavigator> {
                   label: 'Home',
                   icon: Icon(Icons.home_outlined),
                   activeIcon: Icon(Icons.home_rounded),
+                ),
+                BottomNavigationBarItem(
+                  label: 'Analytics',
+                  icon: Icon(Icons.analytics_outlined),
+                  activeIcon: Icon(Icons.analytics_rounded),
                 ),
                 BottomNavigationBarItem(
                   label: 'Settings',
@@ -78,6 +85,11 @@ class _PageNavigatorState extends State<PageNavigator> {
                   label: 'Home',
                   icon: Icon(Icons.home_outlined),
                   selectedIcon: Icon(Icons.home_rounded),
+                ),
+                NavigationDestination(
+                  label: 'Analytics',
+                  icon: Icon(Icons.analytics_outlined),
+                  selectedIcon: Icon(Icons.analytics_rounded),
                 ),
                 NavigationDestination(
                   label: 'Settings',

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:money_archive/data/local/realm/models/business.dart';
-import 'package:money_archive/data/local/realm/models/expense.dart';
-import 'package:money_archive/data/local/realm/models/expense_category.dart';
-import 'package:money_archive/data/local/realm/repositories/business_repository.dart';
-import 'package:money_archive/data/local/realm/repositories/expense_category_repository.dart';
-import 'package:money_archive/data/local/realm/repositories/expense_repository.dart';
-import 'package:money_archive/page_navigator.dart';
-import 'package:money_archive/providers/business_provider.dart';
-import 'package:money_archive/providers/expense_category_provider.dart';
-import 'package:money_archive/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/data/local/realm/models/business.dart';
+import 'package:simple_expense_tracker/data/local/realm/models/expense.dart';
+import 'package:simple_expense_tracker/data/local/realm/models/expense_category.dart';
+import 'package:simple_expense_tracker/data/local/realm/repositories/business_repository.dart';
+import 'package:simple_expense_tracker/data/local/realm/repositories/expense_category_repository.dart';
+import 'package:simple_expense_tracker/data/local/realm/repositories/expense_repository.dart';
+import 'package:simple_expense_tracker/page_navigator.dart';
+import 'package:simple_expense_tracker/providers/business_provider.dart';
+import 'package:simple_expense_tracker/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/providers/expenses_provider.dart';
 import 'package:realm/realm.dart';
 
 void main() async {
@@ -39,21 +39,21 @@ void main() async {
         repository: categoryRepository,
         child: BusinessProvider(
           repository: businessesRepository,
-          child: const MoneyArchiveApp(),
+          child: const ExpenseArchiveApp(),
         ),
       ),
     ),
   );
 }
 
-class MoneyArchiveApp extends StatelessWidget {
-  const MoneyArchiveApp({super.key});
+class ExpenseArchiveApp extends StatelessWidget {
+  const ExpenseArchiveApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Money Archive',
+      title: 'Expense Archive',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: GoogleFonts.manrope().fontFamily,

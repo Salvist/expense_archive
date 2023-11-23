@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:money_archive/domain/models/business.dart';
-import 'package:money_archive/domain/models/expense.dart';
-import 'package:money_archive/domain/models/expense_category.dart';
-import 'package:money_archive/providers/business_provider.dart';
-import 'package:money_archive/providers/expense_category_provider.dart';
-import 'package:money_archive/providers/expenses_provider.dart';
-import 'package:money_archive/screens/add_expense_category_page.dart';
-import 'package:money_archive/widgets/fields/business_field.dart';
-import 'package:money_archive/widgets/fields/cost_field.dart';
-import 'package:money_archive/widgets/fields/date_picker.dart';
-import 'package:money_archive/widgets/expense_category_dropdown.dart';
-import 'package:money_archive/widgets/fields/time_picker.dart';
+import 'package:simple_expense_tracker/domain/models/amount.dart';
+import 'package:simple_expense_tracker/domain/models/business.dart';
+import 'package:simple_expense_tracker/domain/models/expense.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/screens/add_expense_category_page.dart';
+import 'package:simple_expense_tracker/widgets/expense_category_dropdown.dart';
+import 'package:simple_expense_tracker/widgets/fields/business_field.dart';
+import 'package:simple_expense_tracker/widgets/fields/cost_field.dart';
+import 'package:simple_expense_tracker/widgets/fields/date_picker.dart';
+import 'package:simple_expense_tracker/widgets/fields/time_picker.dart';
 
 class AddExpensePage extends StatefulWidget {
   const AddExpensePage({super.key});
@@ -54,7 +53,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
     final expense = Expense(
       category: expenseCategory!,
       name: _business!.name,
-      amount: _business!.costPreset!,
+      amount: Amount.fromString(_cost.text)!,
       note: note,
       paidAt: _date.copyWith(hour: _time.hour, minute: _time.minute),
     );
@@ -96,6 +95,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           onChanged: (category) {
                             setState(() {
                               expenseCategory = category;
+                              _business = null;
+                              _cost.text = '';
                             });
                           },
                         ),
@@ -122,7 +123,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                       category: expenseCategory,
                       value: _business,
                       onSelected: (value) {
-                        _business = value;
+                        setState(() {
+                          _business = value;
+                        });
                         if (_business?.costPreset != null) {
                           _cost.text = _business!.costPreset!.withoutCurrency();
                         }

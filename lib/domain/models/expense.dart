@@ -1,4 +1,4 @@
-import 'package:money_archive/domain/models/amount.dart';
+import 'package:simple_expense_tracker/domain/models/amount.dart';
 
 import 'expense_category.dart';
 

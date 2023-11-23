@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/utils/available_icons.dart';
+import 'package:simple_expense_tracker/utils/available_icons.dart';
 
 /// Return an icon name
 Future<String?> showIconPicker(BuildContext context) {

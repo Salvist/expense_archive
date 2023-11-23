@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/providers/expenses_provider.dart';
-import 'package:money_archive/utils/extensions/date_time_extension.dart';
-import 'package:money_archive/widgets/dialogs/expense_info_dialog.dart';
+import 'package:simple_expense_tracker/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
+import 'package:simple_expense_tracker/widgets/dialogs/expense_info_dialog.dart';
 
 class AllExpensePage extends StatelessWidget {
   const AllExpensePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final expenses = InheritedExpenses.of(context).data;
+    final expenses = InheritedExpenses.of(context).data.reversed;
 
     return Scaffold(
       appBar: AppBar(
@@ -17,7 +17,7 @@ class AllExpensePage extends StatelessWidget {
       body: ListView.builder(
         itemCount: expenses.length,
         itemBuilder: (context, index) {
-          final expense = expenses[index];
+          final expense = expenses.elementAt(index);
 
           return ListTile(
             onTap: () {

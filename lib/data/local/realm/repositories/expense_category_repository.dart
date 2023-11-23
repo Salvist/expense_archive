@@ -1,9 +1,9 @@
 import 'dart:developer';
 
 import 'package:realm/realm.dart';
-import 'package:money_archive/data/local/realm/models/expense_category.dart';
-import 'package:money_archive/domain/models/expense_category.dart';
-import 'package:money_archive/domain/repositories/expense_category_repository.dart';
+import 'package:simple_expense_tracker/data/local/realm/models/expense_category.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/domain/repositories/expense_category_repository.dart';
 
 final class RealmExpenseCategoryRepository implements ExpenseCategoryRepository {
   final Realm realm;

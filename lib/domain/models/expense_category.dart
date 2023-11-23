@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart' show IconData;
-import 'package:money_archive/utils/available_icons.dart';
+import 'package:simple_expense_tracker/utils/available_icons.dart';
 
 class ExpenseCategory {
   final String name;
   final int id;
+
+  /// Please check [categoryIcons]
   final String? iconName;
 
   const ExpenseCategory({
@@ -21,6 +23,25 @@ class ExpenseCategory {
   }
 
   IconData? get icon => categoryIcons[iconName];
+
+  static const defaultCategories = <ExpenseCategory>[
+    ExpenseCategory(
+      name: 'Food',
+      iconName: 'fastfood',
+    ),
+    ExpenseCategory(
+      name: 'Transportation',
+      iconName: 'subway',
+    ),
+    ExpenseCategory(
+      name: 'Clothes',
+      iconName: 'checkroom',
+    ),
+    ExpenseCategory(
+      name: 'Other',
+      iconName: 'question_mark',
+    ),
+  ];
 }
 
 class DuplicateCategoryException implements Exception {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/widgets/fields/cost_field.dart';
+import 'package:simple_expense_tracker/widgets/fields/cost_field.dart';
 
 class BusinessForm extends StatelessWidget {
   final TextEditingController nameController;

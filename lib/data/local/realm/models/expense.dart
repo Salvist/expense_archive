@@ -1,6 +1,6 @@
-import 'package:money_archive/domain/models/amount.dart';
-import 'package:money_archive/domain/models/expense.dart';
-import 'package:money_archive/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/domain/models/amount.dart';
+import 'package:simple_expense_tracker/domain/models/expense.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:realm/realm.dart';
 
 part 'expense.g.dart';
@@ -27,7 +27,7 @@ class ExpenseMapper {
       ObjectId(),
       expense.name,
       expense.amount.value,
-      expense.paidAt,
+      expense.paidAt.toUtc(),
       expense.category.name,
       categoryIconName: expense.category.iconName,
       note: expense.note,
@@ -43,7 +43,7 @@ class ExpenseMapper {
       name: realm.name,
       amount: Amount(realm.cost),
       note: realm.note,
-      paidAt: realm.paidAt,
+      paidAt: realm.paidAt.toLocal(),
     );
   }
 }

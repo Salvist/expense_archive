@@ -1,12 +1,9 @@
 import 'dart:developer' as dev;
 
-import 'package:money_archive/domain/models/amount.dart';
 import 'package:realm/realm.dart';
-import 'package:money_archive/data/local/realm/models/expense.dart';
-
-import 'package:money_archive/domain/models/expense.dart';
-import 'package:money_archive/domain/models/expense_category.dart';
-import 'package:money_archive/domain/repositories/expense_repository.dart';
+import 'package:simple_expense_tracker/data/local/realm/models/expense.dart';
+import 'package:simple_expense_tracker/domain/models/expense.dart';
+import 'package:simple_expense_tracker/domain/repositories/expense_repository.dart';
 
 final class RealmExpenseRepository implements ExpenseRepository {
   final Realm realm;
@@ -17,33 +14,14 @@ final class RealmExpenseRepository implements ExpenseRepository {
     final expense = realm.find<RealmExpense>(expenseId);
     if (expense == null) return null;
 
-    return Expense(
-      name: expense.name,
-      category: ExpenseCategory(
-        name: expense.categoryName,
-        iconName: expense.categoryIconName,
-      ),
-      amount: Amount(expense.cost),
-      note: expense.note,
-      paidAt: expense.paidAt,
-    );
+    return ExpenseMapper.toExpense(expense);
   }
 
   @override
   Future<List<Expense>> getAll() async {
     final realmExpenses = realm.all<RealmExpense>();
-    final expenses = realmExpenses
-        .map((expense) => Expense(
-              name: expense.name,
-              category: ExpenseCategory(
-                name: expense.categoryName,
-                iconName: expense.categoryIconName,
-              ),
-              amount: Amount(expense.cost),
-              note: expense.note,
-              paidAt: expense.paidAt,
-            ))
-        .toList();
+    final expenses = realmExpenses.map(ExpenseMapper.toExpense).toList();
+    final dates = expenses.map((e) => e.paidAt);
     return expenses;
   }
 

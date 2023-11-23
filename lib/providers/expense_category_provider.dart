@@ -1,29 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/domain/models/expense_category.dart';
-import 'package:money_archive/domain/repositories/expense_category_repository.dart';
-
-const defaultCategories = <ExpenseCategory>[
-  ExpenseCategory(
-    id: 1,
-    name: 'Food',
-    iconName: 'restaurant',
-  ),
-  ExpenseCategory(
-    id: 2,
-    name: 'Subway',
-    iconName: 'subway',
-  ),
-  ExpenseCategory(
-    id: 3,
-    name: 'Electricity',
-    iconName: 'bolt',
-  ),
-  ExpenseCategory(
-    id: 4,
-    name: 'Clothes',
-    iconName: 'checkroom',
-  ),
-];
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/domain/repositories/expense_category_repository.dart';
 
 class ExpenseCategories extends InheritedWidget {
   final List<ExpenseCategory> data;
@@ -76,7 +53,7 @@ class ExpenseCategoryProviderState extends State<ExpenseCategoryProvider> {
   void firstSetup() async {
     final categories = await widget.repository.getAll();
     if (categories.isEmpty) {
-      for (final category in defaultCategories) {
+      for (final category in ExpenseCategory.defaultCategories) {
         await widget.repository.add(category);
       }
       setState(() {

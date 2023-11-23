@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:money_archive/domain/models/business.dart';
-import 'package:money_archive/providers/business_provider.dart';
-import 'package:money_archive/providers/expense_category_provider.dart';
-import 'package:money_archive/widgets/app_bar_title.dart';
-import 'package:money_archive/widgets/dialogs/add_business_dialog.dart';
-import 'package:money_archive/widgets/dialogs/edit_bussiness_dialog.dart';
-import 'package:money_archive/widgets/fields/cost_field.dart';
+import 'package:simple_expense_tracker/domain/models/business.dart';
+import 'package:simple_expense_tracker/providers/business_provider.dart';
+import 'package:simple_expense_tracker/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/widgets/app_bar_title.dart';
+import 'package:simple_expense_tracker/widgets/dialogs/add_business_dialog.dart';
+import 'package:simple_expense_tracker/widgets/dialogs/edit_bussiness_dialog.dart';
+import 'package:simple_expense_tracker/widgets/fields/cost_field.dart';
 
 class ManageBusinessesPage extends StatefulWidget {
   const ManageBusinessesPage({super.key});

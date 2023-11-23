@@ -1,10 +1,12 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:money_archive/domain/models/amount.dart';
-import 'package:money_archive/domain/models/expense.dart';
-import 'package:money_archive/domain/repositories/expense_repository.dart';
-import 'package:money_archive/utils/extensions/currency_extension.dart';
+import 'package:simple_expense_tracker/domain/models/amount.dart';
+import 'package:simple_expense_tracker/domain/models/expense.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/domain/models/total_expense_category.dart';
+import 'package:simple_expense_tracker/domain/repositories/expense_repository.dart';
+import 'package:simple_expense_tracker/utils/extensions/currency_extension.dart';
 
 class InheritedExpenses extends InheritedWidget {
   final List<Expense> data;
@@ -88,6 +90,12 @@ class ExpenseProviderState extends State<ExpenseProvider> {
     setState(() {
       expenses.add(addedExpense);
     });
+  }
+
+  Amount getTotalAmountByDate(DateTime date) {
+    final dayExpenses = expenses.where((expense) => DateUtils.isSameDay(expense.paidAt, date));
+    final amounts = dayExpenses.map((e) => e.amount);
+    return amounts.fold(Amount.zero, (previousValue, element) => previousValue + element);
   }
 
   void removeExpense(Expense expense) {
