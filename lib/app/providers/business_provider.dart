@@ -3,10 +3,10 @@ import 'package:simple_expense_tracker/domain/models/business.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/domain/repositories/business_repository.dart';
 
-class Businesses extends InheritedWidget {
+class BusinessProvider extends InheritedWidget {
   final List<Business> data;
 
-  const Businesses({
+  const BusinessProvider({
     super.key,
     required this.data,
     required Widget child,
@@ -16,37 +16,37 @@ class Businesses extends InheritedWidget {
     return data.where((business) => business.categoryName == category.name);
   }
 
-  static Businesses of(BuildContext context) {
-    final Businesses? result = context.dependOnInheritedWidgetOfExactType<Businesses>();
+  static BusinessProvider of(BuildContext context) {
+    final BusinessProvider? result = context.dependOnInheritedWidgetOfExactType<BusinessProvider>();
     assert(result != null, 'No Businesses found in context');
     return result!;
   }
 
   @override
-  bool updateShouldNotify(Businesses oldWidget) {
+  bool updateShouldNotify(BusinessProvider oldWidget) {
     return true;
   }
 }
 
-class BusinessProvider extends StatefulWidget {
+class BusinessNotifier extends StatefulWidget {
   final BusinessRepository repository;
   final Widget child;
 
-  const BusinessProvider({
+  const BusinessNotifier({
     super.key,
     required this.repository,
     required this.child,
   });
 
-  static BusinessProviderState of(BuildContext context) {
-    return context.findAncestorStateOfType<BusinessProviderState>()!;
+  static BusinessNotifierState of(BuildContext context) {
+    return context.findAncestorStateOfType<BusinessNotifierState>()!;
   }
 
   @override
-  State<BusinessProvider> createState() => BusinessProviderState();
+  State<BusinessNotifier> createState() => BusinessNotifierState();
 }
 
-class BusinessProviderState extends State<BusinessProvider> {
+class BusinessNotifierState extends State<BusinessNotifier> {
   final _data = <Business>[];
 
   @override
@@ -80,7 +80,7 @@ class BusinessProviderState extends State<BusinessProvider> {
 
   @override
   Widget build(BuildContext context) {
-    return Businesses(
+    return BusinessProvider(
       data: _data,
       child: widget.child,
     );

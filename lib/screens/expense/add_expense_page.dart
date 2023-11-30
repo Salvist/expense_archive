@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
 import 'package:simple_expense_tracker/domain/models/amount.dart';
 import 'package:simple_expense_tracker/domain/models/business.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
-import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
-import 'package:simple_expense_tracker/app/providers/expenses_provider.dart';
 import 'package:simple_expense_tracker/screens/expense_category/add_expense_category_page.dart';
 import 'package:simple_expense_tracker/widgets/expense_category_dropdown.dart';
 import 'package:simple_expense_tracker/widgets/fields/business_field.dart';
@@ -30,7 +30,6 @@ class _AddExpensePageState extends State<AddExpensePage> {
 
   bool get enableAutocomplete => expenseCategory != null;
 
-  final _name = TextEditingController();
   final _cost = TextEditingController();
   final _note = TextEditingController();
   DateTime _date = DateTime.now();
@@ -59,12 +58,14 @@ class _AddExpensePageState extends State<AddExpensePage> {
     );
 
     ExpenseProvider.of(context).addExpense(expense);
+
+    // ExpenseProvider.of(context).addExpense(expense);
     Navigator.pop(context);
   }
 
   @override
   void didChangeDependencies() {
-    categories = ExpenseCategories.of(context);
+    categories = CategoryProvider.of(context);
     super.didChangeDependencies();
   }
 

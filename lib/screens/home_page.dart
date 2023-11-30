@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:simple_expense_tracker/app/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
 import 'package:simple_expense_tracker/screens/expense/add_expense_page.dart';
 import 'package:simple_expense_tracker/screens/expense/all_expense_page.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
@@ -14,8 +13,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final currentDate = DateTime.now();
-
-    final expenses = InheritedExpenses.of(context);
+    final expenseProvider = ExpenseProvider.of(context);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -52,7 +50,7 @@ class HomePage extends StatelessWidget {
                                   // style: theme.textTheme.headlineSmall,
                                 ),
                                 Text(
-                                  expenses.monthly,
+                                  expenseProvider.monthly,
                                   style: theme.textTheme.titleLarge,
                                 ),
                               ],
@@ -69,7 +67,7 @@ class HomePage extends StatelessWidget {
                               children: [
                                 const Text('Today'),
                                 Text(
-                                  expenses.today,
+                                  expenseProvider.today,
                                   style: theme.textTheme.titleLarge,
                                 ),
                               ],
@@ -88,7 +86,6 @@ class HomePage extends StatelessWidget {
               trailing: TextButton(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const AllExpensePage()));
-                  // context.push('/home/all_expenses');
                 },
                 child: const Text('View all'),
               ),
@@ -98,7 +95,7 @@ class HomePage extends StatelessWidget {
               shrinkWrap: true,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               children: [
-                ...expenses.recent.map(
+                ...expenseProvider.recent.map(
                   (expense) => Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: ExpenseTile(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
-import 'package:simple_expense_tracker/utils/extensions/currency_extension.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
 
 class ExpenseTile extends StatelessWidget {

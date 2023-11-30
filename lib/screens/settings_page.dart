@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/app/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
 import 'package:simple_expense_tracker/screens/expense/all_expense_page.dart';
 import 'package:simple_expense_tracker/screens/expense_category/expense_category_page.dart';
 import 'package:simple_expense_tracker/screens/expense_category/manage_businesses_page.dart';
@@ -46,7 +46,7 @@ class SettingsPage extends StatelessWidget {
                 context: context,
                 builder: (context) => RemoveAllExpensesDialog(
                   onDelete: () {
-                    ExpenseProvider.of(context).removeAllExpense();
+                    ExpenseProvider.of(context).removeAll();
                   },
                 ),
               );

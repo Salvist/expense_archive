@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/app/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/expense_info_dialog.dart';
 
@@ -8,7 +8,7 @@ class AllExpensePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final expenses = InheritedExpenses.of(context).data.reversed;
+    final expenses = ExpenseProvider.of(context).data.reversed;
 
     return Scaffold(
       appBar: AppBar(

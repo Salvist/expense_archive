@@ -2,46 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/domain/repositories/expense_category_repository.dart';
 
-class ExpenseCategories extends InheritedWidget {
+class CategoryProvider extends InheritedWidget {
   final List<ExpenseCategory> data;
 
-  const ExpenseCategories({
+  const CategoryProvider({
     super.key,
     required this.data,
     required Widget child,
   }) : super(child: child);
 
   static List<ExpenseCategory> of(BuildContext context) {
-    final ExpenseCategories? result = context.dependOnInheritedWidgetOfExactType<ExpenseCategories>();
+    final CategoryProvider? result = context.dependOnInheritedWidgetOfExactType<CategoryProvider>();
     assert(result != null, 'No ExpenseCategories found in context');
     return result!.data;
   }
 
   @override
-  bool updateShouldNotify(ExpenseCategories oldWidget) {
+  bool updateShouldNotify(CategoryProvider oldWidget) {
     return true;
   }
 }
 
-class ExpenseCategoryProvider extends StatefulWidget {
+class CategoryNotifier extends StatefulWidget {
   final ExpenseCategoryRepository repository;
   final Widget child;
 
-  const ExpenseCategoryProvider({
+  const CategoryNotifier({
     super.key,
     required this.repository,
     required this.child,
   });
 
-  static ExpenseCategoryProviderState of(BuildContext context) {
-    return context.findAncestorStateOfType<ExpenseCategoryProviderState>()!;
+  static CategoryNotifierState of(BuildContext context) {
+    return context.findAncestorStateOfType<CategoryNotifierState>()!;
   }
 
   @override
-  State<ExpenseCategoryProvider> createState() => ExpenseCategoryProviderState();
+  State<CategoryNotifier> createState() => CategoryNotifierState();
 }
 
-class ExpenseCategoryProviderState extends State<ExpenseCategoryProvider> {
+class CategoryNotifierState extends State<CategoryNotifier> {
   final _categories = <ExpenseCategory>[];
 
   @override
@@ -88,7 +88,7 @@ class ExpenseCategoryProviderState extends State<ExpenseCategoryProvider> {
 
   @override
   Widget build(BuildContext context) {
-    return ExpenseCategories(
+    return CategoryProvider(
       data: _categories,
       child: widget.child,
     );

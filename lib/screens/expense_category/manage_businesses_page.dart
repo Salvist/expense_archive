@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/domain/models/business.dart';
 import 'package:simple_expense_tracker/app/providers/business_provider.dart';
 import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/domain/models/business.dart';
 import 'package:simple_expense_tracker/widgets/app_bar_title.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/add_business_dialog.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/edit_bussiness_dialog.dart';
-import 'package:simple_expense_tracker/widgets/fields/cost_field.dart';
 
 class ManageBusinessesPage extends StatefulWidget {
   const ManageBusinessesPage({super.key});
@@ -19,8 +18,8 @@ class _ManageBusinessesPageState extends State<ManageBusinessesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = ExpenseCategories.of(context);
-    final businesses = Businesses.of(context);
+    final categories = CategoryProvider.of(context);
+    final businesses = BusinessProvider.of(context);
 
     return DefaultTabController(
       initialIndex: _categoryIndex,
@@ -83,7 +82,7 @@ class _ManageBusinessesPageState extends State<ManageBusinessesPage> {
                       );
                       if (editedBusiness == null) return;
                       if (!mounted) return;
-                      BusinessProvider.of(context).editBusiness(b, editedBusiness);
+                      // BusinessProvider.of(context).editBusiness(b, editedBusiness);
                     },
                     title: Text(b.name),
                     trailing: b.costPreset != null ? Text('${b.costPreset!}') : null,
@@ -101,7 +100,7 @@ class _ManageBusinessesPageState extends State<ManageBusinessesPage> {
               },
             );
             if (!mounted || business == null) return;
-            BusinessProvider.of(context).addBusiness(business);
+            BusinessNotifier.of(context).addBusiness(business);
           },
           child: const Icon(Icons.add_rounded),
         ),

@@ -53,5 +53,6 @@ final class RealmExpenseRepository implements ExpenseRepository {
     realm.write(() {
       realm.deleteAll<RealmExpense>();
     });
+    dev.log('All expenses has been deleted.', name: 'Realm');
   }
 }

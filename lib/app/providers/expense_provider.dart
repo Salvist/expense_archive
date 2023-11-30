@@ -3,13 +3,22 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/amount.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
-import 'package:simple_expense_tracker/domain/models/expense_category.dart';
-import 'package:simple_expense_tracker/domain/models/total_expense_category.dart';
 import 'package:simple_expense_tracker/domain/repositories/expense_repository.dart';
-import 'package:simple_expense_tracker/utils/extensions/currency_extension.dart';
 
-class InheritedExpenses extends InheritedWidget {
+class ExpenseProvider extends InheritedWidget {
   final List<Expense> data;
+  final void Function(Expense expense) addExpense;
+  final void Function() removeAll;
+  final void Function(Expense expense) removeExpense;
+
+  const ExpenseProvider._({
+    super.key,
+    required this.data,
+    required this.addExpense,
+    required this.removeAll,
+    required this.removeExpense,
+    required super.child,
+  });
 
   String get today {
     final currentDate = DateTime.now();
@@ -31,43 +40,39 @@ class InheritedExpenses extends InheritedWidget {
     return UnmodifiableListView(recentExpenses);
   }
 
-  const InheritedExpenses({
-    super.key,
-    required this.data,
-    required Widget child,
-  }) : super(child: child);
+  Amount getTotalAmountByDate(DateTime date) {
+    final dayExpenses = data.where((expense) => DateUtils.isSameDay(expense.paidAt, date));
+    final amounts = dayExpenses.map((e) => e.amount);
+    return amounts.fold(Amount.zero, (previousValue, element) => previousValue + element);
+  }
 
-  static InheritedExpenses of(BuildContext context) {
-    final InheritedExpenses? result = context.dependOnInheritedWidgetOfExactType<InheritedExpenses>();
+  static ExpenseProvider of(BuildContext context) {
+    final ExpenseProvider? result = context.dependOnInheritedWidgetOfExactType<ExpenseProvider>();
     assert(result != null, 'No InheritedExpenses found in context');
     return result!;
   }
 
   @override
-  bool updateShouldNotify(InheritedExpenses oldWidget) {
+  bool updateShouldNotify(ExpenseProvider oldWidget) {
     return true;
   }
 }
 
-class ExpenseProvider extends StatefulWidget {
+class ExpenseNotifier extends StatefulWidget {
   final ExpenseRepository repository;
 
   final Widget child;
-  const ExpenseProvider({
+  const ExpenseNotifier({
     super.key,
     required this.repository,
     required this.child,
   });
 
-  static ExpenseProviderState of(BuildContext context) {
-    return context.findAncestorStateOfType<ExpenseProviderState>()!;
-  }
-
   @override
-  State<ExpenseProvider> createState() => ExpenseProviderState();
+  State<ExpenseNotifier> createState() => ExpenseNotifierState();
 }
 
-class ExpenseProviderState extends State<ExpenseProvider> {
+class ExpenseNotifierState extends State<ExpenseNotifier> {
   final expenses = <Expense>[];
 
   @override
@@ -92,12 +97,6 @@ class ExpenseProviderState extends State<ExpenseProvider> {
     });
   }
 
-  Amount getTotalAmountByDate(DateTime date) {
-    final dayExpenses = expenses.where((expense) => DateUtils.isSameDay(expense.paidAt, date));
-    final amounts = dayExpenses.map((e) => e.amount);
-    return amounts.fold(Amount.zero, (previousValue, element) => previousValue + element);
-  }
-
   void removeExpense(Expense expense) {
     widget.repository.remove(expense);
     setState(() {
@@ -114,8 +113,11 @@ class ExpenseProviderState extends State<ExpenseProvider> {
 
   @override
   Widget build(BuildContext context) {
-    return InheritedExpenses(
+    return ExpenseProvider._(
       data: expenses,
+      addExpense: addExpense,
+      removeAll: removeAllExpense,
+      removeExpense: removeExpense,
       child: widget.child,
     );
   }

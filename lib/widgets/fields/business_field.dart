@@ -40,7 +40,7 @@ class _BusinessFieldState extends State<BusinessField> {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.category != widget.category && widget.category != null) {
-      _businesses = Businesses.of(context).byCategory(widget.category!);
+      _businesses = BusinessProvider.of(context).byCategory(widget.category!);
 
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         _controller.clear();
@@ -57,7 +57,7 @@ class _BusinessFieldState extends State<BusinessField> {
   @override
   void didChangeDependencies() {
     if (widget.category != null) {
-      _businesses = Businesses.of(context).byCategory(widget.category!);
+      _businesses = BusinessProvider.of(context).byCategory(widget.category!);
     }
     super.didChangeDependencies();
   }
@@ -69,7 +69,7 @@ class _BusinessFieldState extends State<BusinessField> {
       final end = option.lastIndexOf('"');
       final businessName = option.substring(start, end);
       business = Business(name: businessName, categoryName: widget.category!.name);
-      BusinessProvider.of(context).addBusiness(business);
+      BusinessNotifier.of(context).addBusiness(business);
     } else {
       business = _businesses.firstWhere((business) => business.name == option);
     }

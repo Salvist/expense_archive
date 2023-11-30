@@ -8,7 +8,7 @@ class ExpenseCategoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = ExpenseCategories.of(context);
+    final categories = CategoryProvider.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -45,7 +45,7 @@ class ExpenseCategoryPage extends StatelessWidget {
             trailing: IconButton(
               icon: const Icon(Icons.delete_rounded),
               onPressed: () {
-                ExpenseCategoryProvider.of(context).removeCategory(category);
+                // CategoryProvider.of(context).removeCategory(category);
               },
             ),
           );

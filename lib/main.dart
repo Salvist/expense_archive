@@ -9,7 +9,7 @@ import 'package:simple_expense_tracker/data/local/realm/repositories/expense_rep
 import 'package:simple_expense_tracker/page_navigator.dart';
 import 'package:simple_expense_tracker/app/providers/business_provider.dart';
 import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
-import 'package:simple_expense_tracker/app/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
 import 'package:realm/realm.dart';
 
 void main() async {
@@ -33,11 +33,11 @@ void main() async {
   final businessesRepository = RealmBusinessRepository(realm);
 
   runApp(
-    ExpenseProvider(
+    ExpenseNotifier(
       repository: expenseRepository,
-      child: ExpenseCategoryProvider(
+      child: CategoryNotifier(
         repository: categoryRepository,
-        child: BusinessProvider(
+        child: BusinessNotifier(
           repository: businessesRepository,
           child: const ExpenseArchiveApp(),
         ),
@@ -71,24 +71,5 @@ class ExpenseArchiveApp extends StatelessWidget {
       ),
       home: const PageNavigator(),
     );
-
-    // return MaterialApp.router(
-    //   debugShowCheckedModeBanner: false,
-    //   title: 'Flutter Demo',
-    //   theme: ThemeData(
-    //     colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
-    //     useMaterial3: true,
-    //     // fontFamily: GoogleFonts.robotoSlab().fontFamily,
-    //     inputDecorationTheme: const InputDecorationTheme(
-    //       filled: true,
-    //     ),
-    //     dropdownMenuTheme: const DropdownMenuThemeData(
-    //       inputDecorationTheme: InputDecorationTheme(
-    //         filled: true,
-    //       ),
-    //     ),
-    //   ),
-    //   routerConfig: router,
-    // );
   }
 }
