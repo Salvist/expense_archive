@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
-import 'package:simple_expense_tracker/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
 import 'package:simple_expense_tracker/utils/available_icons.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/icon_picker_dialog.dart';
 import 'package:simple_expense_tracker/widgets/expanded_button.dart';

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:simple_expense_tracker/screens/add_expense_category_page.dart';
-import 'package:simple_expense_tracker/screens/add_expense_page.dart';
-import 'package:simple_expense_tracker/screens/all_expense_page.dart';
-import 'package:simple_expense_tracker/screens/expense_category_page.dart';
+import 'package:simple_expense_tracker/screens/expense_category/add_expense_category_page.dart';
+import 'package:simple_expense_tracker/screens/expense/add_expense_page.dart';
+import 'package:simple_expense_tracker/screens/expense/all_expense_page.dart';
+import 'package:simple_expense_tracker/screens/expense_category/expense_category_page.dart';
 import 'package:simple_expense_tracker/screens/home_page.dart';
 import 'package:simple_expense_tracker/screens/settings_page.dart';
 import 'package:simple_expense_tracker/widgets/bottom_nav_bar.dart';

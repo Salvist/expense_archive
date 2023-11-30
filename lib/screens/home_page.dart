@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:simple_expense_tracker/providers/expenses_provider.dart';
-import 'package:simple_expense_tracker/screens/add_expense_page.dart';
-import 'package:simple_expense_tracker/screens/all_expense_page.dart';
+import 'package:simple_expense_tracker/app/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/screens/expense/add_expense_page.dart';
+import 'package:simple_expense_tracker/screens/expense/all_expense_page.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/expense_info_dialog.dart';
 import 'package:simple_expense_tracker/widgets/expense_tile.dart';

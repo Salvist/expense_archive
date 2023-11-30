@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/business.dart';
-import 'package:simple_expense_tracker/providers/business_provider.dart';
-import 'package:simple_expense_tracker/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/app/providers/business_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
 import 'package:simple_expense_tracker/widgets/app_bar_title.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/add_business_dialog.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/edit_bussiness_dialog.dart';

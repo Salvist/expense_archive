@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/providers/expense_category_provider.dart';
-import 'package:simple_expense_tracker/screens/add_expense_category_page.dart';
+import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/screens/expense_category/add_expense_category_page.dart';
 import 'package:simple_expense_tracker/utils/available_icons.dart';
 
 class ExpenseCategoryPage extends StatelessWidget {

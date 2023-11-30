@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/business.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
-import 'package:simple_expense_tracker/providers/business_provider.dart';
+import 'package:simple_expense_tracker/app/providers/business_provider.dart';
 
 class BusinessField extends StatefulWidget {
   final ExpenseCategory? category;

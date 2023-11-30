@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
-import 'package:simple_expense_tracker/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expenses_provider.dart';
 import 'package:simple_expense_tracker/utils/available_icons.dart';
 import 'package:simple_expense_tracker/utils/extensions/currency_extension.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';

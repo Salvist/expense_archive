@@ -7,9 +7,9 @@ import 'package:simple_expense_tracker/data/local/realm/repositories/business_re
 import 'package:simple_expense_tracker/data/local/realm/repositories/expense_category_repository.dart';
 import 'package:simple_expense_tracker/data/local/realm/repositories/expense_repository.dart';
 import 'package:simple_expense_tracker/page_navigator.dart';
-import 'package:simple_expense_tracker/providers/business_provider.dart';
-import 'package:simple_expense_tracker/providers/expense_category_provider.dart';
-import 'package:simple_expense_tracker/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/app/providers/business_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expenses_provider.dart';
 import 'package:realm/realm.dart';
 
 void main() async {

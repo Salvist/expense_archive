@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/category_expense.dart';
-import 'package:simple_expense_tracker/providers/expense_category_provider.dart';
-import 'package:simple_expense_tracker/providers/expenses_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
+import 'package:simple_expense_tracker/app/providers/expenses_provider.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
 
 class CategoryExpenseListView extends StatelessWidget {

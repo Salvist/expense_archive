@@ -16,11 +16,6 @@ class Businesses extends InheritedWidget {
     return data.where((business) => business.categoryName == category.name);
   }
 
-  // Iterable<Iterable<Business>> byCategories(Iterable<ExpenseCategory> categories){
-  //   f
-  //
-  // }
-
   static Businesses of(BuildContext context) {
     final Businesses? result = context.dependOnInheritedWidgetOfExactType<Businesses>();
     assert(result != null, 'No Businesses found in context');
