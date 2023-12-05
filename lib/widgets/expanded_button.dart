@@ -14,7 +14,8 @@ class ExpandedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: Theme.of(context).buttonTheme.height,
+      // height: Theme.of(context).buttonTheme.height,
+      height: 40,
       child: FilledButton(
         style: FilledButton.styleFrom(
           shape: const RoundedRectangleBorder(

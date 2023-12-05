@@ -1,18 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
+import 'package:simple_expense_tracker/domain/models/date_range.dart';
+import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
 import 'package:simple_expense_tracker/widgets/category_expense_list_view.dart';
 import 'package:simple_expense_tracker/widgets/charts/bar_chart.dart';
-
-List<DateTime> _getWeekDates() {
-  final currentDate = DateUtils.dateOnly(DateTime.now());
-  final dates = <DateTime>[];
-  for (int i = 0; i < 7; i++) {
-    final x = i - (currentDate.weekday % 7);
-    dates.add(DateTime(currentDate.year, currentDate.month, currentDate.day + x));
-  }
-
-  return dates;
-}
 
 class AnalyticsPage extends StatelessWidget {
   const AnalyticsPage({
@@ -22,7 +13,7 @@ class AnalyticsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final expenseProvider = ExpenseProvider.of(context);
-    final weekDates = _getWeekDates();
+    final weekDates = DateRange.now();
 
     return Scaffold(
       appBar: AppBar(
@@ -37,42 +28,37 @@ class AnalyticsPage extends StatelessWidget {
             children: [
               BarChart(
                 title: 'Weekly Expense',
+                subtitle: weekDates.toString(),
                 width: double.infinity,
                 dataSource: <ChartData>[
-                  ChartData(label: 'Sun', value: expenseProvider.getTotalAmountByDate(weekDates[0]).value),
-                  ChartData(label: 'Mon', value: expenseProvider.getTotalAmountByDate(weekDates[1]).value),
-                  ChartData(label: 'Tue', value: expenseProvider.getTotalAmountByDate(weekDates[2]).value),
-                  ChartData(label: 'Wed', value: expenseProvider.getTotalAmountByDate(weekDates[3]).value),
-                  ChartData(label: 'Thu', value: expenseProvider.getTotalAmountByDate(weekDates[4]).value),
-                  ChartData(label: 'Fri', value: expenseProvider.getTotalAmountByDate(weekDates[5]).value),
-                  ChartData(label: 'Sat', value: expenseProvider.getTotalAmountByDate(weekDates[6]).value),
+                  for (final date in weekDates.getDates())
+                    ChartData(label: date.weekdayNameShort, value: expenseProvider.getTotalAmountByDate(date).value),
                 ],
-                trailing: MenuAnchor(
-                  // alignmentOffset: Offset(10, 1),
-                  menuChildren: [
-                    MenuItemButton(
-                      onPressed: () {},
-                      child: const Text('Weekly'),
-                    ),
-                    MenuItemButton(
-                      child: const Text('Monthly'),
-                      onPressed: () {},
-                    ),
-                  ],
-                  builder: (context, controller, child) {
-                    return TextButton.icon(
-                      onPressed: () {
-                        controller.isOpen ? controller.close() : controller.open();
-                      },
-                      label: const Icon(Icons.arrow_drop_down_rounded),
-                      icon: const Text('Weekly'),
-                    );
-                  },
-                ),
+                // trailing: MenuAnchor(
+                //   // alignmentOffset: Offset(10, 1),
+                //   menuChildren: [
+                //     MenuItemButton(
+                //       onPressed: () {},
+                //       child: const Text('Weekly'),
+                //     ),
+                //     MenuItemButton(
+                //       child: const Text('Monthly'),
+                //       onPressed: () {},
+                //     ),
+                //   ],
+                //   builder: (context, controller, child) {
+                //     return TextButton.icon(
+                //       onPressed: () {
+                //         controller.isOpen ? controller.close() : controller.open();
+                //       },
+                //       label: const Icon(Icons.arrow_drop_down_rounded),
+                //       icon: const Text('Weekly'),
+                //     );
+                //   },
+                // ),
               ),
-              // const SizedBox(height: 32),
               const CategoryExpenseListView(),
-              const SizedBox(height: 200),
+              const SizedBox(height: 80),
             ],
           ),
         ),

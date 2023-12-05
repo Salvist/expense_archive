@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/utils/available_icons.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/icon_picker_dialog.dart';
@@ -48,7 +49,7 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
         iconName: _iconName,
       );
 
-      // final addedCategory = await CategoryProvider.of(context).addCategory(category);
+      final addedCategory = await CategoryNotifier.of(context).addCategory(category);
 
       // final businessNames = businessControllers.map((e) => e.name.text);
       // for(final business in businessControllers){
@@ -61,7 +62,7 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
       //   iconData: _icon?.icon?.codePoint,
       // );
       if (!mounted) return;
-      Navigator.pop(context, category);
+      Navigator.pop(context, addedCategory);
     } on DuplicateCategoryException catch (e) {
       setState(() {
         _nameErrorMessage = e.message;
@@ -166,15 +167,15 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
                               ],
                             ),
                           const SizedBox(height: 8),
-                          if (businessControllers.length < 4)
-                            FilledButton.tonal(
-                              onPressed: () {
-                                setState(() {
-                                  businessControllers.add(BusinessController(id: businessControllers.length));
-                                });
-                              },
-                              child: const Text('Add more'),
-                            ),
+                          // if (businessControllers.length < 4)
+                          //   FilledButton.tonal(
+                          //     onPressed: () {
+                          //       setState(() {
+                          //         businessControllers.add(BusinessController(id: businessControllers.length));
+                          //       });
+                          //     },
+                          //     child: const Text('Add more'),
+                          //   ),
                         ],
                       ),
                     ),

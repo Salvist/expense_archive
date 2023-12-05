@@ -15,6 +15,9 @@ class HomePage extends StatelessWidget {
     final currentDate = DateTime.now();
     final expenseProvider = ExpenseProvider.of(context);
 
+    final dayAmount = expenseProvider.getTotalAmountByDate(currentDate);
+    final monthlyAmount = expenseProvider.getTotalAmountByMonth(currentDate);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -50,7 +53,7 @@ class HomePage extends StatelessWidget {
                                   // style: theme.textTheme.headlineSmall,
                                 ),
                                 Text(
-                                  expenseProvider.monthly,
+                                  '$monthlyAmount',
                                   style: theme.textTheme.titleLarge,
                                 ),
                               ],
@@ -67,7 +70,7 @@ class HomePage extends StatelessWidget {
                               children: [
                                 const Text('Today'),
                                 Text(
-                                  expenseProvider.today,
+                                  '$dayAmount',
                                   style: theme.textTheme.titleLarge,
                                 ),
                               ],

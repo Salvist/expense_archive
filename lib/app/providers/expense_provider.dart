@@ -20,24 +20,20 @@ class ExpenseProvider extends InheritedWidget {
     required super.child,
   });
 
-  String get today {
-    final currentDate = DateTime.now();
-    final expenses = data.where((expense) => DateUtils.isSameDay(expense.paidAt, currentDate));
-    final totalExpense = expenses.fold(Amount.zero, (previousValue, expense) => previousValue + expense.amount);
-    return '$totalExpense';
-  }
-
-  String get monthly {
-    final currentDate = DateTime.now();
-    final monthlyExpenses = data.where((expense) => DateUtils.isSameMonth(expense.paidAt, currentDate));
-    final expense =
-        monthlyExpenses.fold<Amount>(Amount.zero, (previousValue, element) => previousValue + element.amount);
-    return '$expense';
-  }
-
   UnmodifiableListView<Expense> get recent {
     final recentExpenses = data.reversed.take(5);
     return UnmodifiableListView(recentExpenses);
+  }
+
+  UnmodifiableListView<Expense> getExpensesByMonth(DateTime date) {
+    final monthlyExpenses = data.where((expense) => DateUtils.isSameMonth(expense.paidAt, date));
+    return UnmodifiableListView(monthlyExpenses);
+  }
+
+  Amount getTotalAmountByMonth(DateTime date) {
+    final monthlyExpenses = getExpensesByMonth(date);
+    final amounts = monthlyExpenses.map((e) => e.amount);
+    return amounts.fold(Amount.zero, (previousValue, element) => previousValue + element);
   }
 
   Amount getTotalAmountByDate(DateTime date) {
@@ -94,6 +90,7 @@ class ExpenseNotifierState extends State<ExpenseNotifier> {
 
     setState(() {
       expenses.add(addedExpense);
+      expenses.sort((a, b) => a.paidAt.compareTo(b.paidAt));
     });
   }
 

@@ -8,7 +8,7 @@ class ExpenseCategoryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categories = CategoryProvider.of(context);
+    final categories = CategoryProvider.of(context).data;
 
     return Scaffold(
       appBar: AppBar(

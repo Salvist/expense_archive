@@ -11,10 +11,10 @@ class CategoryProvider extends InheritedWidget {
     required Widget child,
   }) : super(child: child);
 
-  static List<ExpenseCategory> of(BuildContext context) {
+  static CategoryProvider of(BuildContext context) {
     final CategoryProvider? result = context.dependOnInheritedWidgetOfExactType<CategoryProvider>();
     assert(result != null, 'No ExpenseCategories found in context');
-    return result!.data;
+    return result!;
   }
 
   @override

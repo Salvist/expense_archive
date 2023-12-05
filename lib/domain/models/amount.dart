@@ -23,5 +23,10 @@ final class Amount {
   @override
   String toString() => NumberFormat.simpleCurrency(decimalDigits: 2).format(value);
 
+  String inPercentOf(Amount other) {
+    final percent = (value / other.value) * 100;
+    return '${percent.round()}%';
+  }
+
   Amount operator +(Amount other) => Amount(value + other.value);
 }

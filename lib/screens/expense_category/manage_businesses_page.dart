@@ -18,7 +18,7 @@ class _ManageBusinessesPageState extends State<ManageBusinessesPage> {
 
   @override
   Widget build(BuildContext context) {
-    final categories = CategoryProvider.of(context);
+    final categories = CategoryProvider.of(context).data;
     final businesses = BusinessProvider.of(context);
 
     return DefaultTabController(

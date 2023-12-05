@@ -6,6 +6,7 @@ import 'package:simple_expense_tracker/domain/models/business.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/screens/expense_category/add_expense_category_page.dart';
+import 'package:simple_expense_tracker/widgets/expanded_button.dart';
 import 'package:simple_expense_tracker/widgets/expense_category_dropdown.dart';
 import 'package:simple_expense_tracker/widgets/fields/business_field.dart';
 import 'package:simple_expense_tracker/widgets/fields/cost_field.dart';
@@ -65,7 +66,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
 
   @override
   void didChangeDependencies() {
-    categories = CategoryProvider.of(context);
+    categories = CategoryProvider.of(context).data;
     super.didChangeDependencies();
   }
 
@@ -183,18 +184,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
               ),
             ),
           ),
-          SizedBox(
-            width: double.infinity,
-            height: Theme.of(context).buttonTheme.height,
-            child: FilledButton(
-              style: FilledButton.styleFrom(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.zero,
-                ),
-              ),
-              onPressed: onSubmit,
-              child: const Text('Add expense'),
-            ),
+          ExpandedButton(
+            onPressed: onSubmit,
+            child: const Text('Add expense'),
           ),
         ],
       ),

@@ -28,6 +28,10 @@ class _ExpenseInfoDialogState extends State<ExpenseInfoDialog> {
         children: [
           Text('Category: ${widget.expense.category.name}'),
           Text('Paid on ${widget.expense.paidAt.format('yMMMd')}'),
+          if (widget.expense.note != null) ...[
+            const SizedBox(height: 16),
+            Text('Note: ${widget.expense.note}'),
+          ],
         ],
       ),
       actionsAlignment: MainAxisAlignment.spaceBetween,

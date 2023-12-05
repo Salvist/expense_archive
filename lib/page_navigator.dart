@@ -46,58 +46,66 @@ class _PageNavigatorState extends State<PageNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        children: const <Widget>[
-          HomePage(),
-          AnalyticsPage(),
-          SettingsPage(),
-        ],
+    return PopScope(
+      canPop: _selectedIndex == 0,
+      onPopInvoked: (didPop) {
+        if (_selectedIndex != 0) {
+          _goToDestination(0);
+        }
+      },
+      child: Scaffold(
+        body: PageView(
+          controller: _pageController,
+          children: const <Widget>[
+            HomePage(),
+            AnalyticsPage(),
+            SettingsPage(),
+          ],
+        ),
+        bottomNavigationBar: Platform.isIOS
+            ? CupertinoTabBar(
+                currentIndex: _selectedIndex,
+                onTap: _goToDestination,
+                items: const <BottomNavigationBarItem>[
+                  BottomNavigationBarItem(
+                    label: 'Home',
+                    icon: Icon(Icons.home_outlined),
+                    activeIcon: Icon(Icons.home_rounded),
+                  ),
+                  BottomNavigationBarItem(
+                    label: 'Analytics',
+                    icon: Icon(Icons.analytics_outlined),
+                    activeIcon: Icon(Icons.analytics_rounded),
+                  ),
+                  BottomNavigationBarItem(
+                    label: 'Settings',
+                    icon: Icon(Icons.settings_outlined),
+                    activeIcon: Icon(Icons.settings_rounded),
+                  ),
+                ],
+              )
+            : NavigationBar(
+                onDestinationSelected: _goToDestination,
+                selectedIndex: _selectedIndex,
+                destinations: const <NavigationDestination>[
+                  NavigationDestination(
+                    label: 'Home',
+                    icon: Icon(Icons.home_outlined),
+                    selectedIcon: Icon(Icons.home_rounded),
+                  ),
+                  NavigationDestination(
+                    label: 'Analytics',
+                    icon: Icon(Icons.analytics_outlined),
+                    selectedIcon: Icon(Icons.analytics_rounded),
+                  ),
+                  NavigationDestination(
+                    label: 'Settings',
+                    icon: Icon(Icons.settings_outlined),
+                    selectedIcon: Icon(Icons.settings_rounded),
+                  ),
+                ],
+              ),
       ),
-      bottomNavigationBar: Platform.isIOS
-          ? CupertinoTabBar(
-              currentIndex: _selectedIndex,
-              onTap: _goToDestination,
-              items: const <BottomNavigationBarItem>[
-                BottomNavigationBarItem(
-                  label: 'Home',
-                  icon: Icon(Icons.home_outlined),
-                  activeIcon: Icon(Icons.home_rounded),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Analytics',
-                  icon: Icon(Icons.analytics_outlined),
-                  activeIcon: Icon(Icons.analytics_rounded),
-                ),
-                BottomNavigationBarItem(
-                  label: 'Settings',
-                  icon: Icon(Icons.settings_outlined),
-                  activeIcon: Icon(Icons.settings_rounded),
-                ),
-              ],
-            )
-          : NavigationBar(
-              onDestinationSelected: _goToDestination,
-              selectedIndex: _selectedIndex,
-              destinations: const <NavigationDestination>[
-                NavigationDestination(
-                  label: 'Home',
-                  icon: Icon(Icons.home_outlined),
-                  selectedIcon: Icon(Icons.home_rounded),
-                ),
-                NavigationDestination(
-                  label: 'Analytics',
-                  icon: Icon(Icons.analytics_outlined),
-                  selectedIcon: Icon(Icons.analytics_rounded),
-                ),
-                NavigationDestination(
-                  label: 'Settings',
-                  icon: Icon(Icons.settings_outlined),
-                  selectedIcon: Icon(Icons.settings_rounded),
-                ),
-              ],
-            ),
     );
   }
 }

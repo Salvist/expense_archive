@@ -13,7 +13,9 @@ class ChartData {
 
 class BarChart extends StatelessWidget {
   final String? title;
+  final String? subtitle;
   final TextStyle? titleStyle;
+  final TextStyle? subtitleStyle;
   final Widget? trailing;
 
   final List<ChartData> dataSource;
@@ -25,7 +27,9 @@ class BarChart extends StatelessWidget {
   const BarChart({
     super.key,
     this.title,
+    this.subtitle,
     this.titleStyle,
+    this.subtitleStyle,
     this.trailing,
     required this.dataSource,
     this.width = 400.0,
@@ -52,11 +56,10 @@ class BarChart extends StatelessWidget {
   double get highestMilestone {
     final values = dataSource.map((e) => e.value);
     final highestValue = values.reduce((value, element) => value > element ? value : element);
+
     if (highestValue < 1000) {
-      // return highestValue.nearestHundred();
-      final a = highestValue % 100;
-      return a > 0 ? (highestValue ~/ 100) * 100 + 100 : highestValue;
-      // return (highestValue ~/ 100) * 100 + 100;
+      if (highestValue % 100 == 0) return highestValue;
+      return (highestValue ~/ 100) * 100 + 100;
     }
     return highestValue;
   }
@@ -87,7 +90,7 @@ class BarChart extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (title != null) Text(title!, style: titleStyle ?? textTheme.bodyLarge),
-                    Text('Nov 12-18, 2023', style: theme.textTheme.bodySmall),
+                    if (subtitle != null) Text(subtitle!, style: subtitleStyle ?? textTheme.bodySmall),
                   ],
                 ),
                 if (trailing != null) trailing!,

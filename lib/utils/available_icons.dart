@@ -10,7 +10,7 @@ const categoryIcons = <String, IconData>{
   'liquor': Icons.liquor_rounded,
   'shopping_cart': Icons.shopping_cart_rounded,
 
-  // Beayty
+  // Beauty
   'checkroom': Icons.checkroom_rounded,
   'local_laundry_service': Icons.local_laundry_service_rounded,
 
@@ -23,6 +23,7 @@ const categoryIcons = <String, IconData>{
   'television': Icons.tv_rounded,
   'chair': Icons.chair_rounded,
   'couch': Icons.weekend_rounded,
+  'idea': Icons.emoji_objects_rounded,
 
   // Transportations
   'directions_bike': Icons.directions_bike_rounded,
@@ -36,14 +37,16 @@ const categoryIcons = <String, IconData>{
   'directions': Icons.directions_boat_rounded,
 
   // Utilities
+  'house': Icons.house_rounded,
+  'apartment': Icons.apartment_rounded,
   'local_gas_station': Icons.local_gas_station_rounded,
   'propane_tank': Icons.propane_tank_rounded,
   'ev_station': Icons.ev_station_rounded,
   'bolt': Icons.bolt_rounded,
   'electric_bolt': Icons.electric_bolt_rounded,
+  'lightbulb': Icons.lightbulb_rounded,
 
-  'house': Icons.house_rounded,
-  'apartment': Icons.apartment_rounded,
-
+  // Other
+  'trending_up': Icons.trending_up_rounded,
   'question_mark': Icons.question_mark_rounded,
 };
