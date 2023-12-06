@@ -1,16 +1,16 @@
-import 'package:simple_expense_tracker/data/local/realm/models/business.dart';
-import 'package:simple_expense_tracker/domain/models/business.dart';
-import 'package:simple_expense_tracker/domain/repositories/business_repository.dart';
-import 'package:realm/realm.dart';
-
 import 'dart:developer' as dev;
 
-final class RealmBusinessRepository implements BusinessRepository {
+import 'package:realm/realm.dart';
+import 'package:simple_expense_tracker/data/dto/business_dto.dart';
+import 'package:simple_expense_tracker/data/source/local/local_business_repository.dart';
+import 'package:simple_expense_tracker/data/source/local/realm/models/business.dart';
+
+final class RealmBusinessRepository implements LocalBusinessRepository {
   final Realm _realm;
   const RealmBusinessRepository(this._realm);
 
   @override
-  Future<void> add(Business business) async {
+  Future<void> add(BusinessDto business) async {
     try {
       final businessExist = _realm.query<RealmBusiness>(
         'name == \$0 AND categoryName == \$1',
@@ -21,7 +21,7 @@ final class RealmBusinessRepository implements BusinessRepository {
         throw Exception('Business ${business.name} already exist in category ${business.categoryName}');
       }
 
-      final realmBusiness = BusinessMapper.toRealm(business);
+      final realmBusiness = business.toRealm();
 
       _realm.write(() {
         _realm.add(realmBusiness);
@@ -38,21 +38,21 @@ final class RealmBusinessRepository implements BusinessRepository {
   }
 
   @override
-  Future<Business> get(String name) {
+  Future<BusinessDto> get(String name) {
     // TODO: implement get
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Business>> getAll() async {
+  Future<List<BusinessDto>> getAll() async {
     final realmBusinesses = _realm.all<RealmBusiness>();
-    final businesses = realmBusinesses.map(BusinessMapper.toBusiness).toList();
+    final businesses = realmBusinesses.map(BusinessDto.fromRealm).toList();
     dev.log('${businesses.length} businesses has been loaded.', name: 'Realm');
     return businesses;
   }
 
   @override
-  Future<Business> edit(Business editedBusiness) async {
+  Future<BusinessDto> edit(BusinessDto editedBusiness) async {
     final results = _realm.query<RealmBusiness>(
       'name == \$0 AND categoryName == \$1',
       [editedBusiness.name, editedBusiness.categoryName],

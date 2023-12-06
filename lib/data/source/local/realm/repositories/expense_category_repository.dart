@@ -1,18 +1,20 @@
 import 'dart:developer';
 
 import 'package:realm/realm.dart';
-import 'package:simple_expense_tracker/data/local/realm/models/expense_category.dart';
+import 'package:simple_expense_tracker/data/dto/category_dto.dart';
+import 'package:simple_expense_tracker/data/source/local/local_category_repository.dart';
+import 'package:simple_expense_tracker/data/source/local/realm/models/expense_category.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
-import 'package:simple_expense_tracker/domain/repositories/expense_category_repository.dart';
 
-final class RealmExpenseCategoryRepository implements ExpenseCategoryRepository {
+final class RealmExpenseCategoryRepository implements LocalCategoryRepository {
   final Realm realm;
   const RealmExpenseCategoryRepository(this.realm);
 
   @override
-  Future<void> add(ExpenseCategory category) async {
+  Future<void> add(CategoryDto category) async {
     try {
-      final realmCategory = CategoryMapper.toRealm(category);
+      // final realmCategory = CategoryMapper.toRealm(category);
+      final realmCategory = category.toRealm();
       realm.write(() {
         realm.add(realmCategory);
       });
@@ -27,15 +29,15 @@ final class RealmExpenseCategoryRepository implements ExpenseCategoryRepository 
   }
 
   @override
-  Future<List<ExpenseCategory>> getAll() async {
+  Future<List<CategoryDto>> getAll() async {
     final realmCategories = realm.all<RealmExpenseCategory>();
-    final categories = realmCategories.map((e) => ExpenseCategory(name: e.name, iconName: e.iconName));
+    final categories = realmCategories.map(CategoryDto.fromRealm);
     log('${categories.length} categories has been loaded.', name: 'Realm');
     return categories.toList();
   }
 
   @override
-  Future<ExpenseCategory> remove(ExpenseCategory category) async {
+  Future<CategoryDto> remove(CategoryDto category) async {
     final data = realm.find<RealmExpenseCategory>(category.name);
     if (data == null) {
       log('Category ${category.name} does not exist in database', name: 'Realm');

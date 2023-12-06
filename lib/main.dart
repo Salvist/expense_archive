@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:simple_expense_tracker/data/local/realm/models/business.dart';
-import 'package:simple_expense_tracker/data/local/realm/models/expense.dart';
-import 'package:simple_expense_tracker/data/local/realm/models/expense_category.dart';
-import 'package:simple_expense_tracker/data/local/realm/repositories/business_repository.dart';
-import 'package:simple_expense_tracker/data/local/realm/repositories/expense_category_repository.dart';
-import 'package:simple_expense_tracker/data/local/realm/repositories/expense_repository.dart';
-import 'package:simple_expense_tracker/page_navigator.dart';
+import 'package:realm/realm.dart';
 import 'package:simple_expense_tracker/app/providers/business_provider.dart';
 import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
-import 'package:realm/realm.dart';
+import 'package:simple_expense_tracker/data/repositories/business_repository.dart';
+import 'package:simple_expense_tracker/data/repositories/expense_category_repository.dart';
+import 'package:simple_expense_tracker/data/repositories/expense_repository.dart';
+import 'package:simple_expense_tracker/data/source/local/realm/models/business.dart';
+import 'package:simple_expense_tracker/data/source/local/realm/models/expense.dart';
+import 'package:simple_expense_tracker/data/source/local/realm/models/expense_category.dart';
+import 'package:simple_expense_tracker/data/source/local/realm/repositories/business_repository.dart';
+import 'package:simple_expense_tracker/data/source/local/realm/repositories/expense_category_repository.dart';
+import 'package:simple_expense_tracker/data/source/local/realm/repositories/expense_repository.dart';
+import 'package:simple_expense_tracker/page_navigator.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -28,9 +31,15 @@ void main() async {
   // realm.close();
   // Realm.deleteRealm(realmConfig.path);
 
-  final expenseRepository = RealmExpenseRepository(realm);
-  final categoryRepository = RealmExpenseCategoryRepository(realm);
-  final businessesRepository = RealmBusinessRepository(realm);
+  // Local repositories
+  final localExpenseRepo = RealmExpenseRepository(realm);
+  final localCategoryRepo = RealmExpenseCategoryRepository(realm);
+  final localBusinessRepo = RealmBusinessRepository(realm);
+
+  // Domain repositories
+  final expenseRepository = ExpenseRepositoryImpl(localExpenseRepo);
+  final categoryRepository = ExpenseCategoryRepositoryImpl(localCategoryRepo);
+  final businessRepository = BusinessRepositoryImpl(localBusinessRepo);
 
   runApp(
     ExpenseNotifier(
@@ -38,7 +47,7 @@ void main() async {
       child: CategoryNotifier(
         repository: categoryRepository,
         child: BusinessNotifier(
-          repository: businessesRepository,
+          repository: businessRepository,
           child: const ExpenseArchiveApp(),
         ),
       ),

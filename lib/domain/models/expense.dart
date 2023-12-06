@@ -3,9 +3,7 @@ import 'package:simple_expense_tracker/domain/models/amount.dart';
 import 'expense_category.dart';
 
 class Expense {
-  final String? _id;
-  String get id => _id!;
-
+  final String? id;
   final ExpenseCategory category;
   final String name;
   final Amount amount;
@@ -13,17 +11,17 @@ class Expense {
   final DateTime paidAt;
 
   const Expense({
-    String? id,
+    this.id,
     required this.category,
     required this.name,
     required this.amount,
     this.note,
     required this.paidAt,
-  }) : _id = id;
+  });
 
   Expense copyWith({String? id}) {
     return Expense(
-      id: id ?? _id,
+      id: id ?? this.id,
       category: category,
       name: name,
       amount: amount,
