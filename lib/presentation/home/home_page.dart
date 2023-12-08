@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
+import 'package:simple_expense_tracker/presentation/home/home_provider.dart';
 import 'package:simple_expense_tracker/screens/expense/add_expense_page.dart';
 import 'package:simple_expense_tracker/screens/expense/all_expense_page.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
@@ -9,11 +10,21 @@ import 'package:simple_expense_tracker/widgets/expense_tile.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  static Object route(BuildContext context) {
+    final route = MaterialPageRoute(builder: (context) {
+      return const HomePage();
+    });
+    return route;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final currentDate = DateTime.now();
     final expenseProvider = ExpenseProvider.of(context);
+    // final recentExpenses = HomeProvider.recentExpensesOf(context);
+    final monthlyExpenses = HomeProvider.monthlyExpensesOf(context);
+
 
     final dayAmount = expenseProvider.getTotalAmountByDate(currentDate);
     final monthlyAmount = expenseProvider.getTotalAmountByMonth(currentDate);
@@ -98,7 +109,7 @@ class HomePage extends StatelessWidget {
               shrinkWrap: true,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               children: [
-                ...expenseProvider.recent.map(
+                ...monthlyExpenses.map(
                   (expense) => Padding(
                     padding: const EdgeInsets.only(bottom: 8),
                     child: ExpenseTile(
@@ -119,9 +130,9 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const AddExpensePage()));
-          // context.push('/home/add_expense');
+        onPressed: () async {
+          await Navigator.push(context, MaterialPageRoute(builder: (context) => const AddExpensePage()));
+          // if (context.mounted) HomePageController.of(context).init();
         },
         icon: const Icon(Icons.add_rounded),
         label: const Text('Add expense'),

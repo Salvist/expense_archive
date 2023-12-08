@@ -36,4 +36,14 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
   Future<void> removeAll() async {
     return await _local.removeAll();
   }
+
+  @override
+  Future<List<Expense>> getByMonth(DateTime date) async {
+    return await _local.getByMonth(date);
+  }
+
+  @override
+  Future<List<Expense>> getRecent([int count = 5]) async {
+    return await _local.getRecent(count);
+  }
 }

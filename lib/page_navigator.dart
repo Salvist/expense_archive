@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_expense_tracker/app/providers/repository_provider.dart';
+import 'package:simple_expense_tracker/presentation/home/home_provider.dart';
 import 'package:simple_expense_tracker/screens/analytics_page.dart';
-import 'package:simple_expense_tracker/screens/home_page.dart';
+import 'package:simple_expense_tracker/presentation/home/home_page.dart';
 import 'package:simple_expense_tracker/screens/settings_page.dart';
 
 class PageNavigator extends StatefulWidget {
@@ -46,6 +48,8 @@ class _PageNavigatorState extends State<PageNavigator> {
 
   @override
   Widget build(BuildContext context) {
+    final repositoryProvider = RepositoryProvider.of(context);
+
     return PopScope(
       canPop: _selectedIndex == 0,
       onPopInvoked: (didPop) {
@@ -56,10 +60,13 @@ class _PageNavigatorState extends State<PageNavigator> {
       child: Scaffold(
         body: PageView(
           controller: _pageController,
-          children: const <Widget>[
-            HomePage(),
-            AnalyticsPage(),
-            SettingsPage(),
+          children: <Widget>[
+            HomePageController(
+              expenseRepository: repositoryProvider.expenseRepository,
+              child: const HomePage(),
+            ),
+            const AnalyticsPage(),
+            const SettingsPage(),
           ],
         ),
         bottomNavigationBar: Platform.isIOS

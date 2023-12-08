@@ -10,19 +10,27 @@ final class RealmExpenseRepository implements LocalExpenseRepository {
   const RealmExpenseRepository(this.realm);
 
   @override
+  Future<List<ExpenseDto>> getAll() async {
+    final realmExpenses = realm.all<RealmExpense>();
+    final expenses = realmExpenses.map(ExpenseDto.fromRealm).toList();
+    return expenses;
+  }
+
+  @override
+  Future<List<ExpenseDto>> getRecent([int count = 5]) async {
+    final queryString = 'TRUEPREDICATE SORT(paidAt DESC) LIMIT($count)';
+    final realmExpenses = realm.query<RealmExpense>(queryString);
+    final recentExpenses = realmExpenses.map(ExpenseDto.fromRealm).toList();
+    return recentExpenses;
+  }
+
+  @override
   Future<ExpenseDto?> get(String expenseId) async {
     final expense = realm.find<RealmExpense>(expenseId);
     if (expense == null) return null;
 
     // return ExpenseMapper.toExpense(expense);
     return ExpenseDto.fromRealm(expense);
-  }
-
-  @override
-  Future<List<ExpenseDto>> getAll() async {
-    final realmExpenses = realm.all<RealmExpense>();
-    final expenses = realmExpenses.map(ExpenseDto.fromRealm).toList();
-    return expenses;
   }
 
   @override
@@ -56,5 +64,17 @@ final class RealmExpenseRepository implements LocalExpenseRepository {
       realm.deleteAll<RealmExpense>();
     });
     dev.log('All expenses has been deleted.', name: 'Realm');
+  }
+
+  @override
+  Future<List<ExpenseDto>> getByMonth(DateTime date) async {
+    final monthDate = DateTime(date.year, date.month);
+    final nextMonthDate = DateTime(date.year, date.month + 1);
+
+    const queryString = r'paidAt BETWEEN{$0, $1} SORT(paidAt DESC)';
+    final args = [monthDate, nextMonthDate];
+    final realmExpenses = realm.query<RealmExpense>(queryString, args);
+    final monthlyExpenses = realmExpenses.map(ExpenseDto.fromRealm).toList();
+    return monthlyExpenses;
   }
 }

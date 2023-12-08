@@ -4,6 +4,7 @@ import 'package:realm/realm.dart';
 import 'package:simple_expense_tracker/app/providers/business_provider.dart';
 import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
+import 'package:simple_expense_tracker/app/providers/repository_provider.dart';
 import 'package:simple_expense_tracker/data/repositories/business_repository.dart';
 import 'package:simple_expense_tracker/data/repositories/expense_category_repository.dart';
 import 'package:simple_expense_tracker/data/repositories/expense_repository.dart';
@@ -42,13 +43,18 @@ void main() async {
   final businessRepository = BusinessRepositoryImpl(localBusinessRepo);
 
   runApp(
-    ExpenseNotifier(
-      repository: expenseRepository,
-      child: CategoryNotifier(
-        repository: categoryRepository,
-        child: BusinessNotifier(
-          repository: businessRepository,
-          child: const ExpenseArchiveApp(),
+    RepositoryProvider(
+      expenseRepository: expenseRepository,
+      categoryRepository: categoryRepository,
+      businessRepository: businessRepository,
+      child: ExpenseNotifier(
+        repository: expenseRepository,
+        child: CategoryNotifier(
+          repository: categoryRepository,
+          child: BusinessNotifier(
+            repository: businessRepository,
+            child: const ExpenseArchiveApp(),
+          ),
         ),
       ),
     ),
