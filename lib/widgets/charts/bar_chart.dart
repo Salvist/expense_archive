@@ -12,12 +12,6 @@ class ChartData {
 }
 
 class BarChart extends StatelessWidget {
-  final String? title;
-  final String? subtitle;
-  final TextStyle? titleStyle;
-  final TextStyle? subtitleStyle;
-  final Widget? trailing;
-
   final List<ChartData> dataSource;
 
   final double width;
@@ -26,23 +20,15 @@ class BarChart extends StatelessWidget {
 
   const BarChart({
     super.key,
-    this.title,
-    this.subtitle,
-    this.titleStyle,
-    this.subtitleStyle,
-    this.trailing,
     required this.dataSource,
     this.width = 400.0,
-    this.height = 240.0,
+    this.height = 200.0,
     this.contentPadding = const EdgeInsets.all(16),
   });
 
-  static const chartNameHeight = 40.0;
-  static const nameAndBarGap = 16.0;
   static const labelHeight = 20.0;
 
-  double get maxBarHeight =>
-      height - nameAndBarGap - contentPadding.vertical - 4.0 - chartNameHeight - labelHeight - Bar.minimumHeight;
+  double get maxBarHeight => height - contentPadding.vertical - 4.0 - labelHeight - Bar.minimumHeight;
 
   double getBarHeight(double value) {
     return value * (maxBarHeight / highestMilestone) + Bar.minimumHeight;
@@ -66,71 +52,41 @@ class BarChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: colorScheme.primaryContainer,
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
-      ),
+    return SizedBox(
       width: width,
       height: height,
-      padding: contentPadding,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: chartNameHeight,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (title != null) Text(title!, style: titleStyle ?? textTheme.bodyLarge),
-                    if (subtitle != null) Text(subtitle!, style: subtitleStyle ?? textTheme.bodySmall),
-                  ],
-                ),
-                if (trailing != null) trailing!,
-              ],
+      child: Padding(
+        padding: contentPadding,
+        child: Stack(
+          children: [
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 16,
+              child: Milestones(
+                highestValue: highestMilestone,
+                numOfMilestone: 4,
+              ),
             ),
-          ),
-          const SizedBox(height: nameAndBarGap),
-          Expanded(
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 16,
-                  child: Milestones(
-                    highestValue: highestMilestone,
-                    numOfMilestone: 4,
-                  ),
-                ),
-                Positioned(
-                  left: 32,
-                  top: 4,
-                  right: 0,
-                  bottom: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      for (final data in dataSource)
-                        Bar(
-                          height: getBarHeight(data.value),
-                          label: Text(data.label),
-                        ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ],
+            Positioned(
+              left: 32,
+              top: 4,
+              right: 0,
+              bottom: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  for (final data in dataSource)
+                    Bar(
+                      height: getBarHeight(data.value),
+                      label: Text(data.label),
+                    ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

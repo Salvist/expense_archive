@@ -27,7 +27,7 @@ class AnalyticsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               BarChart(
-                title: 'Weekly Expense',
+                // title: 'Weekly Expense',
                 // subtitle: weekDates.toString(),
                 width: double.infinity,
                 dataSource: <ChartData>[
