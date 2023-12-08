@@ -3,6 +3,7 @@ import 'package:simple_expense_tracker/app/providers/expense_category_provider.d
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
 import 'package:simple_expense_tracker/domain/models/category_expense.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
+import 'package:simple_expense_tracker/widgets/dropdown_chip.dart';
 
 class CategoryExpenseListView extends StatelessWidget {
   const CategoryExpenseListView({super.key});
@@ -24,24 +25,41 @@ class CategoryExpenseListView extends StatelessWidget {
     }
     categoryExpenses.sort((a, b) => b.totalAmount.compareTo(a.totalAmount));
 
-    return ListView(
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      // physics: const NeverScrollableScrollPhysics(),
+      // shrinkWrap: true,
       children: [
-        ListTile(
-          title: const Text('Expenses by Category'),
-          subtitle: Text(DateTime.now().format('yMMMM')),
-          trailing: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const Text('Total', style: TextStyle(fontSize: 13)),
-              Text(
-                '$monthlyAmount',
-                style: const TextStyle(fontSize: 17, color: Colors.black),
-              ),
-            ],
-          ),
+        // ListTile(
+        //   title: const Text('Expenses by Category'),
+        //   subtitle: Text(DateTime.now().format('yMMMM')),
+        //   trailing: Column(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     crossAxisAlignment: CrossAxisAlignment.end,
+        //     children: [
+        //       const Text('Total', style: TextStyle(fontSize: 13)),
+        //       Text(
+        //         '$monthlyAmount',
+        //         style: const TextStyle(fontSize: 17, color: Colors.black),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        Text('Expenses by Category', style: TextStyle(fontSize: 16)),
+        Row(
+          children: [
+            DropdownChip<String>(
+              value: 'December',
+              otherValues: [],
+              onChanged: (newValue) {},
+            ),
+            const SizedBox(width: 4),
+            DropdownChip<String>(
+              value: '2023',
+              otherValues: [],
+              onChanged: (newValue) {},
+            ),
+          ],
         ),
         ...categoryExpenses.map((e) {
           return ListTile(

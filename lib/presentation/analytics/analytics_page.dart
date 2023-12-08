@@ -28,7 +28,7 @@ class AnalyticsPage extends StatelessWidget {
             children: [
               BarChart(
                 title: 'Weekly Expense',
-                subtitle: weekDates.toString(),
+                // subtitle: weekDates.toString(),
                 width: double.infinity,
                 dataSource: <ChartData>[
                   for (final date in weekDates.getDates())
@@ -57,6 +57,28 @@ class AnalyticsPage extends StatelessWidget {
                 //   },
                 // ),
               ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.navigate_before_rounded),
+                  ),
+                  const Spacer(),
+                  Text(weekDates.toString()),
+                  const Spacer(),
+
+                  // Column(
+                  //   children: [
+                  //     Text('Weekly Expense', style: TextStyle(fontSize: 16)),
+                  //   ],
+                  // ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.navigate_next_rounded),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
               const CategoryExpenseListView(),
               const SizedBox(height: 80),
             ],
