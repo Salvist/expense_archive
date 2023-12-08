@@ -54,6 +54,9 @@ class SettingsPage extends StatelessWidget {
             leading: const Icon(Icons.delete_forever_rounded),
             title: const Text('Delete all expense'),
           ),
+          ListTile(
+            onTap: () {},
+          ),
         ],
       ),
     );

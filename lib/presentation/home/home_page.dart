@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
 import 'package:simple_expense_tracker/presentation/home/home_provider.dart';
+import 'package:simple_expense_tracker/presentation/home/widgets/monthly_amount_view.dart';
+import 'package:simple_expense_tracker/presentation/home/widgets/recent_expenses_list_view.dart';
+import 'package:simple_expense_tracker/presentation/home/widgets/today_amount_view.dart';
 import 'package:simple_expense_tracker/screens/expense/add_expense_page.dart';
 import 'package:simple_expense_tracker/screens/expense/all_expense_page.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
@@ -10,24 +13,10 @@ import 'package:simple_expense_tracker/widgets/expense_tile.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  static Object route(BuildContext context) {
-    final route = MaterialPageRoute(builder: (context) {
-      return const HomePage();
-    });
-    return route;
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final currentDate = DateTime.now();
-    final expenseProvider = ExpenseProvider.of(context);
-    // final recentExpenses = HomeProvider.recentExpensesOf(context);
-    final monthlyExpenses = HomeProvider.monthlyExpensesOf(context);
-
-
-    final dayAmount = expenseProvider.getTotalAmountByDate(currentDate);
-    final monthlyAmount = expenseProvider.getTotalAmountByMonth(currentDate);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -55,37 +44,16 @@ class HomePage extends StatelessWidget {
                     IntrinsicHeight(
                       child: Row(
                         children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  currentDate.monthName,
-                                  // style: theme.textTheme.headlineSmall,
-                                ),
-                                Text(
-                                  '$monthlyAmount',
-                                  style: theme.textTheme.titleLarge,
-                                ),
-                              ],
-                            ),
+                          const Expanded(
+                            child: MonthlyAmountView(),
                           ),
                           VerticalDivider(
                             indent: 4,
                             endIndent: 4,
                             color: theme.colorScheme.primary,
                           ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text('Today'),
-                                Text(
-                                  '$dayAmount',
-                                  style: theme.textTheme.titleLarge,
-                                ),
-                              ],
-                            ),
+                          const Expanded(
+                            child: TodayAmountView(),
                           ),
                         ],
                       ),
@@ -94,37 +62,7 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            ListTile(
-              title: const Text('Recent Expenses'),
-              subtitle: const Text('Showing 5 recent expenses'),
-              trailing: TextButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const AllExpensePage()));
-                },
-                child: const Text('View all'),
-              ),
-            ),
-            ListView(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                ...monthlyExpenses.map(
-                  (expense) => Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: ExpenseTile(
-                      expense: expense,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => ExpenseInfoDialog(expense),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            const RecentExpensesListView(),
             const SizedBox(height: 80),
           ],
         ),

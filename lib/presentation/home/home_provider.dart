@@ -1,10 +1,11 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:simple_expense_tracker/domain/models/amount.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
 import 'package:simple_expense_tracker/domain/repositories/expense_repository.dart';
 
-enum _HomeAspect { recent, monthlyExpenses }
+enum _HomeAspect { recent, monthlyExpenses, monthlyAmount, todayAmount }
 
 class HomeProvider extends InheritedModel<_HomeAspect> {
   final List<Expense> recentExpenses;
@@ -33,6 +34,12 @@ class HomeProvider extends InheritedModel<_HomeAspect> {
     return UnmodifiableListView(monthlyExpenses);
   }
 
+  static Amount monthlyAmountOf(BuildContext context) {
+    final monthlyExpenses = _of(context, aspect: _HomeAspect.monthlyExpenses).monthlyExpenses;
+    final amounts = monthlyExpenses.map((e) => e.amount);
+    return amounts.fold(Amount.zero, (previousValue, element) => previousValue + element);
+  }
+
   @override
   bool updateShouldNotify(covariant HomeProvider oldWidget) {
     return true;
@@ -47,7 +54,7 @@ class HomeProvider extends InheritedModel<_HomeAspect> {
             if (recentExpenses.length != oldWidget.recentExpenses.length) {
               return true;
             }
-          case _HomeAspect.monthlyExpenses:
+          case _HomeAspect.monthlyExpenses || _HomeAspect.monthlyAmount || _HomeAspect.todayAmount:
             if (monthlyExpenses.length != oldWidget.monthlyExpenses.length) {
               return true;
             }
