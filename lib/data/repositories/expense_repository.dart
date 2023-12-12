@@ -43,7 +43,18 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
   }
 
   @override
+  Future<List<Expense>> getByWeek(DateTime date) async {
+    return await _local.getByWeek(date);
+  }
+
+  @override
   Future<List<Expense>> getRecent([int count = 5]) async {
     return await _local.getRecent(count);
+  }
+
+  @override
+  Future<({DateTime start, DateTime end})> getStartAndEndDates() async {
+    final dates = await _local.getStartAndEndDates();
+    return (start: dates.$1, end: dates.$2);
   }
 }

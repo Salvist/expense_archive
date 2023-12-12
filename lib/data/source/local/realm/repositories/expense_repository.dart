@@ -4,6 +4,7 @@ import 'package:realm/realm.dart';
 import 'package:simple_expense_tracker/data/dto/expense_dto.dart';
 import 'package:simple_expense_tracker/data/source/local/local_expense_repository.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/models/expense.dart';
+import 'package:simple_expense_tracker/domain/models/date_range.dart';
 
 final class RealmExpenseRepository implements LocalExpenseRepository {
   final Realm realm;
@@ -76,5 +77,26 @@ final class RealmExpenseRepository implements LocalExpenseRepository {
     final realmExpenses = realm.query<RealmExpense>(queryString, args);
     final monthlyExpenses = realmExpenses.map(ExpenseDto.fromRealm).toList();
     return monthlyExpenses;
+  }
+
+  @override
+  Future<List<ExpenseDto>> getByWeek(DateTime date) async {
+    final dateRange = DateRange.fromDate(date);
+
+    const queryString = r'paidAt BETWEEN{$0, $1} SORT(paidAt DESC)';
+    final args = [dateRange.start, dateRange.end];
+    final realmExpenses = realm.query<RealmExpense>(queryString, args);
+    final weeklyExpenses = realmExpenses.map(ExpenseDto.fromRealm).toList();
+    return weeklyExpenses;
+  }
+
+  @override
+  Future<(DateTime, DateTime)> getStartAndEndDates() async {
+    final startExpenses = realm.query<RealmExpense>('TRUEPREDICATE SORT(paidAt ASC) LIMIT(1)');
+    final endExpenses = realm.query<RealmExpense>('TRUEPREDICATE SORT(paidAt DESC) LIMIT(1)');
+
+    final startDate = startExpenses.isEmpty ? DateTime.now() : startExpenses.first.paidAt.toLocal();
+    final endDate = endExpenses.isEmpty ? DateTime.now() : endExpenses.first.paidAt.toLocal();
+    return (startDate, endDate);
   }
 }

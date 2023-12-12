@@ -1,8 +1,9 @@
+import 'package:equatable/equatable.dart';
 import 'package:simple_expense_tracker/domain/models/amount.dart';
 
 import 'expense_category.dart';
 
-class Expense {
+class Expense extends Equatable {
   final String? id;
   final ExpenseCategory category;
   final String name;
@@ -29,4 +30,7 @@ class Expense {
       paidAt: paidAt,
     );
   }
+
+  @override
+  List<Object> get props => [category, name, amount, paidAt];
 }

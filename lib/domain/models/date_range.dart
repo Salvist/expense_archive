@@ -40,7 +40,11 @@ class DateRange {
       final dates = '${start.day}-${end.day}';
       return '${start.monthName} $dates, ${start.year}';
     }
-
-    return '';
+    if (start.year == end.year) {
+      final startDate = '${start.monthNameShort} ${start.day}';
+      final endDate = '${end.monthNameShort} ${end.day}';
+      return '$startDate - $endDate, ${end.year}';
+    }
+    return '${start.monthNameShort} ${start.day}, ${start.year} - ${end.monthNameShort} ${end.day}, ${end.year}';
   }
 }
