@@ -39,9 +39,9 @@ class RealmExpense extends _RealmExpense
   set name(String value) => RealmObjectBase.set(this, 'name', value);
 
   @override
-  double get cost => RealmObjectBase.get<double>(this, 'cost') as double;
+  double get amount => RealmObjectBase.get<double>(this, 'cost') as double;
   @override
-  set cost(double value) => RealmObjectBase.set(this, 'cost', value);
+  set amount(double value) => RealmObjectBase.set(this, 'cost', value);
 
   @override
   String? get note => RealmObjectBase.get<String>(this, 'note') as String?;

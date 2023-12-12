@@ -24,7 +24,7 @@ class _AddBusinessDialogState extends State<AddBusinessDialog> {
     final business = Business(
       name: _nameController.text,
       categoryName: widget.category.name,
-      costPreset: Amount.fromString(_amountController.text),
+      amountPreset: Amount.fromString(_amountController.text),
     );
     Navigator.pop(context, business);
   }

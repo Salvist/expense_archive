@@ -25,14 +25,14 @@ class _EditBusinessDialogState extends State<EditBusinessDialog> {
   @override
   void initState() {
     _nameController.text = widget.business.name;
-    _amountController.text = widget.business.costPreset?.withoutCurrency() ?? '';
+    _amountController.text = widget.business.amountPreset?.withoutCurrency() ?? '';
     super.initState();
   }
 
   void _applyEdit() async {
     final editedBusiness = widget.business.copyWith(
       name: _nameController.text,
-      costPreset: Amount.fromString(_amountController.text),
+      amountPreset: Amount.fromString(_amountController.text),
     );
 
     Navigator.pop(context, editedBusiness);

@@ -3,22 +3,22 @@ import 'package:simple_expense_tracker/domain/models/amount.dart';
 class Business {
   final String name;
   final String categoryName;
-  final Amount? costPreset;
+  final Amount? amountPreset;
 
   const Business({
     required this.name,
     required this.categoryName,
-    this.costPreset,
+    this.amountPreset,
   });
 
   Business copyWith({
     String? name,
-    Amount? costPreset,
+    Amount? amountPreset,
   }) {
     return Business(
       categoryName: categoryName,
       name: name ?? this.name,
-      costPreset: costPreset ?? this.costPreset,
+      amountPreset: amountPreset ?? this.amountPreset,
     );
   }
 }

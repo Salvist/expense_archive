@@ -60,13 +60,13 @@ final class RealmBusinessRepository implements LocalBusinessRepository {
     if (results.isEmpty) return editedBusiness;
     final realmBusiness = results.first;
     final oldName = realmBusiness.name;
-    final oldCost = realmBusiness.costPreset;
+    final oldCost = realmBusiness.amountPreset;
     _realm.write(() {
       realmBusiness.name = editedBusiness.name;
-      realmBusiness.costPreset = editedBusiness.costPreset?.value;
+      realmBusiness.amountPreset = editedBusiness.amountPreset?.value;
     });
     dev.log(
-      'Name: $oldName --> ${editedBusiness.costPreset}\nCost: $oldCost --> ${editedBusiness.costPreset}',
+      'Name: $oldName --> ${editedBusiness.amountPreset}\nCost: $oldCost --> ${editedBusiness.amountPreset}',
       name: 'Realm',
     );
     return editedBusiness;

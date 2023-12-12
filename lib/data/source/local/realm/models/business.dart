@@ -10,5 +10,5 @@ class _RealmBusiness {
   late String name;
   late String categoryName;
   late String? iconName;
-  late double? costPreset;
+  late double? amountPreset;
 }

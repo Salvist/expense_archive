@@ -85,7 +85,7 @@ class _ManageBusinessesPageState extends State<ManageBusinessesPage> {
                       // BusinessProvider.of(context).editBusiness(b, editedBusiness);
                     },
                     title: Text(b.name),
-                    trailing: b.costPreset != null ? Text('${b.costPreset!}') : null,
+                    trailing: b.amountPreset != null ? Text('${b.amountPreset!}') : null,
                   );
                 },
               ),

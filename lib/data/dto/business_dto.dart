@@ -7,14 +7,14 @@ class BusinessDto extends Business {
   const BusinessDto._({
     required super.name,
     required super.categoryName,
-    super.costPreset,
+    super.amountPreset,
   });
 
   factory BusinessDto.fromEntity(Business business) {
     return BusinessDto._(
       name: business.name,
       categoryName: business.categoryName,
-      costPreset: business.costPreset,
+      amountPreset: business.amountPreset,
     );
   }
 
@@ -22,7 +22,7 @@ class BusinessDto extends Business {
     return BusinessDto._(
       name: business.name,
       categoryName: business.categoryName,
-      costPreset: business.costPreset != null ? Amount(business.costPreset!) : null,
+      amountPreset: business.amountPreset != null ? Amount(business.amountPreset!) : null,
     );
   }
 
@@ -31,7 +31,7 @@ class BusinessDto extends Business {
       ObjectId(),
       name,
       categoryName,
-      costPreset: costPreset?.value,
+      costPreset: amountPreset?.value,
     );
   }
 }

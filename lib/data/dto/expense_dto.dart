@@ -30,7 +30,7 @@ class ExpenseDto extends Expense {
         iconName: realmExpense.categoryIconName,
       ),
       name: realmExpense.name,
-      amount: Amount(realmExpense.cost),
+      amount: Amount(realmExpense.amount),
       paidAt: realmExpense.paidAt.toLocal(),
     );
   }

@@ -128,8 +128,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
                         setState(() {
                           _business = value;
                         });
-                        if (_business?.costPreset != null) {
-                          _cost.text = _business!.costPreset!.withoutCurrency();
+                        if (_business?.amountPreset != null) {
+                          _cost.text = _business!.amountPreset!.withoutCurrency();
                         }
                       },
                       validator: (_) => _business == null ? 'Add or choose a business / individual.' : null,

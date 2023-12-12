@@ -8,7 +8,7 @@ class _RealmExpense {
   late ObjectId id;
 
   late String name;
-  late double cost;
+  late double amount;
   late String? note;
   late DateTime paidAt;
 

@@ -48,10 +48,10 @@ class RealmBusiness extends _RealmBusiness
   set iconName(String? value) => RealmObjectBase.set(this, 'iconName', value);
 
   @override
-  double? get costPreset =>
+  double? get amountPreset =>
       RealmObjectBase.get<double>(this, 'costPreset') as double?;
   @override
-  set costPreset(double? value) =>
+  set amountPreset(double? value) =>
       RealmObjectBase.set(this, 'costPreset', value);
 
   @override
