@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class CostField extends StatelessWidget {
+class AmountField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
   final String? Function(String?)? validator;
 
-  const CostField({
+  const AmountField({
     super.key,
     required this.controller,
-    this.labelText = 'Cost',
+    this.labelText = 'Amount',
     this.validator,
   });
 

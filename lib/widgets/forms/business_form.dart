@@ -25,7 +25,7 @@ class BusinessForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          CostField(controller: amountController),
+          AmountField(controller: amountController),
         ],
       ),
     );

@@ -153,7 +153,7 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
                                       //   controller: business.name,
                                       // ),
                                       const SizedBox(height: 8),
-                                      CostField(
+                                      AmountField(
                                         controller: business.amountPreset,
                                         labelText: 'Cost preset',
                                       ),

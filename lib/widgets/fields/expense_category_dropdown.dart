@@ -57,7 +57,6 @@ class _ExpenseCategoryDropdownState extends State<ExpenseCategoryDropdown> {
 
   @override
   Widget build(BuildContext context) {
-
     Icon leadingIcon;
     if (widget.selectedCategory != null) {
       leadingIcon = Icon(widget.selectedCategory!.icon);

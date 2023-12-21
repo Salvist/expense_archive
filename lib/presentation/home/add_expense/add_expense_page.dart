@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 import 'package:simple_expense_tracker/domain/models/amount.dart';
 import 'package:simple_expense_tracker/domain/models/business.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/domain/repositories/expense_category_repository.dart';
+import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 import 'package:simple_expense_tracker/screens/expense_category/add_expense_category_page.dart';
 import 'package:simple_expense_tracker/widgets/expanded_button.dart';
-import 'package:simple_expense_tracker/widgets/fields/expense_category_dropdown.dart';
 import 'package:simple_expense_tracker/widgets/fields/business_field.dart';
 import 'package:simple_expense_tracker/widgets/fields/cost_field.dart';
 import 'package:simple_expense_tracker/widgets/fields/date_picker.dart';
+import 'package:simple_expense_tracker/widgets/fields/expense_category_dropdown.dart';
 import 'package:simple_expense_tracker/widgets/fields/time_picker.dart';
 
 class AddExpensePage extends StatefulWidget {
@@ -44,7 +44,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
 
   bool get enableAutocomplete => expenseCategory != null;
 
-  final _cost = TextEditingController();
+  final _amount = TextEditingController();
   final _note = TextEditingController();
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
@@ -66,7 +66,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
     final expense = Expense(
       category: expenseCategory!,
       name: _business!.name,
-      amount: Amount.fromString(_cost.text)!,
+      amount: Amount.fromString(_amount.text)!,
       note: note,
       paidAt: _date.copyWith(hour: _time.hour, minute: _time.minute),
     );
@@ -111,7 +111,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                             setState(() {
                               expenseCategory = category;
                               _business = null;
-                              _cost.text = '';
+                              _amount.text = '';
                             });
                           },
                         ),
@@ -143,15 +143,15 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           _business = value;
                         });
                         if (_business?.amountPreset != null) {
-                          _cost.text = _business!.amountPreset!.withoutCurrency();
+                          _amount.text = _business!.amountPreset!.withoutCurrency();
                         }
                       },
                       validator: (_) => _business == null ? 'Add or choose a business / individual.' : null,
                     ),
                     const SizedBox(height: 16),
-                    CostField(
-                      controller: _cost,
-                      labelText: 'Expense',
+                    AmountField(
+                      controller: _amount,
+                      labelText: 'Amount',
                       validator: (value) => value!.isEmpty ? 'How much did you spend?' : null,
                     ),
                     const SizedBox(height: 16),
