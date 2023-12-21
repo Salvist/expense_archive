@@ -21,7 +21,8 @@ class RepositoryProvider extends InheritedWidget {
   static BusinessRepository businessOf(BuildContext context) => of(context).businessRepository;
 
   static RepositoryProvider of(BuildContext context) {
-    final RepositoryProvider? result = context.dependOnInheritedWidgetOfExactType<RepositoryProvider>();
+    // final RepositoryProvider? result = context.dependOnInheritedWidgetOfExactType<RepositoryProvider>();
+    final RepositoryProvider? result = context.findAncestorWidgetOfExactType<RepositoryProvider>();
     assert(result != null, 'No RepositoryProvider found in context');
     return result!;
   }

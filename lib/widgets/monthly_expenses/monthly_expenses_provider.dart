@@ -7,12 +7,13 @@ import 'package:simple_expense_tracker/domain/repositories/expense_repository.da
 class MonthlyExpensesProvider extends InheritedWidget {
   final List<Expense> expenses;
   final List<CategoryExpense> categoryExpenses;
+  final DateTime selectedDate;
   final MonthlyExpensesControllerState controller;
 
   const MonthlyExpensesProvider._({
-    super.key,
     required this.controller,
     required this.expenses,
+    required this.selectedDate,
     required this.categoryExpenses,
     required super.child,
   });
@@ -75,10 +76,23 @@ class MonthlyExpensesControllerState extends State<MonthlyExpensesController> {
     });
   }
 
+  void changeMonth(int month) {
+    setState(() {
+      _currentDate = _currentDate.copyWith(month: month);
+    });
+  }
+
+  void changeYear(int year) {
+    setState(() {
+      _currentDate = _currentDate.copyWith(year: year);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MonthlyExpensesProvider._(
       controller: this,
+      selectedDate: _currentDate,
       expenses: _monthlyExpenses,
       categoryExpenses: _categoryExpenses,
       child: widget.child,

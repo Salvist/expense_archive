@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
+import 'package:simple_expense_tracker/domain/models/expense.dart';
 import 'package:simple_expense_tracker/presentation/home/home_provider.dart';
 import 'package:simple_expense_tracker/presentation/home/widgets/monthly_amount_view.dart';
 import 'package:simple_expense_tracker/presentation/home/widgets/recent_expenses_list_view.dart';
 import 'package:simple_expense_tracker/presentation/home/widgets/today_amount_view.dart';
-import 'package:simple_expense_tracker/screens/expense/add_expense_page.dart';
-import 'package:simple_expense_tracker/screens/expense/all_expense_page.dart';
+import 'package:simple_expense_tracker/presentation/home/add_expense/add_expense_page.dart';
+import 'package:simple_expense_tracker/presentation/home/all_expense_page.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/expense_info_dialog.dart';
 import 'package:simple_expense_tracker/widgets/expense_tile.dart';
@@ -69,8 +70,9 @@ class HomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
-          await Navigator.push(context, MaterialPageRoute(builder: (context) => const AddExpensePage()));
-          // if (context.mounted) HomePageController.of(context).init();
+          final expense = await Navigator.push<Expense>(context, AddExpensePage.route());
+          if (!context.mounted || expense == null) return;
+          HomePageController.of(context).addExpense(expense);
         },
         icon: const Icon(Icons.add_rounded),
         label: const Text('Add expense'),

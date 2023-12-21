@@ -6,6 +6,7 @@ part of 'business.dart';
 // RealmObjectGenerator
 // **************************************************************************
 
+// ignore_for_file: type=lint
 class RealmBusiness extends _RealmBusiness
     with RealmEntity, RealmObjectBase, RealmObject {
   RealmBusiness(
@@ -13,13 +14,13 @@ class RealmBusiness extends _RealmBusiness
     String name,
     String categoryName, {
     String? iconName,
-    double? costPreset,
+    double? amountPreset,
   }) {
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
     RealmObjectBase.set(this, 'categoryName', categoryName);
     RealmObjectBase.set(this, 'iconName', iconName);
-    RealmObjectBase.set(this, 'costPreset', costPreset);
+    RealmObjectBase.set(this, 'amountPreset', amountPreset);
   }
 
   RealmBusiness._();
@@ -49,10 +50,10 @@ class RealmBusiness extends _RealmBusiness
 
   @override
   double? get amountPreset =>
-      RealmObjectBase.get<double>(this, 'costPreset') as double?;
+      RealmObjectBase.get<double>(this, 'amountPreset') as double?;
   @override
   set amountPreset(double? value) =>
-      RealmObjectBase.set(this, 'costPreset', value);
+      RealmObjectBase.set(this, 'amountPreset', value);
 
   @override
   Stream<RealmObjectChanges<RealmBusiness>> get changes =>
@@ -71,7 +72,7 @@ class RealmBusiness extends _RealmBusiness
       SchemaProperty('name', RealmPropertyType.string),
       SchemaProperty('categoryName', RealmPropertyType.string),
       SchemaProperty('iconName', RealmPropertyType.string, optional: true),
-      SchemaProperty('costPreset', RealmPropertyType.double, optional: true),
+      SchemaProperty('amountPreset', RealmPropertyType.double, optional: true),
     ]);
   }
 }

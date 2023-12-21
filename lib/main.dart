@@ -4,7 +4,7 @@ import 'package:realm/realm.dart';
 import 'package:simple_expense_tracker/app/providers/business_provider.dart';
 import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
-import 'package:simple_expense_tracker/app/providers/repository_provider.dart';
+import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 import 'package:simple_expense_tracker/data/repositories/business_repository.dart';
 import 'package:simple_expense_tracker/data/repositories/expense_category_repository.dart';
 import 'package:simple_expense_tracker/data/repositories/expense_repository.dart';
@@ -20,12 +20,14 @@ void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
   // await SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
 
+  final realmSchemas = [
+    RealmExpense.schema,
+    RealmExpenseCategory.schema,
+    RealmBusiness.schema,
+  ];
+
   final realmConfig = Configuration.local(
-    [
-      RealmExpense.schema,
-      RealmExpenseCategory.schema,
-      RealmBusiness.schema,
-    ],
+    realmSchemas,
     shouldDeleteIfMigrationNeeded: true,
   );
   final realm = Realm(realmConfig);

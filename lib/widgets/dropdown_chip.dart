@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 
-class DropdownChip<T> extends StatefulWidget {
+class DropdownChip<T extends Object> extends StatelessWidget {
   final T value;
-  final List<T> otherValues;
+  final List<T> options;
+  final String Function(T option) displayOption;
   final void Function(T newValue) onChanged;
 
   const DropdownChip({
     super.key,
     required this.value,
-    required this.otherValues,
+    required this.options,
+    this.displayOption = _displayOption,
     required this.onChanged,
   });
 
-  @override
-  State<DropdownChip> createState() => _DropdownChipState();
-}
+  static String _displayOption(Object option) => option.toString();
+  // static const _defaultDisplayOption = (T option) => option.toString();
 
-class _DropdownChipState extends State<DropdownChip> {
   static const _borderRadius = BorderRadius.all(Radius.circular(8));
 
   @override
@@ -24,12 +24,15 @@ class _DropdownChipState extends State<DropdownChip> {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
+    final menuChildren = options.map((option) {
+      final display = displayOption;
+      return MenuItemButton(
+        child: Text(displayOption(option)),
+      );
+    }).toList();
+
     return MenuAnchor(
-      menuChildren: [
-        MenuItemButton(
-          child: Text('January'),
-        ),
-      ],
+      menuChildren: menuChildren,
       builder: (context, controller, child) {
         return Material(
           color: colorScheme.secondaryContainer,
@@ -44,7 +47,7 @@ class _DropdownChipState extends State<DropdownChip> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(widget.value),
+                  Text(displayOption(value)),
                   const SizedBox(width: 8),
                   const Icon(Icons.arrow_drop_down_rounded, size: 18),
                 ],
@@ -53,25 +56,6 @@ class _DropdownChipState extends State<DropdownChip> {
           ),
         );
       },
-      // child: Material(
-      //   color: colorScheme.secondaryContainer,
-      //   borderRadius: _borderRadius,
-      //   child: InkWell(
-      //     onTap: () {},
-      //     borderRadius: _borderRadius,
-      //     child: Padding(
-      //       padding: const EdgeInsets.only(left: 16, top: 8, right: 8, bottom: 8),
-      //       child: Row(
-      //         mainAxisSize: MainAxisSize.min,
-      //         children: [
-      //           Text('December'),
-      //           const SizedBox(width: 8),
-      //           const Icon(Icons.arrow_drop_down_rounded, size: 18),
-      //         ],
-      //       ),
-      //     ),
-      //   ),
-      // ),
     );
   }
 }

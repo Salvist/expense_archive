@@ -72,10 +72,10 @@ class CategoryNotifierState extends State<CategoryNotifier> {
   }
 
   Future<ExpenseCategory> addCategory(ExpenseCategory category) async {
-    await widget.repository.add(category.copyWith(id: _categories.last.id + 1));
-    setState(() {
-      _categories.add(category);
-    });
+    // await widget.repository.add(category.copyWith(id: _categories.last.id + 1));
+    // setState(() {
+    //   _categories.add(category);
+    // });
     return category;
   }
 

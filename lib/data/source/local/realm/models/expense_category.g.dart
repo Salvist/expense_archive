@@ -6,15 +6,14 @@ part of 'expense_category.dart';
 // RealmObjectGenerator
 // **************************************************************************
 
+// ignore_for_file: type=lint
 class RealmExpenseCategory extends _RealmExpenseCategory
     with RealmEntity, RealmObjectBase, RealmObject {
   RealmExpenseCategory(
-    String name,
-    int id, {
+    String name, {
     String? iconName,
   }) {
     RealmObjectBase.set(this, 'name', name);
-    RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'iconName', iconName);
   }
 
@@ -24,11 +23,6 @@ class RealmExpenseCategory extends _RealmExpenseCategory
   String get name => RealmObjectBase.get<String>(this, 'name') as String;
   @override
   set name(String value) => RealmObjectBase.set(this, 'name', value);
-
-  @override
-  int get id => RealmObjectBase.get<int>(this, 'id') as int;
-  @override
-  set id(int value) => RealmObjectBase.set(this, 'id', value);
 
   @override
   String? get iconName =>
@@ -51,8 +45,6 @@ class RealmExpenseCategory extends _RealmExpenseCategory
     return const SchemaObject(
         ObjectType.realmObject, RealmExpenseCategory, 'RealmExpenseCategory', [
       SchemaProperty('name', RealmPropertyType.string, primaryKey: true),
-      SchemaProperty('id', RealmPropertyType.int,
-          indexType: RealmIndexType.regular),
       SchemaProperty('iconName', RealmPropertyType.string, optional: true),
     ]);
   }

@@ -17,7 +17,6 @@ class CategoryDto extends ExpenseCategory {
   RealmExpenseCategory toRealm() {
     return RealmExpenseCategory(
       name,
-      id,
       iconName: iconName,
     );
   }

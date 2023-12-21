@@ -86,9 +86,8 @@ class HomePageController extends StatefulWidget {
 }
 
 class _HomePageControllerState extends State<HomePageController> {
-  late ExpenseRepository expenseRepository;
-  var _recentExpenses = <Expense>[];
-  var _monthlyExpenses = <Expense>[];
+  var _recentExpenses = const <Expense>[];
+  var _monthlyExpenses = const <Expense>[];
 
   @override
   void initState() {
@@ -97,12 +96,28 @@ class _HomePageControllerState extends State<HomePageController> {
   }
 
   void init() async {
-    final expenses = await widget.expenseRepository.getRecent();
+    await loadRecentExpenses();
     final monthlyExpenses = await widget.expenseRepository.getByMonth(DateTime.now());
     setState(() {
-      _recentExpenses = expenses;
       _monthlyExpenses = monthlyExpenses;
     });
+  }
+
+  Future<void> loadRecentExpenses() async {
+    final recentExpenses = await widget.expenseRepository.getRecent();
+    setState(() {
+      _recentExpenses = recentExpenses;
+    });
+  }
+
+  void addExpense(Expense expense) async {
+    await widget.expenseRepository.add(expense);
+    await loadRecentExpenses();
+  }
+
+  void removeExpense(Expense expense) async {
+    await widget.expenseRepository.remove(expense);
+    await loadRecentExpenses();
   }
 
   @override

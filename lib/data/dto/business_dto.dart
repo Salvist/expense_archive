@@ -31,7 +31,7 @@ class BusinessDto extends Business {
       ObjectId(),
       name,
       categoryName,
-      costPreset: amountPreset?.value,
+      amountPreset: amountPreset?.value,
     );
   }
 }

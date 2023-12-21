@@ -13,7 +13,6 @@ final class RealmExpenseCategoryRepository implements LocalCategoryRepository {
   @override
   Future<void> add(CategoryDto category) async {
     try {
-      // final realmCategory = CategoryMapper.toRealm(category);
       final realmCategory = category.toRealm();
       realm.write(() {
         realm.add(realmCategory);
@@ -30,8 +29,10 @@ final class RealmExpenseCategoryRepository implements LocalCategoryRepository {
 
   @override
   Future<List<CategoryDto>> getAll() async {
-    final realmCategories = realm.all<RealmExpenseCategory>();
+    const queryString = r'TRUEPREDICATE SORT(name ASC)';
+    final realmCategories = realm.query<RealmExpenseCategory>(queryString);
     final categories = realmCategories.map(CategoryDto.fromRealm);
+    
     log('${categories.length} categories has been loaded.', name: 'Realm');
     return categories.toList();
   }

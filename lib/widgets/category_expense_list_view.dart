@@ -46,21 +46,21 @@ class CategoryExpenseListView extends StatelessWidget {
         //   ),
         // ),
         Text('Expenses by Category', style: TextStyle(fontSize: 16)),
-        Row(
-          children: [
-            DropdownChip<String>(
-              value: 'December',
-              otherValues: [],
-              onChanged: (newValue) {},
-            ),
-            const SizedBox(width: 4),
-            DropdownChip<String>(
-              value: '2023',
-              otherValues: [],
-              onChanged: (newValue) {},
-            ),
-          ],
-        ),
+        // Row(
+        //   children: [
+        //     DropdownChip<String>(
+        //       value: 'December',
+        //       otherValues: [],
+        //       onChanged: (newValue) {},
+        //     ),
+        //     const SizedBox(width: 4),
+        //     DropdownChip<String>(
+        //       value: '2023',
+        //       otherValues: [],
+        //       onChanged: (newValue) {},
+        //     ),
+        //   ],
+        // ),
         ...categoryExpenses.map((e) {
           return ListTile(
             leading: CircleAvatar(

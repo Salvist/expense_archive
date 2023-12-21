@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/presentation/home/home_provider.dart';
-import 'package:simple_expense_tracker/screens/expense/all_expense_page.dart';
+import 'package:simple_expense_tracker/presentation/home/all_expense_page.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/expense_info_dialog.dart';
 import 'package:simple_expense_tracker/widgets/expense_tile.dart';
 

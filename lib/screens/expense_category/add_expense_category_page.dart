@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 import 'package:simple_expense_tracker/utils/available_icons.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/icon_picker_dialog.dart';
 import 'package:simple_expense_tracker/widgets/expanded_button.dart';
@@ -19,6 +20,12 @@ class BusinessController {
 
 class AddExpenseCategoryPage extends StatefulWidget {
   const AddExpenseCategoryPage({super.key});
+
+  static PageRoute<ExpenseCategory> route() => MaterialPageRoute<ExpenseCategory>(
+        builder: (context) {
+          return const AddExpenseCategoryPage();
+        },
+      );
 
   @override
   State<AddExpenseCategoryPage> createState() => _AddExpenseCategoryPageState();
@@ -49,7 +56,9 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
         iconName: _iconName,
       );
 
-      final addedCategory = await CategoryNotifier.of(context).addCategory(category);
+      final categoryRepository = RepositoryProvider.categoryOf(context);
+      final addedCategory = await categoryRepository.add(category);
+      // final addedCategory = await CategoryNotifier.of(context).addCategory(category);
 
       // final businessNames = businessControllers.map((e) => e.name.text);
       // for(final business in businessControllers){
@@ -62,7 +71,7 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
       //   iconData: _icon?.icon?.codePoint,
       // );
       if (!mounted) return;
-      Navigator.pop(context, addedCategory);
+      Navigator.pop(context, category);
     } on DuplicateCategoryException catch (e) {
       setState(() {
         _nameErrorMessage = e.message;

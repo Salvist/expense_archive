@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
-import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
+import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 import 'package:simple_expense_tracker/domain/models/amount.dart';
 import 'package:simple_expense_tracker/domain/models/business.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
+import 'package:simple_expense_tracker/domain/repositories/expense_category_repository.dart';
 import 'package:simple_expense_tracker/screens/expense_category/add_expense_category_page.dart';
 import 'package:simple_expense_tracker/widgets/expanded_button.dart';
-import 'package:simple_expense_tracker/widgets/expense_category_dropdown.dart';
+import 'package:simple_expense_tracker/widgets/fields/expense_category_dropdown.dart';
 import 'package:simple_expense_tracker/widgets/fields/business_field.dart';
 import 'package:simple_expense_tracker/widgets/fields/cost_field.dart';
 import 'package:simple_expense_tracker/widgets/fields/date_picker.dart';
 import 'package:simple_expense_tracker/widgets/fields/time_picker.dart';
 
 class AddExpensePage extends StatefulWidget {
-  const AddExpensePage({super.key});
+  final ExpenseCategoryRepository categoryRepository;
+
+  const AddExpensePage({
+    super.key,
+    required this.categoryRepository,
+  });
+
+  static PageRoute<Expense> route() {
+    return MaterialPageRoute(builder: (context) {
+      return AddExpensePage(
+        categoryRepository: RepositoryProvider.categoryOf(context),
+      );
+    });
+  }
 
   @override
   State<AddExpensePage> createState() => _AddExpensePageState();
@@ -58,16 +71,17 @@ class _AddExpensePageState extends State<AddExpensePage> {
       paidAt: _date.copyWith(hour: _time.hour, minute: _time.minute),
     );
 
-    ExpenseProvider.of(context).addExpense(expense);
-
-    // ExpenseProvider.of(context).addExpense(expense);
-    Navigator.pop(context);
+    Navigator.pop<Expense>(context, expense);
   }
 
   @override
-  void didChangeDependencies() {
-    categories = CategoryProvider.of(context).data;
-    super.didChangeDependencies();
+  void initState() {
+    widget.categoryRepository.getAll().then((categories) {
+      setState(() {
+        this.categories = categories;
+      });
+    });
+    super.initState();
   }
 
   @override
@@ -88,7 +102,6 @@ class _AddExpensePageState extends State<AddExpensePage> {
                 child: Column(
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ExpenseCategoryDropdown(
                           width: MediaQuery.of(context).size.width - 96,
@@ -108,8 +121,9 @@ class _AddExpensePageState extends State<AddExpensePage> {
                           onPressed: () async {
                             final addedCategory = await Navigator.push<ExpenseCategory?>(
                               context,
-                              MaterialPageRoute(builder: (context) => const AddExpenseCategoryPage()),
+                              AddExpenseCategoryPage.route(),
                             );
+
                             if (addedCategory == null) return;
                             setState(() {
                               expenseCategory = addedCategory;

@@ -6,12 +6,13 @@ part of 'expense.dart';
 // RealmObjectGenerator
 // **************************************************************************
 
+// ignore_for_file: type=lint
 class RealmExpense extends _RealmExpense
     with RealmEntity, RealmObjectBase, RealmObject {
   RealmExpense(
     ObjectId id,
     String name,
-    double cost,
+    double amount,
     DateTime paidAt,
     String categoryName, {
     String? note,
@@ -19,7 +20,7 @@ class RealmExpense extends _RealmExpense
   }) {
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'name', name);
-    RealmObjectBase.set(this, 'cost', cost);
+    RealmObjectBase.set(this, 'amount', amount);
     RealmObjectBase.set(this, 'note', note);
     RealmObjectBase.set(this, 'paidAt', paidAt);
     RealmObjectBase.set(this, 'categoryName', categoryName);
@@ -39,9 +40,9 @@ class RealmExpense extends _RealmExpense
   set name(String value) => RealmObjectBase.set(this, 'name', value);
 
   @override
-  double get amount => RealmObjectBase.get<double>(this, 'cost') as double;
+  double get amount => RealmObjectBase.get<double>(this, 'amount') as double;
   @override
-  set amount(double value) => RealmObjectBase.set(this, 'cost', value);
+  set amount(double value) => RealmObjectBase.set(this, 'amount', value);
 
   @override
   String? get note => RealmObjectBase.get<String>(this, 'note') as String?;
@@ -83,7 +84,7 @@ class RealmExpense extends _RealmExpense
         ObjectType.realmObject, RealmExpense, 'RealmExpense', [
       SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string),
-      SchemaProperty('cost', RealmPropertyType.double),
+      SchemaProperty('amount', RealmPropertyType.double),
       SchemaProperty('note', RealmPropertyType.string, optional: true),
       SchemaProperty('paidAt', RealmPropertyType.timestamp),
       SchemaProperty('categoryName', RealmPropertyType.string),

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/app/providers/repository_provider.dart';
+import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 import 'package:simple_expense_tracker/presentation/home/home_provider.dart';
 import 'package:simple_expense_tracker/presentation/analytics/analytics_page.dart';
 import 'package:simple_expense_tracker/presentation/home/home_page.dart';

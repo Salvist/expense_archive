@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
-import 'package:simple_expense_tracker/app/providers/repository_provider.dart';
+import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 import 'package:simple_expense_tracker/domain/models/date_range.dart';
-import 'package:simple_expense_tracker/presentation/analytics/monthly_expenses_provider.dart';
-import 'package:simple_expense_tracker/presentation/analytics/monthly_expenses_view.dart';
+import 'package:simple_expense_tracker/widgets/monthly_expenses/monthly_expenses_provider.dart';
+import 'package:simple_expense_tracker/widgets/monthly_expenses/monthly_expenses_view.dart';
 import 'package:simple_expense_tracker/presentation/analytics/weekly_expenses_chart.dart';
 import 'package:simple_expense_tracker/presentation/analytics/weekly_expenses_provider.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
@@ -41,7 +41,7 @@ class AnalyticsPage extends StatelessWidget {
                 categoryRepository: RepositoryProvider.categoryOf(context),
                 child: const MonthlyExpensesView(),
               ),
-              const CategoryExpenseListView(),
+              // const CategoryExpenseListView(),
               const SizedBox(height: 80),
             ],
           ),

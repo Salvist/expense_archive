@@ -7,8 +7,5 @@ class _RealmExpenseCategory {
   @PrimaryKey()
   late String name;
 
-  @Indexed()
-  late int id;
-
   late String? iconName;
 }

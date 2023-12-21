@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/presentation/analytics/monthly_expenses_provider.dart';
+import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
+import 'package:simple_expense_tracker/widgets/monthly_expenses/monthly_expenses_provider.dart';
 import 'package:simple_expense_tracker/utils/extensions/expense_list_extension.dart';
 import 'package:simple_expense_tracker/widgets/dropdown_chip.dart';
 
@@ -20,17 +21,20 @@ class MonthlyExpensesView extends StatelessWidget {
         const Text('Monthly Expenses', style: TextStyle(fontSize: 16)),
         Row(
           children: [
-            DropdownChip<String>(
-              value: 'December',
-              otherValues: [],
+            DropdownChip<DateTime>(
+              value: monthlyProvider.selectedDate,
+              options: [
+                for (int month = 1; month <= 12; month++) DateTime(monthlyProvider.selectedDate.year, month),
+              ],
+              displayOption: (option) => option.format('yMMMM'),
               onChanged: (newValue) {},
             ),
-            const SizedBox(width: 4),
-            DropdownChip<String>(
-              value: '2023',
-              otherValues: [],
-              onChanged: (newValue) {},
-            ),
+            // const SizedBox(width: 4),
+            // DropdownChip<String>(
+            //   value: '2023',
+            //   otherValues: [],
+            //   onChanged: (newValue) {},
+            // ),
           ],
         ),
         ...monthlyProvider.categoryExpenses.map((e) {

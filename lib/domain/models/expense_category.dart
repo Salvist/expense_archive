@@ -3,20 +3,17 @@ import 'package:simple_expense_tracker/utils/available_icons.dart';
 
 class ExpenseCategory {
   final String name;
-  final int id;
 
   /// Please check [categoryIcons]
   final String? iconName;
 
   const ExpenseCategory({
     required this.name,
-    this.id = 0,
     this.iconName,
   });
 
-  ExpenseCategory copyWith({int? id}) {
+  ExpenseCategory copyWith() {
     return ExpenseCategory(
-      id: id ?? this.id,
       name: name,
       iconName: iconName,
     );
