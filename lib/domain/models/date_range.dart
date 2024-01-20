@@ -22,7 +22,7 @@ class DateRange {
   factory DateRange.fromDate(DateTime date) {
     final weekday = date.weekday % 7;
     final start = DateTime(date.year, date.month, date.day - weekday);
-    final end = start.copyWith(day: start.day + 6);
+    final end = start.copyWith(day: start.day + 7, millisecond: -1);
     return DateRange(start: start, end: end);
   }
 

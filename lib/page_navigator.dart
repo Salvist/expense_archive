@@ -63,7 +63,14 @@ class _PageNavigatorState extends State<PageNavigator> {
           children: <Widget>[
             HomePageController(
               expenseRepository: repositoryProvider.expenseRepository,
-              child: const HomePage(),
+              builder: (monthlyAmount, todayAmount, recentExpenses) {
+                return HomePage(
+                  watchMonthlyAmount: monthlyAmount,
+                  watchTodayAmount: todayAmount,
+                  watchRecentExpenses: recentExpenses,
+                );
+              },
+              // child: const HomePage(),
             ),
             const AnalyticsPage(),
             const SettingsPage(),

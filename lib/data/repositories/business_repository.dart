@@ -1,6 +1,7 @@
 import 'package:simple_expense_tracker/data/dto/business_dto.dart';
 import 'package:simple_expense_tracker/data/source/local/local_business_repository.dart';
 import 'package:simple_expense_tracker/domain/models/business.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/domain/repositories/business_repository.dart';
 
 class BusinessRepositoryImpl implements BusinessRepository {
@@ -28,5 +29,11 @@ class BusinessRepositoryImpl implements BusinessRepository {
   @override
   Future<List<Business>> getAll() async {
     return await _local.getAll();
+  }
+
+  @override
+  Future<List<Business>> getByCategory(ExpenseCategory category) {
+    // TODO: implement getByCategory
+    throw UnimplementedError();
   }
 }

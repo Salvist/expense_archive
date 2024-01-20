@@ -1,4 +1,5 @@
 import 'package:realm/realm.dart';
+import 'package:simple_expense_tracker/data/dto/category_dto.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/models/expense.dart';
 import 'package:simple_expense_tracker/domain/models/amount.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
@@ -25,7 +26,7 @@ class ExpenseDto extends Expense {
   factory ExpenseDto.fromRealm(RealmExpense realmExpense) {
     return ExpenseDto(
       id: realmExpense.id.hexString,
-      category: ExpenseCategory(
+      category: CategoryDto(
         name: realmExpense.categoryName,
         iconName: realmExpense.categoryIconName,
       ),

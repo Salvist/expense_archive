@@ -68,64 +68,37 @@ class HomeProvider extends InheritedModel<_HomeAspect> {
 
 class HomePageController extends StatefulWidget {
   final ExpenseRepository expenseRepository;
-  final Widget child;
+  final Widget Function(
+    Stream<Amount> monthlyAmount,
+    Stream<Amount> todayAmount,
+    Stream<List<Expense>> recentExpenses,
+  ) builder;
 
   const HomePageController({
     super.key,
     required this.expenseRepository,
-    required this.child,
+    required this.builder,
   });
-
-  static _HomePageControllerState of(BuildContext context) {
-    final x = context.findAncestorStateOfType<_HomePageControllerState>();
-    return x!;
-  }
 
   @override
   State<HomePageController> createState() => _HomePageControllerState();
 }
 
 class _HomePageControllerState extends State<HomePageController> {
-  var _recentExpenses = const <Expense>[];
-  var _monthlyExpenses = const <Expense>[];
+  late final Stream<Amount> watchMonthlyAmount;
+  late final Stream<Amount> watchTodayAmount;
+  late final Stream<List<Expense>> watchRecentExpenses;
 
   @override
   void initState() {
-    init();
+    watchMonthlyAmount = widget.expenseRepository.watchMonthlyAmount(DateTime.now());
+    watchTodayAmount = widget.expenseRepository.watchTodayAmount();
+    watchRecentExpenses = widget.expenseRepository.watchRecent();
     super.initState();
-  }
-
-  void init() async {
-    await loadRecentExpenses();
-    final monthlyExpenses = await widget.expenseRepository.getByMonth(DateTime.now());
-    setState(() {
-      _monthlyExpenses = monthlyExpenses;
-    });
-  }
-
-  Future<void> loadRecentExpenses() async {
-    final recentExpenses = await widget.expenseRepository.getRecent();
-    setState(() {
-      _recentExpenses = recentExpenses;
-    });
-  }
-
-  void addExpense(Expense expense) async {
-    await widget.expenseRepository.add(expense);
-    await loadRecentExpenses();
-  }
-
-  void removeExpense(Expense expense) async {
-    await widget.expenseRepository.remove(expense);
-    await loadRecentExpenses();
   }
 
   @override
   Widget build(BuildContext context) {
-    return HomeProvider._(
-      recentExpenses: _recentExpenses,
-      monthlyExpenses: _monthlyExpenses,
-      child: widget.child,
-    );
+    return widget.builder(watchMonthlyAmount, watchTodayAmount, watchRecentExpenses);
   }
 }

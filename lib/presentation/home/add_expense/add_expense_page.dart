@@ -4,6 +4,7 @@ import 'package:simple_expense_tracker/domain/models/business.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/domain/repositories/expense_category_repository.dart';
+import 'package:simple_expense_tracker/domain/repositories/expense_repository.dart';
 import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 import 'package:simple_expense_tracker/screens/expense_category/add_expense_category_page.dart';
 import 'package:simple_expense_tracker/widgets/expanded_button.dart';
@@ -14,16 +15,19 @@ import 'package:simple_expense_tracker/widgets/fields/expense_category_dropdown.
 import 'package:simple_expense_tracker/widgets/fields/time_picker.dart';
 
 class AddExpensePage extends StatefulWidget {
+  final ExpenseRepository expenseRepository;
   final ExpenseCategoryRepository categoryRepository;
 
   const AddExpensePage({
     super.key,
+    required this.expenseRepository,
     required this.categoryRepository,
   });
 
   static PageRoute<Expense> route() {
     return MaterialPageRoute(builder: (context) {
       return AddExpensePage(
+        expenseRepository: RepositoryProvider.expenseOf(context),
         categoryRepository: RepositoryProvider.categoryOf(context),
       );
     });
@@ -49,6 +53,8 @@ class _AddExpensePageState extends State<AddExpensePage> {
   DateTime _date = DateTime.now();
   TimeOfDay _time = TimeOfDay.now();
 
+  bool _isLoading = false;
+
   bool validateExpense() {
     if (expenseCategory == null) {
       setState(() {
@@ -59,19 +65,31 @@ class _AddExpensePageState extends State<AddExpensePage> {
     return _formKey.currentState!.validate();
   }
 
-  void onSubmit() {
+  void onSubmit() async {
     if (!validateExpense()) return;
 
-    final note = _note.text.isEmpty ? null : _note.text;
-    final expense = Expense(
-      category: expenseCategory!,
-      name: _business!.name,
-      amount: Amount.fromString(_amount.text)!,
-      note: note,
-      paidAt: _date.copyWith(hour: _time.hour, minute: _time.minute),
-    );
+    try {
+      setState(() {
+        _isLoading = true;
+      });
 
-    Navigator.pop<Expense>(context, expense);
+      final note = _note.text.isEmpty ? null : _note.text;
+      final expense = Expense(
+        category: expenseCategory!,
+        name: _business!.name,
+        amount: Amount.fromString(_amount.text)!,
+        note: note,
+        paidAt: _date.copyWith(hour: _time.hour, minute: _time.minute),
+      );
+
+      await widget.expenseRepository.add(expense);
+      if (!mounted) return;
+      Navigator.pop<Expense>(context, expense);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -104,6 +122,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                     Row(
                       children: [
                         ExpenseCategoryDropdown(
+                          categoryRepository: RepositoryProvider.categoryOf(context),
                           width: MediaQuery.of(context).size.width - 96,
                           errorText: categoryErrorMessage,
                           selectedCategory: expenseCategory,
@@ -113,6 +132,7 @@ class _AddExpensePageState extends State<AddExpensePage> {
                               _business = null;
                               _amount.text = '';
                             });
+                            print(expenseCategory?.name);
                           },
                         ),
                         const SizedBox(width: 8),

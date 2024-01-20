@@ -5,6 +5,7 @@ import 'package:simple_expense_tracker/domain/repositories/repository_provider.d
 import 'package:simple_expense_tracker/utils/available_icons.dart';
 
 class ExpenseCategoryDropdown extends StatefulWidget {
+  final ExpenseCategoryRepository categoryRepository;
   final double? width;
   final String? errorText;
   final ExpenseCategory? selectedCategory;
@@ -12,6 +13,7 @@ class ExpenseCategoryDropdown extends StatefulWidget {
 
   const ExpenseCategoryDropdown({
     super.key,
+    required this.categoryRepository,
     this.width,
     this.errorText,
     this.selectedCategory,
@@ -23,7 +25,6 @@ class ExpenseCategoryDropdown extends StatefulWidget {
 }
 
 class _ExpenseCategoryDropdownState extends State<ExpenseCategoryDropdown> {
-  late final ExpenseCategoryRepository _categoryRepository;
   var _categories = <ExpenseCategory>[];
   final _controller = TextEditingController();
 
@@ -31,8 +32,7 @@ class _ExpenseCategoryDropdownState extends State<ExpenseCategoryDropdown> {
 
   @override
   void initState() {
-    _categoryRepository = RepositoryProvider.categoryOf(context);
-    _categoryRepository.getAll().then((categories) {
+    widget.categoryRepository.getAll().then((categories) {
       try {
         _categories = categories;
       } finally {

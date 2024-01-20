@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/presentation/home/home_provider.dart';
+import 'package:simple_expense_tracker/domain/models/expense.dart';
 import 'package:simple_expense_tracker/presentation/home/all_expense_page.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/expense_info_dialog.dart';
 import 'package:simple_expense_tracker/widgets/expense_tile.dart';
 
 class RecentExpensesListView extends StatelessWidget {
-  const RecentExpensesListView({super.key});
+  final bool isLoading;
+  final List<Expense> recentExpenses;
+
+  const RecentExpensesListView({
+    super.key,
+    required this.isLoading,
+    required this.recentExpenses,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final recentExpenses = HomeProvider.recentExpensesOf(context);
-
     return Column(
       children: [
         ListTile(

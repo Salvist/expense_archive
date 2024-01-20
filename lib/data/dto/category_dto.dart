@@ -2,13 +2,13 @@ import 'package:simple_expense_tracker/data/source/local/realm/models/expense_ca
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 
 class CategoryDto extends ExpenseCategory {
-  const CategoryDto._({
+  const CategoryDto({
     required super.name,
     super.iconName,
   });
 
   factory CategoryDto.fromEntity(ExpenseCategory category) {
-    return CategoryDto._(
+    return CategoryDto(
       name: category.name,
       iconName: category.iconName,
     );
@@ -22,7 +22,7 @@ class CategoryDto extends ExpenseCategory {
   }
 
   factory CategoryDto.fromRealm(RealmExpenseCategory category) {
-    return CategoryDto._(
+    return CategoryDto(
       name: category.name,
       iconName: category.iconName,
     );

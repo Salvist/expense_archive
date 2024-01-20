@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
+import 'package:simple_expense_tracker/domain/models/amount.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
-import 'package:simple_expense_tracker/presentation/home/home_provider.dart';
-import 'package:simple_expense_tracker/presentation/home/widgets/monthly_amount_view.dart';
-import 'package:simple_expense_tracker/presentation/home/widgets/recent_expenses_list_view.dart';
-import 'package:simple_expense_tracker/presentation/home/widgets/today_amount_view.dart';
 import 'package:simple_expense_tracker/presentation/home/add_expense/add_expense_page.dart';
-import 'package:simple_expense_tracker/presentation/home/all_expense_page.dart';
+import 'package:simple_expense_tracker/presentation/home/widgets/amount_view.dart';
+import 'package:simple_expense_tracker/presentation/home/widgets/recent_expenses_list_view.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
-import 'package:simple_expense_tracker/widgets/dialogs/expense_info_dialog.dart';
-import 'package:simple_expense_tracker/widgets/expense_tile.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final Stream<Amount> watchMonthlyAmount;
+  final Stream<Amount> watchTodayAmount;
+  final Stream<List<Expense>> watchRecentExpenses;
+
+  const HomePage({
+    super.key,
+    required this.watchMonthlyAmount,
+    required this.watchTodayAmount,
+    required this.watchRecentExpenses,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,16 +49,22 @@ class HomePage extends StatelessWidget {
                     IntrinsicHeight(
                       child: Row(
                         children: [
-                          const Expanded(
-                            child: MonthlyAmountView(),
+                          Expanded(
+                            child: WatchAmountView(
+                              title: Text(DateTime.now().monthName),
+                              watchAmount: watchMonthlyAmount,
+                            ),
                           ),
                           VerticalDivider(
                             indent: 4,
                             endIndent: 4,
                             color: theme.colorScheme.primary,
                           ),
-                          const Expanded(
-                            child: TodayAmountView(),
+                          Expanded(
+                            child: WatchAmountView(
+                              title: const Text('Today'),
+                              watchAmount: watchTodayAmount,
+                            ),
                           ),
                         ],
                       ),
@@ -63,7 +73,29 @@ class HomePage extends StatelessWidget {
                 ),
               ),
             ),
-            const RecentExpensesListView(),
+            // const RecentExpensesListView(),
+
+            StreamBuilder<List<Expense>>(
+              stream: watchRecentExpenses,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final recentExpenses = snapshot.requireData;
+                  return RecentExpensesListView(
+                    isLoading: false,
+                    recentExpenses: recentExpenses,
+                  );
+                }
+                return const CircularProgressIndicator();
+              },
+            ),
+
+            // RecentExpensesController(
+            //   repository: RepositoryProvider.expenseOf(context),
+            //   builder: (isLoading, recentExpenses) => RecentExpensesListView(
+            //     isLoading: isLoading,
+            //     recentExpenses: recentExpenses,
+            //   ),
+            // ),
             const SizedBox(height: 80),
           ],
         ),
@@ -72,7 +104,6 @@ class HomePage extends StatelessWidget {
         onPressed: () async {
           final expense = await Navigator.push<Expense>(context, AddExpensePage.route());
           if (!context.mounted || expense == null) return;
-          HomePageController.of(context).addExpense(expense);
         },
         icon: const Icon(Icons.add_rounded),
         label: const Text('Add expense'),

@@ -2,6 +2,7 @@ import 'dart:developer' as dev;
 
 import 'package:realm/realm.dart';
 import 'package:simple_expense_tracker/data/dto/business_dto.dart';
+import 'package:simple_expense_tracker/data/dto/category_dto.dart';
 import 'package:simple_expense_tracker/data/source/local/local_business_repository.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/models/business.dart';
 
@@ -47,6 +48,16 @@ final class RealmBusinessRepository implements LocalBusinessRepository {
   Future<List<BusinessDto>> getAll() async {
     final realmBusinesses = _realm.all<RealmBusiness>();
     final businesses = realmBusinesses.map(BusinessDto.fromRealm).toList();
+    dev.log('${businesses.length} businesses has been loaded.', name: 'Realm');
+    return businesses;
+  }
+
+  @override
+  Future<List<BusinessDto>> getByCategory(CategoryDto category) async {
+    const query = "categoryName == \$0";
+    final args = [category.name];
+    final realmBusiness = _realm.query<RealmBusiness>(query, args);
+    final businesses = realmBusiness.map(BusinessDto.fromRealm).toList();
     dev.log('${businesses.length} businesses has been loaded.', name: 'Realm');
     return businesses;
   }

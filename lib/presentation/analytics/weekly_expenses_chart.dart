@@ -1,14 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
+import 'package:simple_expense_tracker/domain/models/amount.dart';
+import 'package:simple_expense_tracker/domain/models/date_range.dart';
+import 'package:simple_expense_tracker/domain/models/expense.dart';
 import 'package:simple_expense_tracker/presentation/analytics/weekly_expenses_provider.dart';
 import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
 import 'package:simple_expense_tracker/widgets/charts/bar_chart.dart';
 import 'package:simple_expense_tracker/utils/extensions/expense_list_extension.dart';
 
-class WeeklyExpensesChart extends StatelessWidget {
-  const WeeklyExpensesChart({
+class WeeklyExpensesChartView extends StatelessWidget {
+  final DateRange weekDates;
+  final List<Expense> weeklyExpenses;
+  final State<WeeklyExpensesController> controller;
+
+  const WeeklyExpensesChartView({
     super.key,
+    required this.weekDates,
+    required this.weeklyExpenses,
+    required this.controller,
   });
+
+  Amount getTotalAmountByDate(DateTime date) {
+    final dayExpenses = weeklyExpenses.where((expense) => DateUtils.isSameDay(expense.paidAt, date));
+    final amounts = dayExpenses.map((e) => e.amount);
+    return amounts.fold(Amount.zero, (previousValue, element) => previousValue + element);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +32,9 @@ class WeeklyExpensesChart extends StatelessWidget {
     final textTheme = theme.textTheme;
     final colorScheme = theme.colorScheme;
 
-    final expenseProvider = ExpenseProvider.of(context);
-    final weeklyExpenses = WeeklyExpensesProvider.of(context);
-    final weekDates = weeklyExpenses.weekDates;
+    // final expenseProvider = ExpenseProvider.of(context);
+    // final weeklyExpenses = WeeklyExpensesProvider.of(context);
+    // final weekDates = weeklyExpenses.weekDates;
 
     // final weekDates = DateRange.fromDate(_date);
 
@@ -40,7 +56,8 @@ class WeeklyExpensesChart extends StatelessWidget {
                 children: [
                   const Text('Total', style: TextStyle(fontSize: 12)),
                   Text(
-                    '${weeklyExpenses.data.getTotalAmount()}',
+                    '${weeklyExpenses.getTotalAmount()}',
+                    // 'ASDASDASD',
                     style: const TextStyle(fontWeight: FontWeight.bold, height: 1),
                   ),
                 ],
@@ -54,7 +71,9 @@ class WeeklyExpensesChart extends StatelessWidget {
             height: 160,
             dataSource: <ChartData>[
               for (final date in weekDates.getDates())
-                ChartData(label: date.weekdayNameShort, value: expenseProvider.getTotalAmountByDate(date).value),
+                ChartData(label: date.weekdayNameShort, value: getTotalAmountByDate(date).value)
+              // for (final date in weekDates.getDates())
+              //   ChartData(label: date.weekdayNameShort, value: expenseProvider.getTotalAmountByDate(date).value),
             ],
           ),
           Row(

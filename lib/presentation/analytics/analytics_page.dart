@@ -33,7 +33,12 @@ class AnalyticsPage extends StatelessWidget {
             children: [
               WeeklyExpensesController(
                 expenseRepository: RepositoryProvider.expenseOf(context),
-                child: const WeeklyExpensesChart(),
+                builder: (weekDates, weeklyExpenses) {
+                  return WeeklyExpensesChartView(
+                    weekDates: weekDates,
+                    weeklyExpenses: weeklyExpenses,
+                  );
+                },
               ),
               const SizedBox(height: 24),
               MonthlyExpensesController(

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/business.dart';
 import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/app/providers/business_provider.dart';
+import 'package:simple_expense_tracker/domain/repositories/business_repository.dart';
+import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 
 class BusinessField extends StatefulWidget {
   final ExpenseCategory? category;
@@ -28,6 +30,8 @@ class _BusinessFieldState extends State<BusinessField> {
   bool _showKeyboard = false;
 
   late Iterable<Business> _businesses;
+
+  late final _businessRepository = RepositoryProvider.businessOf(context);
 
   @override
   void initState() {
