@@ -6,7 +6,7 @@ import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/domain/repositories/expense_category_repository.dart';
 import 'package:simple_expense_tracker/domain/repositories/expense_repository.dart';
 import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
-import 'package:simple_expense_tracker/screens/expense_category/add_expense_category_page.dart';
+import 'package:simple_expense_tracker/presentation/settings/category_page/add_expense_category_page.dart';
 import 'package:simple_expense_tracker/widgets/expanded_button.dart';
 import 'package:simple_expense_tracker/widgets/fields/business_field.dart';
 import 'package:simple_expense_tracker/widgets/fields/cost_field.dart';

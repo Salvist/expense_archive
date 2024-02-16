@@ -8,10 +8,13 @@ abstract interface class ExpenseRepository {
   Stream<Amount> watchMonthlyAmount(DateTime date);
 
   Future<List<Expense>> getByWeek(DateTime date);
+  Stream<List<Expense>> watchWeeklyExpenses(DateTime date);
 
   /// Get recent expenses by the given [count]. Defaults to 5.
   Future<List<Expense>> getRecent([int count = 5]);
   Stream<List<Expense>> watchRecent([int count = 5]);
+
+  Future<DateTime?> getStartDate();
 
   /// Get the start and end date of your expenses journey.
   Future<({DateTime start, DateTime end})> getStartAndEndDates();

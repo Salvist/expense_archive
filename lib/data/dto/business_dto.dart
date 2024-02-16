@@ -5,6 +5,7 @@ import 'package:simple_expense_tracker/domain/models/business.dart';
 
 class BusinessDto extends Business {
   const BusinessDto._({
+    required super.id,
     required super.name,
     required super.categoryName,
     super.amountPreset,
@@ -12,6 +13,7 @@ class BusinessDto extends Business {
 
   factory BusinessDto.fromEntity(Business business) {
     return BusinessDto._(
+      id: business.id,
       name: business.name,
       categoryName: business.categoryName,
       amountPreset: business.amountPreset,
@@ -20,6 +22,7 @@ class BusinessDto extends Business {
 
   factory BusinessDto.fromRealm(RealmBusiness business) {
     return BusinessDto._(
+      id: business.id.hexString,
       name: business.name,
       categoryName: business.categoryName,
       amountPreset: business.amountPreset != null ? Amount(business.amountPreset!) : null,

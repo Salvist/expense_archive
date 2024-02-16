@@ -59,6 +59,11 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
   }
 
   @override
+  Stream<List<Expense>> watchWeeklyExpenses(DateTime date) async* {
+    yield* _local.watchWeeklyExpenses(date);
+  }
+
+  @override
   Future<List<Expense>> getRecent([int count = 5]) async {
     return await _local.getRecent(count);
   }
@@ -66,6 +71,11 @@ class ExpenseRepositoryImpl implements ExpenseRepository {
   @override
   Stream<List<Expense>> watchRecent([int count = 5]) async* {
     yield* _local.watchRecent(count);
+  }
+
+  @override
+  Future<DateTime?> getStartDate() async {
+    return await _local.getStartDate();
   }
 
   @override

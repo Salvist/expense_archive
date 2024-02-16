@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/date_range.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
@@ -13,20 +15,16 @@ class WeeklyExpensesController extends StatefulWidget {
     required this.builder,
   });
 
-  static WeeklyExpensesControllerState of(BuildContext context) {
-    return context.findAncestorStateOfType<WeeklyExpensesControllerState>()!;
-  }
-
   @override
   State<WeeklyExpensesController> createState() => WeeklyExpensesControllerState();
 }
 
 class WeeklyExpensesControllerState extends State<WeeklyExpensesController> {
   var _weeklyExpenses = <Expense>[];
+  UnmodifiableListView<Expense> get weeklyExpenses => UnmodifiableListView(_weeklyExpenses);
+
   DateTime _currentDate = DateTime.now();
-  DateRange get _weekDates => DateRange.fromDate(_currentDate);
-  late DateTime startDate;
-  late DateTime endDate;
+  DateRange get weekDates => DateRange.getWeek(_currentDate);
 
   static const _oneWeek = Duration(days: 7);
 
@@ -34,39 +32,34 @@ class WeeklyExpensesControllerState extends State<WeeklyExpensesController> {
 
   @override
   void initState() {
-    init();
-
+    loadWeeklyExpenses(_currentDate);
     super.initState();
   }
 
-  void init() async {
-    final dates = await widget.expenseRepository.getStartAndEndDates();
-    startDate = dates.start;
-    endDate = dates.end;
-    widget.expenseRepository.getByWeek(_currentDate).then((expenses) {
+  void loadWeeklyExpenses(DateTime date) async {
+    try {
       setState(() {
-        _weeklyExpenses = expenses;
+        isLoading = true;
       });
-    });
+      _weeklyExpenses = await widget.expenseRepository.getByWeek(date);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
-  void nextWeek() async {
+  void nextWeek() {
     _currentDate = _currentDate.add(_oneWeek);
-    final expenses = await widget.expenseRepository.getByWeek(_currentDate);
-    setState(() {
-      _weeklyExpenses = expenses;
-    });
+    loadWeeklyExpenses(_currentDate);
   }
 
-  void prevWeek() async {
+  void prevWeek() {
     _currentDate = _currentDate.add(const Duration(days: -7));
-    final expenses = await widget.expenseRepository.getByWeek(_currentDate);
-    setState(() {
-      _weeklyExpenses = expenses;
-    });
+    loadWeeklyExpenses(_currentDate);
   }
 
-  bool get hasNextWeek => _weekDates.end.isBefore(endDate);
+  // bool get hasNextWeek => weekDates.end.isBefore(endDate);
 
   @override
   Widget build(BuildContext context) {

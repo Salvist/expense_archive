@@ -25,14 +25,17 @@ class DropdownChip<T extends Object> extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     final menuChildren = options.map((option) {
-      final display = displayOption;
       return MenuItemButton(
+        onPressed: () => onChanged(option),
         child: Text(displayOption(option)),
       );
     }).toList();
 
     return MenuAnchor(
       menuChildren: menuChildren,
+      style: MenuStyle(
+        maximumSize: MaterialStatePropertyAll(Size(double.infinity, 200)),
+      ),
       builder: (context, controller, child) {
         return Material(
           color: colorScheme.secondaryContainer,

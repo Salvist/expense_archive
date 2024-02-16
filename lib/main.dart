@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:realm/realm.dart';
-import 'package:simple_expense_tracker/app/providers/business_provider.dart';
-import 'package:simple_expense_tracker/app/providers/expense_category_provider.dart';
-import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
-import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_expense_tracker/data/repositories/business_repository.dart';
 import 'package:simple_expense_tracker/data/repositories/expense_category_repository.dart';
 import 'package:simple_expense_tracker/data/repositories/expense_repository.dart';
+import 'package:simple_expense_tracker/data/shared_preferences_repository.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/models/business.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/models/expense.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/models/expense_category.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/repositories/business_repository.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/repositories/expense_category_repository.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/repositories/expense_repository.dart';
+import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 import 'package:simple_expense_tracker/page_navigator.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   // await SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
 
   final realmSchemas = [
@@ -37,7 +36,9 @@ void main() async {
   // Local repositories
   final localExpenseRepo = RealmExpenseRepository(realm);
   final localCategoryRepo = RealmExpenseCategoryRepository(realm);
-  final localBusinessRepo = RealmBusinessRepository(realm);
+  final localBusinessRepo = RealmBusinessDataSource(realm);
+  final sharedPrefsRepo = SharedPreferencesRepositoryImpl(await SharedPreferences.getInstance());
+  sharedPrefsRepo.setAskOnRemoveCategory(true);
 
   // Domain repositories
   final expenseRepository = ExpenseRepositoryImpl(localExpenseRepo);
@@ -49,16 +50,8 @@ void main() async {
       expenseRepository: expenseRepository,
       categoryRepository: categoryRepository,
       businessRepository: businessRepository,
-      child: ExpenseNotifier(
-        repository: expenseRepository,
-        child: CategoryNotifier(
-          repository: categoryRepository,
-          child: BusinessNotifier(
-            repository: businessRepository,
-            child: const ExpenseArchiveApp(),
-          ),
-        ),
-      ),
+      sharedPreferencesRepository: sharedPrefsRepo,
+      child: const ExpenseArchiveApp(),
     ),
   );
 }

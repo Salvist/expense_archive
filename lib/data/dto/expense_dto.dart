@@ -3,7 +3,6 @@ import 'package:simple_expense_tracker/data/dto/category_dto.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/models/expense.dart';
 import 'package:simple_expense_tracker/domain/models/amount.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
-import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 
 class ExpenseDto extends Expense {
   const ExpenseDto({

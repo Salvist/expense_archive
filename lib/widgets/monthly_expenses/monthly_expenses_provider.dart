@@ -1,45 +1,24 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/domain/models/category_expense.dart';
+import 'package:simple_expense_tracker/domain/models/amount.dart';
+import 'package:simple_expense_tracker/domain/models/date_range.dart';
 import 'package:simple_expense_tracker/domain/models/expense.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/domain/repositories/expense_category_repository.dart';
 import 'package:simple_expense_tracker/domain/repositories/expense_repository.dart';
-
-class MonthlyExpensesProvider extends InheritedWidget {
-  final List<Expense> expenses;
-  final List<CategoryExpense> categoryExpenses;
-  final DateTime selectedDate;
-  final MonthlyExpensesControllerState controller;
-
-  const MonthlyExpensesProvider._({
-    required this.controller,
-    required this.expenses,
-    required this.selectedDate,
-    required this.categoryExpenses,
-    required super.child,
-  });
-
-  static MonthlyExpensesProvider of(BuildContext context) {
-    final MonthlyExpensesProvider? result = context.dependOnInheritedWidgetOfExactType<MonthlyExpensesProvider>();
-    assert(result != null, 'No MonthlyExpensesProvider found in context');
-    return result!;
-  }
-
-  @override
-  bool updateShouldNotify(MonthlyExpensesProvider old) {
-    return true;
-  }
-}
+import 'package:simple_expense_tracker/utils/extensions/expense_list_extension.dart';
 
 class MonthlyExpensesController extends StatefulWidget {
   final ExpenseRepository expenseRepository;
   final ExpenseCategoryRepository categoryRepository;
-  final Widget child;
+  final Widget Function(MonthlyExpensesControllerState controller) builder;
 
   const MonthlyExpensesController({
     super.key,
     required this.expenseRepository,
     required this.categoryRepository,
-    required this.child,
+    required this.builder,
   });
 
   @override
@@ -48,54 +27,78 @@ class MonthlyExpensesController extends StatefulWidget {
 
 class MonthlyExpensesControllerState extends State<MonthlyExpensesController> {
   var _monthlyExpenses = <Expense>[];
-  var _categoryExpenses = <CategoryExpense>[];
+
   DateTime _currentDate = DateTime.now();
+  DateTime get selectedMonthDate => _currentDate;
+
+  DateTime? _startDate;
+  DateTime get startDate => _startDate ?? DateTime.now();
+  DateTime get endDate => DateTime.now();
+
+  final _months = <DateTime>[];
+  UnmodifiableListView<DateTime> get months => UnmodifiableListView(_months.isEmpty ? [DateTime.now()] : _months);
+
+  UnmodifiableListView<Expense> get monthlyExpenses => UnmodifiableListView(_monthlyExpenses);
+  DateRange? dateRange;
+
+  final _expensesByCategory = <ExpenseCategory, List<Expense>>{};
+  UnmodifiableMapView<ExpenseCategory, List<Expense>> get categoryExpenses => UnmodifiableMapView(_expensesByCategory);
+
+  UnmodifiableMapView<ExpenseCategory, Amount> get totalAmountByCategory {
+    final map = _expensesByCategory.map((key, value) => MapEntry(key, value.getTotalAmount()));
+    final x = SplayTreeMap<ExpenseCategory, Amount>.from(map, (key1, key2) => map[key2]!.compareTo(map[key1]!));
+    return UnmodifiableMapView(x);
+  }
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
   @override
   void initState() {
-    init();
+    loadMonthlyExpenses();
+    widget.expenseRepository.getStartDate().then((value) {
+      setState(() {
+        _months.clear();
+        _startDate = value;
+        final currentDate = DateTime.now();
+        final monthDelta = DateUtils.monthDelta(startDate, currentDate);
+        for (int i = 0; i <= monthDelta; i++) {
+          _months.add(DateTime(currentDate.year, currentDate.month - i));
+        }
+      });
+    });
     super.initState();
   }
 
-  void init() async {
-    final expenses = await widget.expenseRepository.getByMonth(_currentDate);
-    _monthlyExpenses = expenses;
-    final categories = await widget.categoryRepository.getAll();
-    final categoryExpenses = <CategoryExpense>[];
+  void loadMonthlyExpenses() async {
+    try {
+      setState(() {
+        _isLoading = true;
+      });
+      _expensesByCategory.clear();
+      _monthlyExpenses = await widget.expenseRepository.getByMonth(_currentDate);
 
-    for (final category in categories) {
-      final expenses = _monthlyExpenses.where((expense) => expense.category.name == category.name);
-      if (expenses.isNotEmpty) {
-        categoryExpenses.add(CategoryExpense(category: category, expenses: expenses.toList()));
+      for (final expense in _monthlyExpenses) {
+        if (_expensesByCategory[expense.category] != null) {
+          _expensesByCategory[expense.category]!.add(expense);
+        } else {
+          _expensesByCategory[expense.category] = [expense];
+        }
       }
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-    categoryExpenses.sort((a, b) => b.totalAmount.compareTo(a.totalAmount));
-
-    setState(() {
-      _categoryExpenses = categoryExpenses;
-    });
   }
 
-  void changeMonth(int month) {
+  void changeMonthDate(DateTime date) {
     setState(() {
-      _currentDate = _currentDate.copyWith(month: month);
+      _currentDate = date;
     });
-  }
-
-  void changeYear(int year) {
-    setState(() {
-      _currentDate = _currentDate.copyWith(year: year);
-    });
+    loadMonthlyExpenses();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return MonthlyExpensesProvider._(
-      controller: this,
-      selectedDate: _currentDate,
-      expenses: _monthlyExpenses,
-      categoryExpenses: _categoryExpenses,
-      child: widget.child,
-    );
-  }
+  Widget build(BuildContext context) => widget.builder(this);
 }

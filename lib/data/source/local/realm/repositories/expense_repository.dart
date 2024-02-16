@@ -48,13 +48,11 @@ final class RealmExpenseRepository implements LocalExpenseRepository {
 
   @override
   Future<ExpenseDto> add(ExpenseDto expense) async {
-    // final realmExpense = ExpenseMapper.toRealm(expense);
     final realmExpense = expense.toRealm();
     realm.write(() {
       realm.add(realmExpense);
     });
     dev.log('Expense has been added.', name: 'Realm');
-    // return expense.copyWith(id: realmExpense.id.hexString);
     return ExpenseDto.fromRealm(realmExpense);
   }
 
@@ -127,13 +125,33 @@ final class RealmExpenseRepository implements LocalExpenseRepository {
 
   @override
   Future<List<ExpenseDto>> getByWeek(DateTime date) async {
-    final dateRange = DateRange.fromDate(date);
+    final dateRange = DateRange.getWeek(date);
 
     const queryString = r'paidAt BETWEEN{$0, $1} SORT(paidAt DESC)';
     final args = [dateRange.start, dateRange.end];
     final realmExpenses = realm.query<RealmExpense>(queryString, args);
     final weeklyExpenses = realmExpenses.map(ExpenseDto.fromRealm).toList();
     return weeklyExpenses;
+  }
+
+  @override
+  Stream<List<ExpenseDto>> watchWeeklyExpenses(DateTime date) async* {
+    final dateRange = DateRange.getWeek(date);
+
+    const queryString = r'paidAt BETWEEN{$0, $1} SORT(paidAt DESC)';
+    final args = [dateRange.start, dateRange.end];
+    final realmExpenses = realm.query<RealmExpense>(queryString, args);
+    yield* realmExpenses.changes.map((event) {
+      final weeklyExpenses = realmExpenses.map(ExpenseDto.fromRealm).toList();
+      return weeklyExpenses;
+    });
+  }
+
+  @override
+  Future<DateTime?> getStartDate() async {
+    const query = 'TRUEPREDICATE SORT(paidAt ASC) LIMIT(1)';
+    final startExpenses = realm.query<RealmExpense>(query);
+    return startExpenses.isEmpty ? null : startExpenses.first.paidAt.toLocal();
   }
 
   @override

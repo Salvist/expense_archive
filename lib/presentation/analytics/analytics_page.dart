@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
 import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
-import 'package:simple_expense_tracker/domain/models/date_range.dart';
-import 'package:simple_expense_tracker/widgets/monthly_expenses/monthly_expenses_provider.dart';
-import 'package:simple_expense_tracker/widgets/monthly_expenses/monthly_expenses_view.dart';
 import 'package:simple_expense_tracker/presentation/analytics/weekly_expenses_chart.dart';
 import 'package:simple_expense_tracker/presentation/analytics/weekly_expenses_provider.dart';
-import 'package:simple_expense_tracker/utils/extensions/date_time_extension.dart';
-import 'package:simple_expense_tracker/widgets/category_expense_list_view.dart';
-import 'package:simple_expense_tracker/widgets/charts/bar_chart.dart';
+import 'package:simple_expense_tracker/widgets/monthly_expenses/monthly_expenses_provider.dart';
+import 'package:simple_expense_tracker/widgets/monthly_expenses/monthly_expenses_view.dart';
 
 class AnalyticsPage extends StatelessWidget {
   const AnalyticsPage({
@@ -17,9 +12,6 @@ class AnalyticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final expenseProvider = ExpenseProvider.of(context);
-    final weekDates = DateRange.now();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Analytics'),
@@ -33,10 +25,9 @@ class AnalyticsPage extends StatelessWidget {
             children: [
               WeeklyExpensesController(
                 expenseRepository: RepositoryProvider.expenseOf(context),
-                builder: (weekDates, weeklyExpenses) {
+                builder: (controller) {
                   return WeeklyExpensesChartView(
-                    weekDates: weekDates,
-                    weeklyExpenses: weeklyExpenses,
+                    controller: controller,
                   );
                 },
               ),
@@ -44,7 +35,7 @@ class AnalyticsPage extends StatelessWidget {
               MonthlyExpensesController(
                 expenseRepository: RepositoryProvider.expenseOf(context),
                 categoryRepository: RepositoryProvider.categoryOf(context),
-                child: const MonthlyExpensesView(),
+                builder: (controller) => MonthlyExpensesView(controller),
               ),
               // const CategoryExpenseListView(),
               const SizedBox(height: 80),

@@ -39,6 +39,12 @@ class ExpenseCategory {
       iconName: 'question_mark',
     ),
   ];
+
+  @override
+  bool operator ==(covariant ExpenseCategory other) => name == other.name && iconName == other.iconName;
+
+  @override
+  int get hashCode => Object.hash(name, iconName);
 }
 
 class DuplicateCategoryException implements Exception {

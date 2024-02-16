@@ -5,6 +5,8 @@ class DateRange {
   final DateTime start;
   final DateTime end;
 
+  int get monthDifference => start.difference(end).inDays ~/ 365 ~/ 30 + 1;
+
   DateRange({
     required this.start,
     required this.end,
@@ -19,7 +21,8 @@ class DateRange {
     return DateRange(start: start, end: end);
   }
 
-  factory DateRange.fromDate(DateTime date) {
+  /// Returns a [DateRange] from Sunday to Saturday from given [date]
+  factory DateRange.getWeek(DateTime date) {
     final weekday = date.weekday % 7;
     final start = DateTime(date.year, date.month, date.day - weekday);
     final end = start.copyWith(day: start.day + 7, millisecond: -1);

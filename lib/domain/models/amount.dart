@@ -24,6 +24,7 @@ final class Amount {
   String toString() => NumberFormat.simpleCurrency(decimalDigits: 2).format(value);
 
   String inPercentOf(Amount other) {
+    if (other.value == 0) return '0%';
     final percent = (value / other.value) * 100;
     return '${percent.round()}%';
   }

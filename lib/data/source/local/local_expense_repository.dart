@@ -11,6 +11,9 @@ abstract interface class LocalExpenseRepository {
   Stream<Amount> watchMonthlyAmount(DateTime date);
 
   Future<List<ExpenseDto>> getByWeek(DateTime date);
+  Stream<List<ExpenseDto>> watchWeeklyExpenses(DateTime date);
+
+  Future<DateTime?> getStartDate();
   Future<(DateTime, DateTime)> getStartAndEndDates();
   Future<ExpenseDto?> get(String expenseId);
 

@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/domain/models/amount.dart';
 import 'package:simple_expense_tracker/domain/models/business.dart';
-import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/widgets/forms/business_form.dart';
 
 class EditBusinessDialog extends StatefulWidget {
-  final ExpenseCategory category;
   final Business business;
 
   const EditBusinessDialog({
     super.key,
-    required this.category,
     required this.business,
   });
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_expense_tracker/app/providers/expense_provider.dart';
 import 'package:simple_expense_tracker/presentation/home/all_expense_page.dart';
-import 'package:simple_expense_tracker/screens/expense_category/expense_category_page.dart';
+import 'package:simple_expense_tracker/presentation/settings/category_page/expense_category_page.dart';
 import 'package:simple_expense_tracker/screens/expense_category/manage_businesses_page.dart';
 import 'package:simple_expense_tracker/widgets/dialogs/remove_all_expenses_dialog.dart';
 
@@ -18,8 +18,7 @@ class SettingsPage extends StatelessWidget {
         children: [
           ListTile(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const ExpenseCategoryPage()));
-              // context.push('/settings/expense_category');
+              Navigator.push(context, ExpenseCategoryPage.route(context));
             },
             leading: const Icon(Icons.category_rounded),
             title: const Text('Manage expense categories'),
@@ -27,7 +26,7 @@ class SettingsPage extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const ManageBusinessesPage()));
+              Navigator.push(context, ManageBusinessesPage.route());
             },
             title: const Text('Manage businesses / individuals'),
             leading: const Icon(Icons.storefront_rounded),

@@ -6,7 +6,7 @@ import 'package:simple_expense_tracker/domain/repositories/repository_provider.d
 import 'package:simple_expense_tracker/presentation/home/home_provider.dart';
 import 'package:simple_expense_tracker/presentation/analytics/analytics_page.dart';
 import 'package:simple_expense_tracker/presentation/home/home_page.dart';
-import 'package:simple_expense_tracker/screens/settings_page.dart';
+import 'package:simple_expense_tracker/presentation/settings/settings_page.dart';
 
 class PageNavigator extends StatefulWidget {
   const PageNavigator({
@@ -70,7 +70,6 @@ class _PageNavigatorState extends State<PageNavigator> {
                   watchRecentExpenses: recentExpenses,
                 );
               },
-              // child: const HomePage(),
             ),
             const AnalyticsPage(),
             const SettingsPage(),

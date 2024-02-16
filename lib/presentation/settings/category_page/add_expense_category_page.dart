@@ -56,20 +56,6 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
         iconName: _iconName,
       );
 
-      final categoryRepository = RepositoryProvider.categoryOf(context);
-      final addedCategory = await categoryRepository.add(category);
-      // final addedCategory = await CategoryNotifier.of(context).addCategory(category);
-
-      // final businessNames = businessControllers.map((e) => e.name.text);
-      // for(final business in businessControllers){
-      //   if(business.name.text.isNotEmpty){
-      //     BusinessProvider.of(context).
-      //   }
-      // }
-      // final addedCategory = await ExpenseCategoryProvider.of(context).addCategory(
-      //   name: _nameController.text,
-      //   iconData: _icon?.icon?.codePoint,
-      // );
       if (!mounted) return;
       Navigator.pop(context, category);
     } on DuplicateCategoryException catch (e) {
@@ -77,6 +63,12 @@ class _AddExpenseCategoryPageState extends State<AddExpenseCategoryPage> {
         _nameErrorMessage = e.message;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
   }
 
   @override
