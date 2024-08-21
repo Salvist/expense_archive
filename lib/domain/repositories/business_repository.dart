@@ -7,6 +7,7 @@ abstract interface class BusinessRepository {
   Future<Business> get(String name);
 
   Future<Business> add(Business business);
+  Future<void> addAll(List<Business> businesses);
 
   Future<Business> edit(Business editedBusiness);
 

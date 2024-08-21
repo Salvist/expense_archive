@@ -12,12 +12,13 @@ import 'package:simple_expense_tracker/data/source/local/realm/models/expense_ca
 import 'package:simple_expense_tracker/data/source/local/realm/repositories/business_repository.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/repositories/expense_category_repository.dart';
 import 'package:simple_expense_tracker/data/source/local/realm/repositories/expense_repository.dart';
+import 'package:simple_expense_tracker/domain/models/business.dart';
+import 'package:simple_expense_tracker/domain/models/expense_category.dart';
 import 'package:simple_expense_tracker/domain/repositories/repository_provider.dart';
 import 'package:simple_expense_tracker/page_navigator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
 
   final realmSchemas = [
     RealmExpense.schema,
@@ -44,6 +45,11 @@ void main() async {
   final expenseRepository = ExpenseRepositoryImpl(localExpenseRepo);
   final categoryRepository = ExpenseCategoryRepositoryImpl(localCategoryRepo);
   final businessRepository = BusinessRepositoryImpl(localBusinessRepo);
+
+  if (sharedPrefsRepo.isFirstTime()) {
+    categoryRepository.addAll(ExpenseCategory.defaultCategories);
+    businessRepository.addAll(Business.defaultBusinesses);
+  }
 
   runApp(
     RepositoryProvider(
@@ -80,6 +86,7 @@ class ExpenseArchiveApp extends StatelessWidget {
         ),
       ),
       home: const PageNavigator(),
+      // home: const AppStartPage(),
     );
   }
 }

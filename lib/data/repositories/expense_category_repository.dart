@@ -14,6 +14,12 @@ class ExpenseCategoryRepositoryImpl implements ExpenseCategoryRepository {
   }
 
   @override
+  Future<void> addAll(List<ExpenseCategory> categories) async {
+    final categoriesDto = categories.map(CategoryDto.fromEntity).toList();
+    await _local.addAll(categoriesDto);
+  }
+
+  @override
   Future<List<ExpenseCategory>> getAll() async {
     return await _local.getAll();
   }

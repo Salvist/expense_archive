@@ -7,6 +7,7 @@ abstract interface class LocalBusinessDataSource {
   Future<BusinessDto> get(String name);
 
   Future<BusinessDto> add(BusinessDto business);
+  Future<void> addAll(Iterable<BusinessDto> businesses);
 
   Future<BusinessDto> edit(BusinessDto editedBusiness);
 

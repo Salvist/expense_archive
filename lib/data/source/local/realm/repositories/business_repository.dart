@@ -41,6 +41,15 @@ final class RealmBusinessDataSource implements LocalBusinessDataSource {
   }
 
   @override
+  Future<void> addAll(Iterable<BusinessDto> businesses) async {
+    final realmBusinesses = businesses.map((e) => e.toRealm());
+
+    _realm.write(() {
+      _realm.addAll(realmBusinesses);
+    });
+  }
+
+  @override
   Future<BusinessDto> get(String name) {
     // TODO: implement get
     throw UnimplementedError();

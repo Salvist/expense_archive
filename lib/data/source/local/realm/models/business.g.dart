@@ -7,8 +7,7 @@ part of 'business.dart';
 // **************************************************************************
 
 // ignore_for_file: type=lint
-class RealmBusiness extends _RealmBusiness
-    with RealmEntity, RealmObjectBase, RealmObject {
+class RealmBusiness extends _RealmBusiness with RealmEntity, RealmObjectBase, RealmObject {
   RealmBusiness(
     ObjectId id,
     String name,
@@ -36,28 +35,22 @@ class RealmBusiness extends _RealmBusiness
   set name(String value) => RealmObjectBase.set(this, 'name', value);
 
   @override
-  String get categoryName =>
-      RealmObjectBase.get<String>(this, 'categoryName') as String;
+  String get categoryName => RealmObjectBase.get<String>(this, 'categoryName') as String;
   @override
-  set categoryName(String value) =>
-      RealmObjectBase.set(this, 'categoryName', value);
+  set categoryName(String value) => RealmObjectBase.set(this, 'categoryName', value);
 
   @override
-  String? get iconName =>
-      RealmObjectBase.get<String>(this, 'iconName') as String?;
+  String? get iconName => RealmObjectBase.get<String>(this, 'iconName') as String?;
   @override
   set iconName(String? value) => RealmObjectBase.set(this, 'iconName', value);
 
   @override
-  double? get amountPreset =>
-      RealmObjectBase.get<double>(this, 'amountPreset') as double?;
+  double? get amountPreset => RealmObjectBase.get<double>(this, 'amountPreset') as double?;
   @override
-  set amountPreset(double? value) =>
-      RealmObjectBase.set(this, 'amountPreset', value);
+  set amountPreset(double? value) => RealmObjectBase.set(this, 'amountPreset', value);
 
   @override
-  Stream<RealmObjectChanges<RealmBusiness>> get changes =>
-      RealmObjectBase.getChanges<RealmBusiness>(this);
+  Stream<RealmObjectChanges<RealmBusiness>> get changes => RealmObjectBase.getChanges<RealmBusiness>(this);
 
   @override
   RealmBusiness freeze() => RealmObjectBase.freezeObject<RealmBusiness>(this);
@@ -66,8 +59,7 @@ class RealmBusiness extends _RealmBusiness
   static SchemaObject? _schema;
   static SchemaObject _initSchema() {
     RealmObjectBase.registerFactory(RealmBusiness._);
-    return const SchemaObject(
-        ObjectType.realmObject, RealmBusiness, 'RealmBusiness', [
+    return SchemaObject(ObjectType.realmObject, RealmBusiness, 'RealmBusiness', [
       SchemaProperty('id', RealmPropertyType.objectid, primaryKey: true),
       SchemaProperty('name', RealmPropertyType.string),
       SchemaProperty('categoryName', RealmPropertyType.string),

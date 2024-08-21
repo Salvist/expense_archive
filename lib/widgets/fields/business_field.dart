@@ -31,10 +31,12 @@ class _BusinessFieldState extends State<BusinessField> {
 
   late Iterable<Business> _businesses;
 
-  late final _businessRepository = RepositoryProvider.businessOf(context);
+  late final BusinessRepository _businessRepository;
 
   @override
   void initState() {
+    _businessRepository = RepositoryProvider.businessOf(context);
+    // _businessRepository.getByCategory(widget.category!);
     _focusNode.addListener(() {});
     super.initState();
   }
@@ -44,25 +46,29 @@ class _BusinessFieldState extends State<BusinessField> {
     super.didUpdateWidget(oldWidget);
 
     if (oldWidget.category != widget.category && widget.category != null) {
-      _businesses = BusinessProvider.of(context).byCategory(widget.category!);
+      // _businesses = BusinessProvider.of(context).byCategory(widget.category!);
+      _businessRepository.getByCategory(widget.category!).then((value) {
+        setState(() {
+          _businesses = value;
+        });
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          _controller.clear();
 
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        _controller.clear();
-
-        if (_businesses.length == 1) {
-          final business = _businesses.first;
-          _controller.text = business.name;
-          if (widget.onSelected != null) widget.onSelected!(business);
-        }
+          if (_businesses.length == 1) {
+            final business = _businesses.first;
+            _controller.text = business.name;
+            if (widget.onSelected != null) widget.onSelected!(business);
+          }
+        });
       });
     }
   }
 
   @override
   void didChangeDependencies() {
-    if (widget.category != null) {
-      _businesses = BusinessProvider.of(context).byCategory(widget.category!);
-    }
+    // if (widget.category != null) {
+    //   _businesses = BusinessProvider.of(context).byCategory(widget.category!);
+    // }
     super.didChangeDependencies();
   }
 
@@ -73,7 +79,7 @@ class _BusinessFieldState extends State<BusinessField> {
       final end = option.lastIndexOf('"');
       final businessName = option.substring(start, end);
       business = Business(name: businessName, categoryName: widget.category!.name);
-      BusinessNotifier.of(context).addBusiness(business);
+      // BusinessNotifier.of(context).addBusiness(business);
     } else {
       business = _businesses.firstWhere((business) => business.name == option);
     }

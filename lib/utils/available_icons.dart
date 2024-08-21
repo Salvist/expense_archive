@@ -6,6 +6,8 @@ const categoryIcons = <String, IconData>{
   'lunch_dining': Icons.lunch_dining_rounded,
   'fastfood': Icons.fastfood_rounded,
   'emoji_food_beverage': Icons.emoji_food_beverage_rounded,
+  'coffee': Icons.local_cafe_rounded,
+  'coffee_maker': Icons.coffee_maker_rounded,
   'local_bar': Icons.local_bar_rounded,
   'liquor': Icons.liquor_rounded,
   'shopping_cart': Icons.shopping_cart_rounded,
